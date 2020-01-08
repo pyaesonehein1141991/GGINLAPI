@@ -1,4 +1,4 @@
-package org.tat.gginl.api.common;
+package org.tat.gginl.api.common.enumdata;
 
 public enum ActiveStatus {
 	ACTIVATE("activate"), DEACTIVATE("deactivate"),CONFIGURE("configure");
