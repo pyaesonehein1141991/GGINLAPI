@@ -153,7 +153,7 @@ public class Customer implements Serializable {
 	@Embedded
 	private UserRecorder recorder;
 	
-	private boolean isExisting;
+//	private boolean isExisting;
 
 	@Version
 	private int version;
