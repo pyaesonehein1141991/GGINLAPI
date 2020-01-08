@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -189,10 +190,10 @@ public class DateUtils {
 	public static int ageFromDateOfBirth(Date dateOfBirth) {
 		if (dateOfBirth == null)
 			return 0;
-		LocalDate birthdate = new LocalDate(dateOfBirth);
-		LocalDate now = new LocalDate();
-		Years age = Years.yearsBetween(birthdate, now);
-		return age.getYears();
+		LocalDate birthdate = dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate now = LocalDate.now();
+		Period diff = Period.between(birthdate, now);
+		return diff.getYears();
 	}
 
 	public static Date resetStartDate(Date startDate) {
@@ -222,8 +223,10 @@ public class DateUtils {
 	 * @return date that is subtracted by given day
 	 */
 	public static Date minusDays(Date date, int day) {
-		DateTime dateTime = new DateTime(date, DateTimeZone.getDefault());
-		return dateTime.minusDays(day).toDate();
+		LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().minusDays(day); 
+		return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+		
+		
 	}
 
 	/**
@@ -234,8 +237,8 @@ public class DateUtils {
 	 * @return date that is added by given day
 	 */
 	public static Date plusDays(Date date, int day) {
-		DateTime dateTime = new DateTime(date, DateTimeZone.getDefault());
-		return dateTime.plusDays(day).toDate();
+		LocalDate localDate = LocalDate.ofInstant(date.toInstant(), ZoneId.systemDefault()).plusDays(day);
+		return Date.from(localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 	}
 
 	/**

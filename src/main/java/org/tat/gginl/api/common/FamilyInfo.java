@@ -14,10 +14,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import com.ace.demoapi.modal.Industry;
-import com.ace.demoapi.modal.Occupation;
-import com.ace.demoapi.modal.RelationShip;
-
 import lombok.Data;
 
 @Data
