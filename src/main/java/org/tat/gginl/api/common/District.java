@@ -7,7 +7,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
-import com.ace.demoapi.common.UserRecorder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;

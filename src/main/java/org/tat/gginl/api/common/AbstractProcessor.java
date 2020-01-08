@@ -4,8 +4,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ace.demoapi.modal.Currency;
-
 
 public abstract class AbstractProcessor {
 	protected final String SEPARATOR = " ";

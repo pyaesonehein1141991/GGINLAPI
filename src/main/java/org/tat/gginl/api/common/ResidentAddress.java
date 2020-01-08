@@ -6,8 +6,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import com.ace.demoapi.modal.Township;
-
 import lombok.Data;
 
 @Data

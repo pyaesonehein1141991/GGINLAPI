@@ -7,9 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Version;
 
-import com.ace.demoapi.common.UserRecorder;
-
-
 import lombok.Data;
 @Data
 @Entity
