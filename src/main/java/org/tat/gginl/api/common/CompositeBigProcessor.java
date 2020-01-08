@@ -1,5 +1,7 @@
 package org.tat.gginl.api.common;
 
+import org.tat.gginl.api.common.enumdata.Scale;
+
 public class CompositeBigProcessor extends AbstractProcessor {
 	static public Scale SCALE = Scale.SHORT;
 	private HundredProcessor hundredProcessor = new HundredProcessor();

@@ -7,6 +7,8 @@ import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import org.tat.gginl.api.common.enumdata.NcbYear;
+
 import lombok.Data;
 
 

@@ -31,17 +31,17 @@ import org.tat.gginl.api.common.CustomerInfoStatus;
 import org.tat.gginl.api.common.FamilyInfo;
 import org.tat.gginl.api.common.IdType;
 import org.tat.gginl.api.common.Industry;
-import org.tat.gginl.api.common.MaritalStatus;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.Occupation;
 import org.tat.gginl.api.common.OfficeAddress;
-import org.tat.gginl.api.common.PassportType;
 import org.tat.gginl.api.common.PermanentAddress;
 import org.tat.gginl.api.common.Qualification;
 import org.tat.gginl.api.common.Religion;
 import org.tat.gginl.api.common.ResidentAddress;
 import org.tat.gginl.api.common.UserRecorder;
 import org.tat.gginl.api.common.enumdata.Gender;
+import org.tat.gginl.api.common.enumdata.MaritalStatus;
+import org.tat.gginl.api.common.enumdata.PassportType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 

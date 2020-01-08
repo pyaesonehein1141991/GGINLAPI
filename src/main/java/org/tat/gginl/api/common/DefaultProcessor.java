@@ -1,5 +1,6 @@
 package org.tat.gginl.api.common;
 
+import org.tat.gginl.api.common.enumdata.Scale;
 
 public class DefaultProcessor extends AbstractProcessor {
 	static public Scale SCALE = Scale.SHORT;

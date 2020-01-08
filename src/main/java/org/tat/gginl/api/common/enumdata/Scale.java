@@ -1,7 +1,6 @@
-package org.tat.gginl.api.common;
+package org.tat.gginl.api.common.enumdata;
 
-
-
+import org.tat.gginl.api.common.ScaleUnit;
 
 public enum Scale {
 	SHORT, LONG;

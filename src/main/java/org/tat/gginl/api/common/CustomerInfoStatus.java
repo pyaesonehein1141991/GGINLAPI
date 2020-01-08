@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Version;
 
+import org.tat.gginl.api.common.enumdata.CustomerStatus;
+
 import lombok.Data;
 
 @Data
