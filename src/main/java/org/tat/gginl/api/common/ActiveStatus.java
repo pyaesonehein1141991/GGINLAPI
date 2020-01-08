@@ -1,15 +1,16 @@
 package org.tat.gginl.api.common;
 
-public enum Gender {
-	MALE("Male"), FEMALE("Female");
+public enum ActiveStatus {
+	ACTIVATE("activate"), DEACTIVATE("deactivate"),CONFIGURE("configure");
+
 	private String label;
 
-	private Gender(String label) {
+	private ActiveStatus(String label) {
 		this.label = label;
 	}
 
 	public String getLabel() {
 		return label;
 	}
-
 }
+
