@@ -31,6 +31,8 @@ import org.tat.gginl.api.services.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.opencsv.CSVWriter;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.MappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
@@ -47,8 +49,13 @@ class GginlApiApplicationTests {
 	public static <T> void writesCsvFromBean(Path path, List<T> objectList) throws Exception{
 		Writer writer = new FileWriter(path.toString());
 		
+		MappingStrategy<Object> mappingStrategy = new ColumnPositionMappingStrategy<>();
+	    mappingStrategy.setType(Customer.class);
+		
 		StatefulBeanToCsv<Object> sbc = new StatefulBeanToCsvBuilder<>(writer)
-				.withSeparator(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
+				.withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+				.withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+				.withEscapechar(CSVWriter.NO_ESCAPE_CHARACTER)
 				.build();
 		
 		sbc.write(objectList);
@@ -103,6 +110,7 @@ class GginlApiApplicationTests {
 	public void createCustomerFolder() throws Exception {
 		
 		Date startDate = resetStartDate(new Date());
+		startDate = minusDays(startDate, 2);
 		Date endDate = resetEndDate(new Date());
 		
 		List<Customer> customerList = customerService.findByRecorderCreatedDateBetweenOrRecorderUpdatedDateBetween(startDate, endDate);
