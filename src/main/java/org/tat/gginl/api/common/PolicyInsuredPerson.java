@@ -43,6 +43,7 @@ import org.tat.gginl.api.domains.LifePolicy;
 import org.tat.gginl.api.domains.Occupation;
 import org.tat.gginl.api.domains.PolicyInsuredPersonAddonHistory;
 import org.tat.gginl.api.domains.PolicyInsuredPersonAttachment;
+import org.tat.gginl.api.domains.PolicyInsuredPersonAttachmentHistory;
 import org.tat.gginl.api.domains.PolicyInsuredPersonBeneficiariesHistory;
 import org.tat.gginl.api.domains.PolicyInsuredPersonHistory;
 import org.tat.gginl.api.domains.PolicyInsuredPersonKeyFactorValue;

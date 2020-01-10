@@ -34,6 +34,7 @@ import org.tat.gginl.api.domains.MedicalPolicyInsuredPersonAttachment;
 import org.tat.gginl.api.domains.MedicalPolicyInsuredPersonBeneficiaries;
 import org.tat.gginl.api.domains.MedicalPolicyInsuredPersonKeyFactorValue;
 import org.tat.gginl.api.domains.MedicalProposalInsuredPerson;
+import org.tat.gginl.api.domains.MedicalProposalInsuredPersonAddOn;
 import org.tat.gginl.api.domains.MedicalProposalInsuredPersonAttachment;
 import org.tat.gginl.api.domains.MedicalProposalInsuredPersonBeneficiaries;
 import org.tat.gginl.api.domains.MedicalProposalInsuredPersonKeyFactorValue;
