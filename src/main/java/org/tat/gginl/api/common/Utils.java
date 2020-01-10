@@ -23,33 +23,48 @@ import java.util.zip.ZipInputStream;
 
 import javax.servlet.ServletContext;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.Months;
+import org.joda.time.Period;
+import org.joda.time.chrono.GregorianChronology;
+import org.tat.gginl.api.domains.LifePolicy;
+import org.tat.gginl.api.domains.LifeProposal;
+
+
+
+
 public class Utils {
 	private static final int BUFFER_SIZE = 4096;
 
-	public static double getTotalClaimAmount(MedicalClaimProposalDTO medicalClaimProposalDTO) {
-		double totalClaimAmount = 0.0;
-		if (medicalClaimProposalDTO.isHospitalized()) {
-			if (medicalClaimProposalDTO.getHospitalizedClaimDTO().isApproved()) {
-				totalClaimAmount += medicalClaimProposalDTO.getHospitalizedClaimDTO().getHospitalizedAmount();
-			}
-		}
-		if (medicalClaimProposalDTO.isOperation()) {
-			if (medicalClaimProposalDTO.getOperationClaimDTO().isApproved()) {
-				totalClaimAmount += medicalClaimProposalDTO.getOperationClaimDTO().getOperationFee() + medicalClaimProposalDTO.getOperationClaimDTO().getAbortionAmt();
-			}
-		}
-		if (medicalClaimProposalDTO.isMedication()) {
-			if (medicalClaimProposalDTO.getMedicationClaimDTO().isApproved()) {
-				totalClaimAmount += medicalClaimProposalDTO.getMedicationClaimDTO().getMedicationFee();
-			}
-		}
-		if (medicalClaimProposalDTO.isDeath()) {
-			if (medicalClaimProposalDTO.getDeathClaimDTO().isApproved()) {
-				totalClaimAmount += medicalClaimProposalDTO.getDeathClaimDTO().getDeathClaimAmount();
-			}
-		}
-		return totalClaimAmount;
-	}
+//	public static double getTotalClaimAmount(MedicalClaimProposalDTO medicalClaimProposalDTO) {
+//		double totalClaimAmount = 0.0;
+//		if (medicalClaimProposalDTO.isHospitalized()) {
+//			if (medicalClaimProposalDTO.getHospitalizedClaimDTO().isApproved()) {
+//				totalClaimAmount += medicalClaimProposalDTO.getHospitalizedClaimDTO().getHospitalizedAmount();
+//			}
+//		}
+//		if (medicalClaimProposalDTO.isOperation()) {
+//			if (medicalClaimProposalDTO.getOperationClaimDTO().isApproved()) {
+//				totalClaimAmount += medicalClaimProposalDTO.getOperationClaimDTO().getOperationFee() + medicalClaimProposalDTO.getOperationClaimDTO().getAbortionAmt();
+//			}
+//		}
+//		if (medicalClaimProposalDTO.isMedication()) {
+//			if (medicalClaimProposalDTO.getMedicationClaimDTO().isApproved()) {
+//				totalClaimAmount += medicalClaimProposalDTO.getMedicationClaimDTO().getMedicationFee();
+//			}
+//		}
+//		if (medicalClaimProposalDTO.isDeath()) {
+//			if (medicalClaimProposalDTO.getDeathClaimDTO().isApproved()) {
+//				totalClaimAmount += medicalClaimProposalDTO.getDeathClaimDTO().getDeathClaimAmount();
+//			}
+//		}
+//		return totalClaimAmount;
+//	}
 
 	public static Date resetStartDate(Date startDate) {
 		Calendar cal = Calendar.getInstance();
