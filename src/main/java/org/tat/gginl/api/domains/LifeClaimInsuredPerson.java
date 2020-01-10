@@ -20,11 +20,6 @@ import org.tat.gginl.api.common.PolicyInsuredPerson;
 
 
 
-/**
- * @author T&D Infomation System Ltd
- * @since 1.0.0
- * @date 2013/07/16
- */
 
 @Entity
 @NamedQueries(value = {
