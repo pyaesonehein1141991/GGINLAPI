@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.tat.gginl.api.domain.Customer;
-import org.tat.gginl.api.repository.CustomerRepository;
+import org.tat.gginl.api.domains.Customer;
+
 
 @Service
 public class CustomerService {
