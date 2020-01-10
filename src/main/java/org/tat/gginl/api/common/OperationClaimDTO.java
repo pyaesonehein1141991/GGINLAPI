@@ -4,12 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.ace.insurance.medical.claim.OperationClaimICD10;
-import org.ace.insurance.medical.claim.OperationType;
-import org.ace.insurance.system.common.icd10.ICD10;
-import org.ace.insurance.system.common.operation.Operation;
-import org.ace.insurance.web.manage.life.proposal.AttachmentDTO;
-import org.ace.insurance.web.manage.medical.survey.SurveyQuestionAnswerDTO;
 
 public class OperationClaimDTO extends MedicalClaimDTO {
 	private Date operationDate;

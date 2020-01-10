@@ -25,19 +25,17 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.CommonCreateAndUpateMarks;
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.life.proposal.ProposalInsuredPerson;
-import org.ace.insurance.medical.claim.ClaimType;
-import org.ace.insurance.medical.productprocess.ProductProcess;
-import org.ace.insurance.medical.proposal.SurveyType;
-import org.ace.insurance.medical.surveyquestion.InputType;
-import org.ace.insurance.medical.surveyquestion.ProductProcessQuestionLink;
-import org.ace.insurance.medical.surveyquestion.ResourceQuestion;
-import org.ace.insurance.web.common.ValidationUtil;
-import org.ace.insurance.web.manage.surveyquestion.ResourceQuestionDTO;
-import org.ace.insurance.web.manage.surveyquestion.SurveyQuestionDTO;
-import org.ace.java.component.idgen.service.IDInterceptor;
+import org.tat.gginl.api.common.ClaimType;
+import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
+import org.tat.gginl.api.common.IDInterceptor;
+import org.tat.gginl.api.common.InputType;
+import org.tat.gginl.api.common.ProductProcess;
+import org.tat.gginl.api.common.ProductProcessQuestionLink;
+import org.tat.gginl.api.common.ResourceQuestionAnswer;
+import org.tat.gginl.api.common.SurveyQuestionDTO;
+import org.tat.gginl.api.common.SurveyType;
+import org.tat.gginl.api.common.TableName;
+
 
 @Entity
 @Table(name = TableName.SURVEYQUESTIONANSWER)

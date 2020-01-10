@@ -26,15 +26,14 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.PaymentDTO;
-import org.ace.insurance.common.PolicyReferenceType;
-import org.ace.insurance.common.PolicyStatus;
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.common.interfaces.IDataModel;
-import org.ace.insurance.system.common.PaymentChannel;
-import org.ace.insurance.system.common.bank.Bank;
-import org.ace.insurance.system.common.paymenttype.PaymentType;
-import org.ace.java.component.FormatID;
+import org.tat.gginl.api.common.FormatID;
+import org.tat.gginl.api.common.IDataModel;
+import org.tat.gginl.api.common.PaymentChannel;
+import org.tat.gginl.api.common.PaymentDTO;
+import org.tat.gginl.api.common.PolicyReferenceType;
+import org.tat.gginl.api.common.PolicyStatus;
+import org.tat.gginl.api.common.TableName;
+
 
 @Entity
 @Table(name = TableName.PAYMENT)

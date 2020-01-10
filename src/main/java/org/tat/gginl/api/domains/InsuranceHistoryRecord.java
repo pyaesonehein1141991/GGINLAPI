@@ -19,11 +19,10 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.CommonCreateAndUpateMarks;
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.product.Product;
-import org.ace.insurance.system.common.coinsurancecompany.CoinsuranceCompany;
-import org.ace.java.component.idgen.service.IDInterceptor;
+import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
+import org.tat.gginl.api.common.IDInterceptor;
+import org.tat.gginl.api.common.TableName;
+
 
 @Entity
 @Table(name = TableName.INSURANCE_HISTORY_RECORD)

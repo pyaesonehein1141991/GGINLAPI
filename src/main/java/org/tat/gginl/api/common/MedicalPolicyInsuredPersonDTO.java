@@ -5,18 +5,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.ace.insurance.common.ResidentAddress;
-import org.ace.insurance.medical.claim.ClaimStatus;
-import org.ace.insurance.medical.policy.MedicalPolicyInsuredPersonAddOn;
-import org.ace.insurance.medical.policy.MedicalPolicyInsuredPersonAttachment;
-import org.ace.insurance.medical.policy.MedicalPolicyInsuredPersonKeyFactorValue;
-import org.ace.insurance.product.Product;
-import org.ace.insurance.system.common.customer.Customer;
-import org.ace.insurance.system.common.organization.Organization;
-import org.ace.insurance.system.common.relationship.RelationShip;
-import org.ace.insurance.web.common.CommonDTO;
-import org.ace.insurance.web.manage.medical.proposal.CustomerDTO;
-import org.ace.insurance.web.manage.medical.proposal.PolicyGuardianDTO;
+import org.tat.gginl.api.domains.Customer;
+import org.tat.gginl.api.domains.CustomerDTO;
+import org.tat.gginl.api.domains.MedicalPolicyInsuredPersonAddOn;
+import org.tat.gginl.api.domains.MedicalPolicyInsuredPersonAttachment;
+import org.tat.gginl.api.domains.MedicalPolicyInsuredPersonKeyFactorValue;
+import org.tat.gginl.api.domains.Organization;
+import org.tat.gginl.api.domains.Product;
+import org.tat.gginl.api.domains.RelationShip;
+
 
 public class MedicalPolicyInsuredPersonDTO extends CommonDTO {
 

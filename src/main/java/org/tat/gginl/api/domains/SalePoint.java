@@ -19,11 +19,10 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.CommonCreateAndUpateMarks;
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.system.common.branch.Branch;
-import org.ace.insurance.system.common.township.Township;
-import org.ace.java.component.idgen.service.IDInterceptor;
+import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
+import org.tat.gginl.api.common.IDInterceptor;
+import org.tat.gginl.api.common.TableName;
+
 
 @Entity
 @Table(name = TableName.SALEPOINT)

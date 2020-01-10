@@ -21,9 +21,11 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.ProductGroupType;
-import org.ace.insurance.common.TableName;
-import org.ace.java.component.FormatID;
+import org.tat.gginl.api.common.FormatID;
+import org.tat.gginl.api.common.NcbYear;
+import org.tat.gginl.api.common.ProductGroupType;
+import org.tat.gginl.api.common.TableName;
+
 
 @Entity
 @Table(name = TableName.PRODUCTGROUP)

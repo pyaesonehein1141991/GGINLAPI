@@ -28,20 +28,11 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.PolicyHistoryEntryType;
-import org.ace.insurance.common.PolicyStatus;
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.life.policy.LifePolicy;
-import org.ace.insurance.life.proposal.LifeProposal;
-import org.ace.insurance.product.ProductGroup;
-import org.ace.insurance.system.common.agent.Agent;
-import org.ace.insurance.system.common.branch.Branch;
-import org.ace.insurance.system.common.customer.Customer;
-import org.ace.insurance.system.common.organization.Organization;
-import org.ace.insurance.system.common.paymenttype.PaymentType;
-import org.ace.insurance.system.common.saleman.SaleMan;
-import org.ace.insurance.user.User;
-import org.ace.java.component.FormatID;
+import org.tat.gginl.api.common.FormatID;
+import org.tat.gginl.api.common.PolicyHistoryEntryType;
+import org.tat.gginl.api.common.PolicyStatus;
+import org.tat.gginl.api.common.TableName;
+
 
 @Entity
 @Table(name = TableName.LIFEPOLICYHISTORY)

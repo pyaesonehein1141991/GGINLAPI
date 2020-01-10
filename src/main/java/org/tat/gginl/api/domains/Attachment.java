@@ -15,10 +15,11 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.common.interfaces.IEntity;
-import org.ace.insurance.web.manage.life.proposal.AttachmentDTO;
-import org.ace.java.component.FormatID;
+import org.tat.gginl.api.common.AttachmentDTO;
+import org.tat.gginl.api.common.FormatID;
+import org.tat.gginl.api.common.IEntity;
+import org.tat.gginl.api.common.TableName;
+
 
 @Entity
 @Table(name = TableName.ATTACHMENT)

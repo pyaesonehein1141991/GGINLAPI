@@ -2,7 +2,6 @@ package org.tat.gginl.api.common;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -29,22 +27,20 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.CommonCreateAndUpateMarks;
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.common.Utils;
-import org.ace.insurance.common.interfaces.IInsuredItem;
-import org.ace.insurance.medical.claim.ClaimStatus;
-import org.ace.insurance.medical.proposal.MedicalPersonHistoryRecord;
-import org.ace.insurance.medical.proposal.MedicalProposalInsuredPerson;
-import org.ace.insurance.medical.proposal.MedicalProposalInsuredPersonAddOn;
-import org.ace.insurance.medical.proposal.MedicalProposalInsuredPersonAttachment;
-import org.ace.insurance.medical.proposal.MedicalProposalInsuredPersonBeneficiaries;
-import org.ace.insurance.medical.proposal.MedicalProposalInsuredPersonKeyFactorValue;
-import org.ace.insurance.product.Product;
-import org.ace.insurance.system.common.customer.Customer;
-import org.ace.insurance.system.common.occupation.Occupation;
-import org.ace.insurance.system.common.relationship.RelationShip;
-import org.ace.java.component.idgen.service.IDInterceptor;
+import org.tat.gginl.api.domains.Customer;
+import org.tat.gginl.api.domains.MedicalPersonHistoryRecord;
+import org.tat.gginl.api.domains.MedicalPolicyInsuredPersonAddOn;
+import org.tat.gginl.api.domains.MedicalPolicyInsuredPersonAttachment;
+import org.tat.gginl.api.domains.MedicalPolicyInsuredPersonBeneficiaries;
+import org.tat.gginl.api.domains.MedicalPolicyInsuredPersonKeyFactorValue;
+import org.tat.gginl.api.domains.MedicalProposalInsuredPerson;
+import org.tat.gginl.api.domains.MedicalProposalInsuredPersonAttachment;
+import org.tat.gginl.api.domains.MedicalProposalInsuredPersonBeneficiaries;
+import org.tat.gginl.api.domains.MedicalProposalInsuredPersonKeyFactorValue;
+import org.tat.gginl.api.domains.Occupation;
+import org.tat.gginl.api.domains.Product;
+import org.tat.gginl.api.domains.RelationShip;
+
 
 @Entity
 @Table(name = TableName.MEDICALPOLICYINSUREDPERSON)

@@ -28,13 +28,12 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.ContentInfo;
-import org.ace.insurance.common.IdType;
-import org.ace.insurance.common.Name;
-import org.ace.insurance.common.PermanentAddress;
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.system.common.branch.Branch;
-import org.ace.java.component.FormatID;
+import org.tat.gginl.api.common.ContentInfo;
+import org.tat.gginl.api.common.FormatID;
+import org.tat.gginl.api.common.IdType;
+import org.tat.gginl.api.common.Name;
+import org.tat.gginl.api.common.PermanentAddress;
+import org.tat.gginl.api.common.TableName;
 
 @Entity
 @Table(name = TableName.SALEMAN)

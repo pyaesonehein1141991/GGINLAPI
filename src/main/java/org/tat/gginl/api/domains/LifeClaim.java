@@ -31,12 +31,13 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.common.interfaces.IEntity;
-import org.ace.insurance.life.policy.LifePolicy;
-import org.ace.insurance.system.common.branch.Branch;
-import org.ace.insurance.system.common.saleman.SaleMan;
-import org.ace.java.component.FormatID;
+import org.tat.gginl.api.common.FormatID;
+import org.tat.gginl.api.common.IEntity;
+import org.tat.gginl.api.common.LifeClaimBeneficiaryRole;
+import org.tat.gginl.api.common.LifeClaimDeathPerson;
+import org.tat.gginl.api.common.LifeClaimInsuredPersonBeneficiary;
+import org.tat.gginl.api.common.LifeClaimRole;
+import org.tat.gginl.api.common.TableName;
 
 /**
  * @author T&D Infomation System Ltd
@@ -375,12 +376,10 @@ public class LifeClaim implements Serializable, IEntity{
 		return amount;
 	}
 	
-	public boolean isDeathClaim() {
-		if (this.claimInsuredPerson instanceof LifeClaimDeathPerson) {
-			return true;
-		}
-		return false;
-	}
+	/*
+	 * public boolean isDeathClaim() { if (this.claimInsuredPerson instanceof
+	 * LifeClaimDeathPerson) { return true; } return false; }
+	 */
 
 	public String getPortalId() {
 		return portalId;

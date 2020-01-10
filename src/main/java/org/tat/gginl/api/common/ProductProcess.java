@@ -26,12 +26,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.CommonCreateAndUpateMarks;
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.medical.process.Process;
-import org.ace.insurance.medical.surveyquestion.ProductProcessQuestionLink;
-import org.ace.insurance.product.Product;
-import org.ace.java.component.idgen.service.IDInterceptor;
+import org.tat.gginl.api.domains.Product;
 
 @Entity
 @Table(name = TableName.PRODUCTPROCESS)

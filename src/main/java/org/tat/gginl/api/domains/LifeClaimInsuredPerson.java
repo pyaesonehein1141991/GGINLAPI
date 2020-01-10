@@ -126,7 +126,7 @@ public class LifeClaimInsuredPerson extends LifeClaimBeneficiary implements Seri
 		if (this.claimInsuredPersonAttachmentList == null ) {
 			this.claimInsuredPersonAttachmentList = new ArrayList<LifeClaimInsuredPersonAttachment>();
 		}
-		claimInsuredPersonAttachment.setLifeClaimInsuredPerson(this);
+		//claimInsuredPersonAttachment.setLifeClaimInsuredPerson(this);
 		claimInsuredPersonAttachmentList.add(claimInsuredPersonAttachment);
 	}
 
