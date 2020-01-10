@@ -2,22 +2,16 @@ package org.tat.gginl.api.domains;
 
 
 	import java.io.Serializable;
-	import java.util.Date;
+import java.util.Date;
 
-	import javax.persistence.Access;
-	import javax.persistence.AccessType;
-	import javax.persistence.Entity;
-	import javax.persistence.GeneratedValue;
-	import javax.persistence.GenerationType;
-	import javax.persistence.Id;
-	import javax.persistence.NamedQueries;
-	import javax.persistence.NamedQuery;
-	import javax.persistence.Table;
-	import javax.persistence.TableGenerator;
-	import javax.persistence.Temporal;
-	import javax.persistence.TemporalType;
-	import javax.persistence.Transient;
-	import javax.persistence.Version;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.persistence.Version;
 
 import org.tat.gginl.api.common.FormatID;
 
@@ -29,9 +23,7 @@ import lombok.Data;
 	@Data
 	public class Country implements Serializable {
 
-		/**
-		 * 
-		 */
+		
 		private static final long serialVersionUID = 1L;
 		@Id
 		@GeneratedValue(strategy = GenerationType.TABLE, generator = "COUNTRY_GEN")
