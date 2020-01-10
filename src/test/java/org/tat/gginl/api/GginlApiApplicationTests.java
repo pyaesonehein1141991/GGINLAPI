@@ -25,7 +25,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.tat.gginl.api.domain.Customer;
+import org.tat.gginl.api.domains.Customer;
 import org.tat.gginl.api.services.CustomerService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
