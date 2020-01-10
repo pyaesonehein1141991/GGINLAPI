@@ -884,11 +884,11 @@ public class PolicyInsuredPerson implements IInsuredItem, Serializable {
 		} else if (months > 0 && months != 12) {
 			int a = 12 / months;
 			for (int i = 1; i <= a; i++) {
-				result.add(org.ace.insurance.web.common.Utils.formattedDate(cal.getTime(), "dd-MMM"));
+				result.add(org.tat.gginl.api.common.Utils.formattedDate(cal.getTime(), "dd-MMM"));
 				cal.add(Calendar.MONTH, months);
 			}
 		} else if (months == 12) {
-			result.add(org.ace.insurance.web.common.Utils.formattedDate(cal.getTime(), "dd-MMM"));
+			result.add(org.tat.gginl.api.common.Utils.formattedDate(cal.getTime(), "dd-MMM"));
 		}
 		return result != null ? result.toString().substring(1, result.toString().length() - 1) : null;
 	}

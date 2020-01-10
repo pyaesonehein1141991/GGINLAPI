@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.tat.gginl.api.domains.SurveyQuestion;
+import org.tat.gginl.api.domains.ResourceQuestion; 
 
 
 public class SurveyQuestionDTO extends CommonDTO implements ISorter {
@@ -43,7 +44,7 @@ public class SurveyQuestionDTO extends CommonDTO implements ISorter {
 			questionLinkDTO.setPriority(link.getPriority());
 			this.addProductProcessQuestionLink(questionLinkDTO);
 		}
-		for (ResourceQuestion resourceQuestion : surveyQuestion.getResourceQuestionList()) {
+		for ( ResourceQuestion resourceQuestion : surveyQuestion.getResourceQuestionList()) {
 			this.addResourceQuestion(new ResourceQuestionDTO(resourceQuestion.getName()));
 		}
 

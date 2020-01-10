@@ -32,9 +32,11 @@ import org.tat.gginl.api.common.InputType;
 import org.tat.gginl.api.common.ProductProcess;
 import org.tat.gginl.api.common.ProductProcessQuestionLink;
 import org.tat.gginl.api.common.ResourceQuestionAnswer;
+import org.tat.gginl.api.common.ResourceQuestionDTO;
 import org.tat.gginl.api.common.SurveyQuestionDTO;
 import org.tat.gginl.api.common.SurveyType;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.ValidationUtil;
 
 
 @Entity

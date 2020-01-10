@@ -3,6 +3,7 @@ package org.tat.gginl.api.common;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.tat.gginl.api.domains.ResourceQuestion;
 
 
 
