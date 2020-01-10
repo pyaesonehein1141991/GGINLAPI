@@ -1,4 +1,4 @@
-package org.tat.gginl.api.common;
+package org.tat.gginl.api.domains;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -27,8 +27,10 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.tat.gginl.api.domains.LifeClaimSuccessor;
-import org.tat.gginl.api.domains.Payment;
+import org.tat.gginl.api.common.ClaimStatus;
+import org.tat.gginl.api.common.FormatID;
+import org.tat.gginl.api.common.IEntity;
+import org.tat.gginl.api.common.TableName;
 
 
 /**

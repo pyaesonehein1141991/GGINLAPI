@@ -1,4 +1,4 @@
-package org.tat.gginl.api.common;
+package org.tat.gginl.api.domains;
 
 import java.util.List;
 
@@ -16,9 +16,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import org.tat.gginl.api.domains.LifeClaim;
-import org.tat.gginl.api.domains.LifeClaimInsuredPerson;
-import org.tat.gginl.api.domains.LifeClaimSuccessor;
+import org.tat.gginl.api.common.BeneficiaryStatus;
+import org.tat.gginl.api.common.ClaimStatus;
+import org.tat.gginl.api.common.IEntity;
+import org.tat.gginl.api.common.PolicyInsuredPersonBeneficiaries;
 
 
 /**

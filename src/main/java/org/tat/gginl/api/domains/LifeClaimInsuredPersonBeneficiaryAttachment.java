@@ -1,4 +1,4 @@
-package org.tat.gginl.api.common;
+package org.tat.gginl.api.domains;
 
 import java.io.Serializable;
 
@@ -18,24 +18,29 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.tat.gginl.api.common.FormatID;
+import org.tat.gginl.api.common.IEntity;
+import org.tat.gginl.api.common.TableName;
+
+
+
 /**
  * @author T&D Infomation System Ltd
  * @since 1.0.0
  * @date 2013/07/16
  */
 
-//import org.ace.insurance.life.claim.garbage.ClaimInsuredPerson;
 @Entity
-@Table(name = TableName.LIFECLAIM_INSUREDPERSON_ATTACHMENT)
-@TableGenerator(name = "LIFECLAIM_INSURED_PERSON_ATTACHMENT_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "LIFECLAIM_INSURED_PERSON_ATTACHMENT_GEN", allocationSize = 10)
+@Table(name = TableName.LIFECLAIM_INSUREDPERSON_BENEFICIARY_ATTACHMENT)
+@TableGenerator(name = "LIFECLAIMINSUREDPERSONBENEFICIARYATTACHMENT_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "LIFECLAIMINSUREDPERSONBENEFICIARYATTACHMENT_GEN", allocationSize = 10)
 @NamedQueries(value = {
-		@NamedQuery(name = "ClaimInsuredPersonAttachment.findAll", query = "SELECT m FROM LifeClaimInsuredPersonAttachment m "),
-		@NamedQuery(name = "ClaimInsuredPersonAttachment.findById", query = "SELECT m FROM LifeClaimInsuredPersonAttachment m WHERE m.id = :id") })
+		@NamedQuery(name = "ClaimInsuredPersonBeneficiaryAttachment.findAll", query = "SELECT m FROM LifeClaimInsuredPersonBeneficiaryAttachment m "),
+		@NamedQuery(name = "ClaimInsuredPersonBeneficiaryAttachment.findById", query = "SELECT m FROM LifeClaimInsuredPersonBeneficiaryAttachment m WHERE m.id = :id") })
 @Access(value = AccessType.FIELD)
-public class LifeClaimInsuredPersonAttachment implements Serializable , IEntity{
-	/**
-	 * 
-	 */
+public class LifeClaimInsuredPersonBeneficiaryAttachment implements
+		Serializable, IEntity {
+
+
 	private static final long serialVersionUID = 1L;
 	@Transient
 	private String id;
@@ -45,28 +50,23 @@ public class LifeClaimInsuredPersonAttachment implements Serializable , IEntity{
 	private String filePath;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CLAIMINSUREDPERSONID", referencedColumnName = "ID")
-	private LifeClaimInsuredPerson lifeClaimInsuredPerson;
+	@JoinColumn(name = "CLAIMINSUREDPERSONBENEFICIARYID", referencedColumnName = "ID")
+	private LifeClaimInsuredPersonBeneficiary claimInsuredPersonBeneficiary;
 
 	@Version
 	private int version;
 
-	public LifeClaimInsuredPersonAttachment() {
+	public LifeClaimInsuredPersonBeneficiaryAttachment() {
 	}
 
-	public LifeClaimInsuredPersonAttachment(String name, String filePath) {
+	public LifeClaimInsuredPersonBeneficiaryAttachment(String name,
+			String filePath) {
 		this.name = name;
 		this.filePath = filePath;
-	}
-
-	public LifeClaimInsuredPersonAttachment(String name, String filePath, LifeClaimInsuredPerson lifeClaimInsuredPerson) {
-		this.name = name;
-		this.filePath = filePath;
-		this.lifeClaimInsuredPerson = lifeClaimInsuredPerson;
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "LIFECLAIM_INSURED_PERSON_ATTACHMENT_GEN")
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "LIFECLAIMINSUREDPERSONBENEFICIARYATTACHMENT_GEN")
 	@Access(value = AccessType.PROPERTY)
 	public String getId() {
 		return id;
@@ -102,12 +102,13 @@ public class LifeClaimInsuredPersonAttachment implements Serializable , IEntity{
 		this.filePath = filePath;
 	}
 
-	public LifeClaimInsuredPerson getClaimInsuredPerson() {
-		return lifeClaimInsuredPerson;
+	public LifeClaimInsuredPersonBeneficiary getClaimInsuredPersonBeneficiary() {
+		return claimInsuredPersonBeneficiary;
 	}
 
-	public void setLifeClaimInsuredPerson(LifeClaimInsuredPerson claimInsuredPerson) {
-		this.lifeClaimInsuredPerson = claimInsuredPerson;
+	public void setClaimInsuredPersonBeneficiary(
+			LifeClaimInsuredPersonBeneficiary claimInsuredPersonBeneficiary) {
+		this.claimInsuredPersonBeneficiary = claimInsuredPersonBeneficiary;
 	}
 
 	public int getVersion() {
@@ -138,7 +139,7 @@ public class LifeClaimInsuredPersonAttachment implements Serializable , IEntity{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		LifeClaimInsuredPersonAttachment other = (LifeClaimInsuredPersonAttachment) obj;
+		LifeClaimInsuredPersonBeneficiaryAttachment other = (LifeClaimInsuredPersonBeneficiaryAttachment) obj;
 		if (filePath == null) {
 			if (other.filePath != null)
 				return false;

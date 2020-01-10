@@ -1,4 +1,4 @@
-package org.tat.gginl.api.common;
+package org.tat.gginl.api.domains;
 
 /**
  * @author T&D Infomation System Ltd

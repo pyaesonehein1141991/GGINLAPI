@@ -3,6 +3,8 @@ package org.tat.gginl.api.common;
 import java.util.Date;
 import java.util.List;
 
+import org.tat.gginl.api.domains.LifeClaimInsuredPersonAttachment;
+
 /**
  * @author T&D Infomation System Ltd
  * @since 1.0.0

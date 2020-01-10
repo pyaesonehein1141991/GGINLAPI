@@ -1,4 +1,4 @@
-package org.tat.gginl.api.common;
+package org.tat.gginl.api.domains;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -7,6 +7,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.tat.gginl.api.common.IEntity;
 
 
 

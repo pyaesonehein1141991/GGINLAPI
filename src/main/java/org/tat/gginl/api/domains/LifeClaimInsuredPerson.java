@@ -16,10 +16,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
 import org.tat.gginl.api.common.IEntity;
-import org.tat.gginl.api.common.LifeClaimBeneficiary;
-import org.tat.gginl.api.common.LifeClaimBeneficiaryRole;
-import org.tat.gginl.api.common.LifeClaimInsuredPersonAttachment;
-import org.tat.gginl.api.common.LifeClaimInsuredPersonBeneficiary;
 import org.tat.gginl.api.common.PolicyInsuredPerson;
 
 

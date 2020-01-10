@@ -1,5 +1,7 @@
 package org.tat.gginl.api.common;
 
+import org.tat.gginl.api.domains.LifeClaimInsuredPersonBeneficiary;
+import org.tat.gginl.api.domains.LifeClaimInsuredPersonBeneficiaryAttachment;
 
 /**
  * @author T&D Infomation System Ltd
