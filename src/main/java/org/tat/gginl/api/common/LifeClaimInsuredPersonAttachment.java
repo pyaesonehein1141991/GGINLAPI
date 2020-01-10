@@ -33,6 +33,10 @@ import javax.persistence.Version;
 		@NamedQuery(name = "ClaimInsuredPersonAttachment.findById", query = "SELECT m FROM LifeClaimInsuredPersonAttachment m WHERE m.id = :id") })
 @Access(value = AccessType.FIELD)
 public class LifeClaimInsuredPersonAttachment implements Serializable , IEntity{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Transient
 	private String id;
 	@Transient

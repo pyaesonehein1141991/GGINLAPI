@@ -34,13 +34,10 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.common.WorkFlowType;
-import org.ace.insurance.common.WorkflowTask;
-import org.ace.insurance.role.Role;
-import org.ace.insurance.system.common.branch.Branch;
-import org.ace.insurance.system.common.salepoint.SalePoint;
-import org.ace.java.component.FormatID;
+import org.tat.gginl.api.common.FormatID;
+import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.WorkFlowType;
+import org.tat.gginl.api.common.WorkflowTask;
 
 @Entity
 @Table(name = TableName.USER)

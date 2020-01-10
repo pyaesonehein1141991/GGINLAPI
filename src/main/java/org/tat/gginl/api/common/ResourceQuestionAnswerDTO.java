@@ -1,7 +1,6 @@
 package org.tat.gginl.api.common;
 
-import org.ace.insurance.medical.surveyAnswer.ResourceQuestionAnswer;
-import org.ace.insurance.web.common.CommonDTO;
+
 
 public class ResourceQuestionAnswerDTO extends CommonDTO {
 	private boolean existsEntity;

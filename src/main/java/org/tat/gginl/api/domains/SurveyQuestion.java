@@ -22,12 +22,12 @@ import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.CommonCreateAndUpateMarks;
-import org.ace.insurance.common.ISorter;
-import org.ace.insurance.common.TableName;
-import org.ace.java.component.idgen.service.IDInterceptor;
+import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
+import org.tat.gginl.api.common.IDInterceptor;
+import org.tat.gginl.api.common.ISorter;
 import org.tat.gginl.api.common.InputType;
 import org.tat.gginl.api.common.ProductProcessQuestionLink;
+import org.tat.gginl.api.common.TableName;
 
 @Entity
 @Table(name = TableName.SURVEYQUESTION)

@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.ace.insurance.web.common.CommonDTO;
-import org.ace.insurance.web.manage.medical.proposal.MedProDTO;
+
 
 public class MedicalSurveyDTO extends CommonDTO {
 	private String rankAndQualification;

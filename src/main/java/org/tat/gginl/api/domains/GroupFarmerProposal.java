@@ -25,22 +25,13 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.CommonCreateAndUpateMarks;
-import org.ace.insurance.common.InsuranceType;
-import org.ace.insurance.common.ProposalType;
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.common.interfaces.IInsuredItem;
-import org.ace.insurance.common.interfaces.IPolicy;
-import org.ace.insurance.product.ProductGroup;
-import org.ace.insurance.system.common.agent.Agent;
-import org.ace.insurance.system.common.branch.Branch;
-import org.ace.insurance.system.common.customer.Customer;
-import org.ace.insurance.system.common.organization.Organization;
-import org.ace.insurance.system.common.paymenttype.PaymentType;
-import org.ace.insurance.system.common.saleman.SaleMan;
-import org.ace.insurance.system.common.salepoint.SalePoint;
-import org.ace.insurance.user.User;
-import org.ace.java.component.idgen.service.IDInterceptor;
+import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
+import org.tat.gginl.api.common.IDInterceptor;
+import org.tat.gginl.api.common.IInsuredItem;
+import org.tat.gginl.api.common.IPolicy;
+import org.tat.gginl.api.common.InsuranceType;
+import org.tat.gginl.api.common.ProposalType;
+import org.tat.gginl.api.common.TableName;
 
 @Entity
 @Table(name = TableName.GROUPFARMERPROPOSAL)

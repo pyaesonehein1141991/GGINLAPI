@@ -16,10 +16,10 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.life.policyHistory.PolicyInsuredPersonAttachmentHistory;
-import org.ace.insurance.life.proposal.InsuredPersonAttachment;
-import org.ace.java.component.FormatID;
+import org.tat.gginl.api.common.FormatID;
+import org.tat.gginl.api.common.PolicyInsuredPerson;
+import org.tat.gginl.api.common.TableName;
+
 
 @Entity
 @Table(name = TableName.LIFEPOLICYINSUREDPERSONATTACHMENT)

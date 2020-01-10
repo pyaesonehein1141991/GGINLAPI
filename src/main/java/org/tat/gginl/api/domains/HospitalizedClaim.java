@@ -19,9 +19,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.ace.insurance.claim.Attachment;
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.system.common.hospital.Hospital;
+import org.tat.gginl.api.common.Hospital;
+import org.tat.gginl.api.common.HospitalizedClaimICD10;
+import org.tat.gginl.api.common.MedicalClaim;
+import org.tat.gginl.api.common.MedicalClaimRole;
+import org.tat.gginl.api.common.TableName;
 
 @Entity
 @Table(name = TableName.HOSPITALIZEDCLAIM)

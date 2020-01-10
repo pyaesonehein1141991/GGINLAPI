@@ -14,12 +14,11 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.ace.insurance.common.CommonCreateAndUpateMarks;
-import org.ace.insurance.common.TableName;
-import org.ace.insurance.medical.policy.MedicalPolicyInsuredPersonGuardian;
-import org.ace.insurance.system.common.customer.Customer;
-import org.ace.insurance.system.common.relationship.RelationShip;
-import org.ace.java.component.idgen.service.IDInterceptor;
+import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
+import org.tat.gginl.api.common.IDInterceptor;
+import org.tat.gginl.api.common.MedicalPolicyInsuredPersonGuardian;
+import org.tat.gginl.api.common.TableName;
+
 
 @Entity
 @Table(name = TableName.GUARDIAN)
