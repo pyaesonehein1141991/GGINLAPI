@@ -35,12 +35,6 @@ import org.joda.time.chrono.GregorianChronology;
 import org.tat.gginl.api.domains.LifePolicy;
 import org.tat.gginl.api.domains.LifeProposal;
 
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> branch 'master' of https://github.com/pyaesonehein1141991/GGINLAPI.git
 public class Utils {
 	private static final int BUFFER_SIZE = 4096;
 
