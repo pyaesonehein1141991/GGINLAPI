@@ -31,7 +31,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.tat.gginl.api.domains.Attachment;
 import org.tat.gginl.api.domains.Customer;
 import org.tat.gginl.api.domains.GradeInfo;
@@ -884,11 +883,11 @@ public class PolicyInsuredPerson implements IInsuredItem, Serializable {
 		} else if (months > 0 && months != 12) {
 			int a = 12 / months;
 			for (int i = 1; i <= a; i++) {
-				result.add(org.tat.gginl.api.common.Utils.formattedDate(cal.getTime(), "dd-MMM"));
+				result.add(org.tat.gginl.api.common.emumdata.Utils.formattedDate(cal.getTime(), "dd-MMM"));
 				cal.add(Calendar.MONTH, months);
 			}
 		} else if (months == 12) {
-			result.add(org.tat.gginl.api.common.Utils.formattedDate(cal.getTime(), "dd-MMM"));
+			result.add(org.tat.gginl.api.common.emumdata.Utils.formattedDate(cal.getTime(), "dd-MMM"));
 		}
 		return result != null ? result.toString().substring(1, result.toString().length() - 1) : null;
 	}

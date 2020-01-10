@@ -36,6 +36,8 @@ import javax.persistence.Version;
 public class LifeClaimInsuredPersonBeneficiaryAttachment implements
 		Serializable, IEntity {
 
+
+	private static final long serialVersionUID = 1L;
 	@Transient
 	private String id;
 	@Transient

@@ -22,7 +22,8 @@ import javax.persistence.TemporalType;
 @DiscriminatorValue(value = LifeClaimBeneficiaryRole.DEATHPERSON)
 public class LifeClaimDeathPerson extends LifeClaimInsuredPerson implements Serializable, IEntity {
 
-	
+	private static final long serialVersionUID = 1L;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date deathDate;
 

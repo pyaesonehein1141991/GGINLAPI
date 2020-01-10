@@ -528,7 +528,7 @@ public class LifePolicy implements IPolicy, Serializable, ISorter {
 	 * @see org.ace.insurance.common.interfaces.IPolicy#getInsuredItems()
 	 */
 	public List<IInsuredItem> getInsuredItems() {
-		List<IInsuredItem> insuredItems = Collections.EMPTY_LIST;
+		List<IInsuredItem> insuredItems = Collections.emptyList();
 		List<PolicyInsuredPerson> personList = getPolicyInsuredPersonList();
 		if (personList != null) {
 			insuredItems = new ArrayList<IInsuredItem>();

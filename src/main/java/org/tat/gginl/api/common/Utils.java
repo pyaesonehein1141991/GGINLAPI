@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -21,9 +19,6 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import javax.servlet.ServletContext;
-
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
@@ -31,6 +26,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Months;
 import org.joda.time.Period;
+import org.joda.time.PeriodType;
 import org.joda.time.chrono.GregorianChronology;
 import org.tat.gginl.api.domains.LifePolicy;
 import org.tat.gginl.api.domains.LifeProposal;
@@ -748,12 +744,12 @@ public class Utils {
 		return d;
 	}
 
-	public static String getResourceAsString(String filepath) throws IOException {
-		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filepath);
-		StringWriter writer = new StringWriter();
-		IOUtils.copy(inputStream, writer);
-		return writer.toString();
-	}
+//	public static String getResourceAsString(String filepath) throws IOException {
+//		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(filepath);
+//		StringWriter writer = new StringWriter();
+//		IOUtils.copy(inputStream, writer);
+//		return writer.toString();
+//	}
 
 	public static void unzip(String zipFilePath, String destDirectory) throws IOException {
 		File destDir = new File(destDirectory);
@@ -875,11 +871,11 @@ public class Utils {
 		return false;
 	}
 
-	public static String getSystemPath() {
-		Object context = FacesContext.getCurrentInstance().getExternalContext().getContext();
-		String systemPath = ((ServletContext) context).getRealPath("/");
-		return systemPath;
-	}
+//	public static String getSystemPath() {
+//		Object context = FacesContext.getCurrentInstance().getExternalContext().getContext();
+//		String systemPath = ((ServletContext) context).getRealPath("/");
+//		return systemPath;
+//	}
 
 	public static String getCompleteName(String initialId, Name name) {
 		String result = "";

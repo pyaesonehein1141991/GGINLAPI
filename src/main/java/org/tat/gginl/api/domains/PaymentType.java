@@ -36,6 +36,9 @@ import org.tat.gginl.api.common.TableName;
 		@NamedQuery(name = "PaymentType.findById", query = "SELECT p FROM PaymentType p WHERE p.id = :id") })
 @Access(value = AccessType.FIELD)
 public class PaymentType implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	@Transient
 	private String id;
 

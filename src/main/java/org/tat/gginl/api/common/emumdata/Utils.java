@@ -7,9 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-
 import org.joda.time.DateTime;
 import org.tat.gginl.api.domains.LifeProposal;
 
@@ -43,11 +40,11 @@ public class Utils {
 		return new Date(lastTime.getMillis());
 	}
 
-	public static String getSystemPath() {
-		Object context = FacesContext.getCurrentInstance().getExternalContext().getContext();
-		String systemPath = ((ServletContext) context).getRealPath("/");
-		return systemPath;
-	}
+//	public static String getSystemPath() {
+//		Object context = FacesContext.getCurrentInstance().getExternalContext().getContext();
+//		String systemPath = ((ServletContext) context).getRealPath("/");
+//		return systemPath;
+//	}
 
 	public static <T> boolean isNull(T t) {
 		if (t == null) {

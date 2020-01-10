@@ -6,6 +6,7 @@ import org.tat.gginl.api.domains.RelationShip;
 import org.tat.gginl.api.domains.StateCode;
 import org.tat.gginl.api.domains.TownshipCode;
 
+import lombok.Data;
 public class MedProInsuBeneDTO extends CommonDTO {
 	private String tempId;
 	private int age;

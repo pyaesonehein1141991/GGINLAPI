@@ -15,6 +15,9 @@ import org.tat.gginl.api.domains.Township;
 
 	@Embeddable
 	public class OfficeAddress implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
+
 		private String officeAddress;
 
 		@OneToOne(fetch = FetchType.LAZY)

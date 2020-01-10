@@ -294,7 +294,7 @@ public class Product implements Serializable {
 	}
 
 	public boolean isBasicSumInsured() {
-		if (premiumRateType.BASED_ON_BASE_SUMINSURED.equals(premiumRateType) && autoCalculate == true) {
+		if (PremiumRateType.BASED_ON_BASE_SUMINSURED.equals(premiumRateType) && autoCalculate == true) {
 			return true;
 		}
 		return false;

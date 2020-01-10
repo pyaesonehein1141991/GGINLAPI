@@ -5,12 +5,7 @@ import java.util.Date;
 import java.util.List;
 import org.tat.gginl.api.domains.ResourceQuestion;
 
-
-
-
-
-
-public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable {
+public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable<Object> {
 	private boolean option;
 	private boolean deleteFlag;
 	private int priority;
@@ -384,5 +379,7 @@ public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable {
 		SurveyQuestionAnswerDTO otherQueAnsDTO = (SurveyQuestionAnswerDTO) o;
 		return this.priority - otherQueAnsDTO.priority;
 	}
+
+
 
 }

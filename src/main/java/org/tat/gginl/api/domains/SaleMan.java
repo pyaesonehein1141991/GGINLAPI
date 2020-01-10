@@ -42,6 +42,8 @@ import org.tat.gginl.api.common.TableName;
 		@NamedQuery(name = "SaleMan.findById", query = "SELECT a FROM SaleMan a WHERE a.id = :id") })
 @Access(value = AccessType.FIELD)
 public class SaleMan implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	@Transient
 	private String id;
 	@Transient

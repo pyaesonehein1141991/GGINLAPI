@@ -36,6 +36,9 @@ import org.tat.gginl.api.common.TableName;
 @Access(value = AccessType.FIELD)
 public class LifeClaimAttachment implements Serializable, IEntity {
 
+
+	private static final long serialVersionUID = 1L;
+
 	@Transient
 	private String id;
 

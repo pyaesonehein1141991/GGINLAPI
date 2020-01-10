@@ -34,6 +34,8 @@ import javax.persistence.Version;
 		@NamedQuery(name = "KeyFactor.findById", query = "SELECT k FROM KeyFactor k WHERE k.id = :id") })
 @Access(value = AccessType.FIELD)
 public class KeyFactor implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	@Transient
 	private String id;
 	@Transient

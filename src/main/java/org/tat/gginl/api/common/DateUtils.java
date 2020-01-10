@@ -14,6 +14,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Months;
 import org.joda.time.Period;
+import org.joda.time.PeriodType;
 import org.joda.time.Years;
 import org.joda.time.chrono.GregorianChronology;
 
@@ -671,11 +672,11 @@ public class DateUtils {
 		return false;
 	}
 
-	public static int getPeriodOfMonth(int period, org.tat.api.common.PeriodType periodType) {
+	public static int getPeriodOfMonth(int period, org.tat.gginl.api.common.PeriodType periodType) {
 		int periodOfMonth = period;
-		if (periodType.equals(org.tat.api.common.PeriodType.DAY)) {
+		if (periodType.equals(org.tat.gginl.api.common.PeriodType.DAY)) {
 			periodOfMonth = period / 31;
-		} else if (periodType.equals(org.tat.api.common.PeriodType.YEAR)) {
+		} else if (periodType.equals(org.tat.gginl.api.common.PeriodType.YEAR)) {
 			periodOfMonth = period * 12;
 		}
 		return periodOfMonth;

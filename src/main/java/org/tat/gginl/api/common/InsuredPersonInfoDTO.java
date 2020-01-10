@@ -371,7 +371,7 @@ public class InsuredPersonInfoDTO {
 
 	public Double getSumInsuredInfo() {
 		if (sumInsuredInfo == null) {
-			sumInsuredInfo = new Double(0.0);
+			sumInsuredInfo = Double.valueOf(0.0);
 		}
 		return sumInsuredInfo;
 	}
@@ -382,7 +382,7 @@ public class InsuredPersonInfoDTO {
 
 	public Number getSumInsuredInfoNum() {
 		if (sumInsuredInfo == null) {
-			sumInsuredInfo = new Double(0.0);
+			sumInsuredInfo = Double.valueOf(0.0);
 		}
 		return sumInsuredInfo;
 	}

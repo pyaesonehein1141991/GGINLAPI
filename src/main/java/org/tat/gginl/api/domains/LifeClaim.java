@@ -34,7 +34,6 @@ import javax.persistence.Version;
 import org.tat.gginl.api.common.FormatID;
 import org.tat.gginl.api.common.IEntity;
 import org.tat.gginl.api.common.LifeClaimBeneficiaryRole;
-import org.tat.gginl.api.common.LifeClaimDeathPerson;
 import org.tat.gginl.api.common.LifeClaimInsuredPersonBeneficiary;
 import org.tat.gginl.api.common.LifeClaimRole;
 import org.tat.gginl.api.common.TableName;

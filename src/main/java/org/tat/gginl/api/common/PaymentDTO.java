@@ -225,7 +225,7 @@ public class PaymentDTO implements ISorter {
 
 	public Double getServicesCharges() {
 		if (servicesCharges == null) {
-			servicesCharges = new Double(0.0);
+			servicesCharges = Double.valueOf(0.0);
 		}
 		return servicesCharges;
 	}
@@ -236,7 +236,7 @@ public class PaymentDTO implements ISorter {
 
 	public Number getServicesChargesNum() {
 		if (servicesCharges == null) {
-			servicesCharges = new Double(0.0);
+			servicesCharges = Double.valueOf(0.0);
 		}
 		return servicesCharges;
 	}
@@ -478,7 +478,7 @@ public class PaymentDTO implements ISorter {
 
 	public Number getNcbPremiumNum() {
 		if (ncbPremium == null) {
-			ncbPremium = new Double(0.0);
+			ncbPremium = Double.valueOf(0.0);
 		}
 		return ncbPremium;
 	}
@@ -491,7 +491,7 @@ public class PaymentDTO implements ISorter {
 
 	public double getPenaltyPremium() {
 		if (penaltyPremium == null) {
-			penaltyPremium = new Double(0.0);
+			penaltyPremium = Double.valueOf(0.0);
 		}
 		return penaltyPremium;
 	}
@@ -502,7 +502,7 @@ public class PaymentDTO implements ISorter {
 
 	public Number getPenaltyPremiumNum() {
 		if (penaltyPremium == null) {
-			penaltyPremium = new Double(0.0);
+			penaltyPremium = Double.valueOf(0.0);
 		}
 		return penaltyPremium;
 	}

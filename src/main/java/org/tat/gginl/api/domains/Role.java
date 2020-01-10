@@ -42,6 +42,8 @@ import org.tat.gginl.api.common.TableName;
 		@NamedQuery(name = "Role.findById", query = "SELECT m FROM Role m WHERE m.id = :id")})
 @Access(value = AccessType.FIELD)
 public class Role implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	@Transient
 	private String id;
 	@Transient

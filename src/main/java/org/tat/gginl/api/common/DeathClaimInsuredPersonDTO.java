@@ -3,10 +3,6 @@ package org.tat.gginl.api.common;
 import java.util.Date;
 import java.util.List;
 
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 /**
  * @author T&D Infomation System Ltd
  * @since 1.0.0

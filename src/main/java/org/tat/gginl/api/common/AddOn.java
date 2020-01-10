@@ -33,6 +33,8 @@ import javax.persistence.Version;
 		@NamedQuery(name = "AddOn.findById", query = "SELECT a FROM AddOn a WHERE a.id = :id") })
 @Access(value = AccessType.FIELD)
 public class AddOn implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	@Transient
 	private String id;
 	@Transient
