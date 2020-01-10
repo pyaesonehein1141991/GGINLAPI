@@ -29,6 +29,10 @@ import lombok.Data;
 	@Data
 	public class Province implements Serializable {
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		@Id
 		@GeneratedValue(strategy = GenerationType.TABLE, generator = "PROVINCE_GEN")
 		private String id;

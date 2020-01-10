@@ -21,6 +21,10 @@ import lombok.Data;
 	@Entity
 	@Data
 	public class Occupation implements Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		@Transient
 		private String id;
 		@Transient
