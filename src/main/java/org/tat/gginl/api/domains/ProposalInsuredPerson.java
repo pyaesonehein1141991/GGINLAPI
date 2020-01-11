@@ -87,6 +87,10 @@ public class ProposalInsuredPerson implements Serializable {
 	@Enumerated(value = EnumType.STRING)
 	private IdType parentIdType;
 	private Date parentDOB;
+	
+	@Transient
+	private String bpmsInsuredPersonId;
+	
 
 	@Transient
 	private Boolean isPaidPremiumForPaidup;
@@ -1003,6 +1007,16 @@ public class ProposalInsuredPerson implements Serializable {
 		if (gradeInfo != null)
 			return gradeInfo.getName();
 		return "-";
+	}
+	
+	
+
+	public String getBpmsInsuredPersonId() {
+		return bpmsInsuredPersonId;
+	}
+
+	public void setBpmsInsuredPersonId(String bpmsInsuredPersonId) {
+		this.bpmsInsuredPersonId = bpmsInsuredPersonId;
 	}
 
 	@Override
