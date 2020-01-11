@@ -1,4 +1,4 @@
-package org.tat.gginl.api.services;
+package org.tat.gginl.api.domains.services;
 
 import java.util.Date;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tat.gginl.api.domains.Customer;
-import org.tat.gginl.api.repository.CustomerRepository;
+import org.tat.gginl.api.domains.repository.CustomerRepository;
 
 @Service
 public class CustomerService {

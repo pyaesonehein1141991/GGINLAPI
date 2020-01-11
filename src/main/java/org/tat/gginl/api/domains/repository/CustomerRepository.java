@@ -1,4 +1,4 @@
-package org.tat.gginl.api.repository;
+package org.tat.gginl.api.domains.repository;
 
 import java.util.Date;
 import java.util.List;

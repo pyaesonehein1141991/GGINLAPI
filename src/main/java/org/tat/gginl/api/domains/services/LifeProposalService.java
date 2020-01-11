@@ -1,4 +1,4 @@
-package org.tat.gginl.api.services;
+package org.tat.gginl.api.domains.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,19 +22,19 @@ import org.tat.gginl.api.domains.ProposalInsuredPerson;
 import org.tat.gginl.api.domains.SaleMan;
 import org.tat.gginl.api.domains.SalePoint;
 import org.tat.gginl.api.domains.Township;
+import org.tat.gginl.api.domains.repository.AgentRepository;
+import org.tat.gginl.api.domains.repository.BranchRepository;
+import org.tat.gginl.api.domains.repository.CustomerRepository;
+import org.tat.gginl.api.domains.repository.LifeProposalRepository;
+import org.tat.gginl.api.domains.repository.OccupationRepository;
+import org.tat.gginl.api.domains.repository.OrganizationRepository;
+import org.tat.gginl.api.domains.repository.PaymentTypeRepository;
+import org.tat.gginl.api.domains.repository.ProductRepository;
+import org.tat.gginl.api.domains.repository.SaleManRepository;
+import org.tat.gginl.api.domains.repository.SalePointRepository;
+import org.tat.gginl.api.domains.repository.TownshipRepository;
 import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalDTO;
 import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalInsuredPersonDTO;
-import org.tat.gginl.api.repository.AgentRepository;
-import org.tat.gginl.api.repository.BranchRepository;
-import org.tat.gginl.api.repository.CustomerRepository;
-import org.tat.gginl.api.repository.LifeProposalRepository;
-import org.tat.gginl.api.repository.OccupationRepository;
-import org.tat.gginl.api.repository.OrganizationRepository;
-import org.tat.gginl.api.repository.PaymentTypeRepository;
-import org.tat.gginl.api.repository.ProductRepository;
-import org.tat.gginl.api.repository.SaleManRepository;
-import org.tat.gginl.api.repository.SalePointRepository;
-import org.tat.gginl.api.repository.TownshipRepository;
 
 @Service
 public class LifeProposalService {
