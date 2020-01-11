@@ -16,7 +16,6 @@ import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.IDInterceptor;
 import org.tat.gginl.api.common.TableName;
 
-
 @Entity
 @Table(name = TableName.RESOURCEQUESTION)
 @TableGenerator(name = "RESOURCE_QUESTION_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "RESOURCE_QUESTION_GEN", allocationSize = 10)

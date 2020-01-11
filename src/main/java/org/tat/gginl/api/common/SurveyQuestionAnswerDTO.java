@@ -3,6 +3,7 @@ package org.tat.gginl.api.common;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.tat.gginl.api.domains.ResourceQuestion;
 
 public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable<Object> {
@@ -18,8 +19,6 @@ public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable<Obj
 	private InputType inputType;
 	private ProductProcess productProcess;
 	private List<ResourceQuestionAnswerDTO> resourceQuestionList;
-	private MedicalSurveyDTO medicalSurveyDTO;
-	private MedicalClaimSurveyDTO medicalClaimSurveyDTO;
 	private SurveyType surveyType;
 	private ClaimType claimType;
 
@@ -173,13 +172,6 @@ public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable<Obj
 		getResourceQuestionList().add(resourceAnswerDTO);
 	}
 
-	public MedicalSurveyDTO getMedicalSurveyDTO() {
-		return medicalSurveyDTO;
-	}
-
-	public void setMedicalSurveyDTO(MedicalSurveyDTO medicalSurveyDTO) {
-		this.medicalSurveyDTO = medicalSurveyDTO;
-	}
 
 	public SurveyType getSurveyType() {
 		return surveyType;
@@ -232,13 +224,6 @@ public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable<Obj
 		this.claimType = claimType;
 	}
 
-	public MedicalClaimSurveyDTO getMedicalClaimSurveyDTO() {
-		return medicalClaimSurveyDTO;
-	}
-
-	public void setMedicalClaimSurveyDTO(MedicalClaimSurveyDTO medicalClaimSurveyDTO) {
-		this.medicalClaimSurveyDTO = medicalClaimSurveyDTO;
-	}
 
 	public String getAnswer() {
 		return answer;
@@ -256,6 +241,8 @@ public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable<Obj
 		this.showSurveyQuestionAnswerDTO = showSQADTO;
 	}
 
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -269,13 +256,13 @@ public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable<Obj
 		result = prime * result + ((falseLabel == null) ? 0 : falseLabel.hashCode());
 		result = prime * result + ((frontLabel == null) ? 0 : frontLabel.hashCode());
 		result = prime * result + ((inputType == null) ? 0 : inputType.hashCode());
-		result = prime * result + ((medicalClaimSurveyDTO == null) ? 0 : medicalClaimSurveyDTO.hashCode());
-		result = prime * result + ((medicalSurveyDTO == null) ? 0 : medicalSurveyDTO.hashCode());
 		result = prime * result + (option ? 1231 : 1237);
 		result = prime * result + priority;
 		result = prime * result + ((productProcess == null) ? 0 : productProcess.hashCode());
 		result = prime * result + ((questionId == null) ? 0 : questionId.hashCode());
+		result = prime * result + ((resourceQuestionList == null) ? 0 : resourceQuestionList.hashCode());
 		result = prime * result + ((selectedResourceQAnsDTO == null) ? 0 : selectedResourceQAnsDTO.hashCode());
+		result = prime * result + ((selectedResourceQAnsDTOList == null) ? 0 : selectedResourceQAnsDTOList.hashCode());
 		result = prime * result + ((showSurveyQuestionAnswerDTO == null) ? 0 : showSurveyQuestionAnswerDTO.hashCode());
 		result = prime * result + ((surveyType == null) ? 0 : surveyType.hashCode());
 		result = prime * result + ((tureLabel == null) ? 0 : tureLabel.hashCode());
@@ -328,16 +315,6 @@ public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable<Obj
 			return false;
 		if (inputType != other.inputType)
 			return false;
-		if (medicalClaimSurveyDTO == null) {
-			if (other.medicalClaimSurveyDTO != null)
-				return false;
-		} else if (!medicalClaimSurveyDTO.equals(other.medicalClaimSurveyDTO))
-			return false;
-		if (medicalSurveyDTO == null) {
-			if (other.medicalSurveyDTO != null)
-				return false;
-		} else if (!medicalSurveyDTO.equals(other.medicalSurveyDTO))
-			return false;
 		if (option != other.option)
 			return false;
 		if (priority != other.priority)
@@ -352,10 +329,20 @@ public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable<Obj
 				return false;
 		} else if (!questionId.equals(other.questionId))
 			return false;
+		if (resourceQuestionList == null) {
+			if (other.resourceQuestionList != null)
+				return false;
+		} else if (!resourceQuestionList.equals(other.resourceQuestionList))
+			return false;
 		if (selectedResourceQAnsDTO == null) {
 			if (other.selectedResourceQAnsDTO != null)
 				return false;
 		} else if (!selectedResourceQAnsDTO.equals(other.selectedResourceQAnsDTO))
+			return false;
+		if (selectedResourceQAnsDTOList == null) {
+			if (other.selectedResourceQAnsDTOList != null)
+				return false;
+		} else if (!selectedResourceQAnsDTOList.equals(other.selectedResourceQAnsDTOList))
 			return false;
 		if (showSurveyQuestionAnswerDTO == null) {
 			if (other.showSurveyQuestionAnswerDTO != null)

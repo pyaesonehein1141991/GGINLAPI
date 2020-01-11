@@ -150,7 +150,7 @@ public class Customer implements Serializable {
 	private List<CustomerInfoStatus> customerStatusList;
 
 	@Embedded
-	private CommonCreateAndUpateMarks commonCreateAndUpateMarks;
+	private CommonCreateAndUpateMarks recorder;
 
 	@Version
 	private int version;
@@ -521,13 +521,7 @@ public class Customer implements Serializable {
 		this.placeOfBirth = placeOfBirth;
 	}
 
-	public CommonCreateAndUpateMarks getCommonCreateAndUpateMarks() {
-		return commonCreateAndUpateMarks;
-	}
-
-	public void setCommonCreateAndUpateMarks(CommonCreateAndUpateMarks commonCreateAndUpateMarks) {
-		this.commonCreateAndUpateMarks = commonCreateAndUpateMarks;
-	}
+	
 
 	public String getReferenceMobileUserId() {
 		return referenceMobileUserId;
@@ -585,8 +579,8 @@ public class Customer implements Serializable {
 			if (residentAddress.getResidentAddress() != null && !residentAddress.getResidentAddress().isEmpty()) {
 				result = result + residentAddress.getResidentAddress();
 			}
-			if (residentAddress.getTownship() != null && !residentAddress.getTownship().getFullTownShip().isEmpty()) {
-				result = result + ", " + residentAddress.getTownship().getFullTownShip();
+			if (residentAddress.getResidentTownship() != null && !residentAddress.getResidentTownship().getFullTownShip().isEmpty()) {
+				result = result + ", " + residentAddress.getResidentTownship().getFullTownShip();
 			}
 		}
 		return result;
@@ -654,7 +648,6 @@ public class Customer implements Serializable {
 		result = prime * result + ((birthMark == null) ? 0 : birthMark.hashCode());
 		result = prime * result + ((branch == null) ? 0 : branch.hashCode());
 		result = prime * result + closedPolicy;
-		result = prime * result + ((commonCreateAndUpateMarks == null) ? 0 : commonCreateAndUpateMarks.hashCode());
 		result = prime * result + ((contentInfo == null) ? 0 : contentInfo.hashCode());
 		result = prime * result + ((country == null) ? 0 : country.hashCode());
 		result = prime * result + ((customerStatusList == null) ? 0 : customerStatusList.hashCode());
@@ -731,11 +724,6 @@ public class Customer implements Serializable {
 		} else if (!branch.equals(other.branch))
 			return false;
 		if (closedPolicy != other.closedPolicy)
-			return false;
-		if (commonCreateAndUpateMarks == null) {
-			if (other.commonCreateAndUpateMarks != null)
-				return false;
-		} else if (!commonCreateAndUpateMarks.equals(other.commonCreateAndUpateMarks))
 			return false;
 		if (contentInfo == null) {
 			if (other.contentInfo != null)

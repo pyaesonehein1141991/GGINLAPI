@@ -741,8 +741,8 @@ public class InsuredPersonInfoDTO {
 			if (residentAddress.getResidentAddress() != null && !residentAddress.getResidentAddress().isEmpty()) {
 				result = residentAddress.getResidentAddress();
 			}
-			if (residentAddress.getTownship() != null) {
-				result = result + " " + residentAddress.getTownship().getName();
+			if (residentAddress.getResidentTownship() != null) {
+				result = result + " " + residentAddress.getResidentTownship().getName();
 			}
 		}
 		return result;

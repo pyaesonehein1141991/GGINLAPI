@@ -848,8 +848,8 @@ public class PolicyInsuredPerson implements IInsuredItem, Serializable {
 			if (residentAddress.getResidentAddress() != null && !residentAddress.getResidentAddress().isEmpty()) {
 				result = result + residentAddress.getResidentAddress();
 			}
-			if (residentAddress.getTownship() != null && !residentAddress.getTownship().getFullTownShip().isEmpty()) {
-				result = result + ", " + residentAddress.getTownship().getFullTownShip();
+			if (residentAddress.getResidentTownship() != null && !residentAddress.getResidentTownship().getFullTownShip().isEmpty()) {
+				result = result + ", " + residentAddress.getResidentTownship().getFullTownShip();
 			}
 		}
 		return result;

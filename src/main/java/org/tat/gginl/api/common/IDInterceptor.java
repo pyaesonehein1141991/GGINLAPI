@@ -14,8 +14,8 @@ public class IDInterceptor extends DescriptorEventAdapter {
 	private static ICustomIDGenerator customIDGenerator;
 	private static IUserProcessService userProcessService;
 
-	@Autowired(required = true)
-	@Qualifier("CustomIDGenerator")
+//	@Autowired(required = true)
+//	@Qualifier("CustomIDGenerator")
 	public void setcustomIDGenerator(ICustomIDGenerator generator) {
 		customIDGenerator = generator;
 	}
@@ -24,8 +24,8 @@ public class IDInterceptor extends DescriptorEventAdapter {
 		return customIDGenerator.getPrefix(cla, true);
 	}
 
-	@Autowired(required = true)
-	@Qualifier("UserProcessService")
+//	@Autowired(required = true)
+//	@Qualifier("UserProcessService")
 	public void setUserProcessService(IUserProcessService userProcessService) {
 		IDInterceptor.userProcessService = userProcessService;
 	}

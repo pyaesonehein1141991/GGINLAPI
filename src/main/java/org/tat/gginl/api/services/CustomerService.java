@@ -1,5 +1,6 @@
 package org.tat.gginl.api.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class CustomerService {
 	private CustomerRepository customerRepository;
 	
 	public List<Customer> findByRecorderCreatedDateBetweenOrRecorderUpdatedDateBetween(Date createdDate, Date updatedDate){
-		return customerRepository.findByRecorderCreatedDateBetweenOrRecorderUpdatedDateBetween(createdDate, updatedDate, createdDate, updatedDate);
+//		return customerRepository.findByCommonCreateAndUpateMarksCreatedDateBetweenOrCommonCreateAndUpateMarksUpdatedDateBetween(createdDate, updatedDate, createdDate, updatedDate);
+		return new ArrayList<>();
 	}
 }

@@ -25,8 +25,8 @@ import org.tat.gginl.api.common.TableName;
 @Table(name = TableName.LIFEPOLICYINSUREDPERSONATTACHMENT)
 @TableGenerator(name = "LPOLINSUREDPERSONATTACHMENT_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "LPOLINSUREDPERSONATTACHMENT_GEN", allocationSize = 10)
 @NamedQueries(value = {
-		@NamedQuery(name = "InsuredPersonAttachment.findAll", query = "SELECT m FROM InsuredPersonAttachment m "),
-		@NamedQuery(name = "InsuredPersonAttachment.findById", query = "SELECT m FROM InsuredPersonAttachment m WHERE m.id = :id") })
+		@NamedQuery(name = "PolicyInsuredPersonAttachment.findAll", query = "SELECT m FROM InsuredPersonAttachment m "),
+		@NamedQuery(name = "PolicyInsuredPersonAttachment.findById", query = "SELECT m FROM InsuredPersonAttachment m WHERE m.id = :id") })
 @Access(value = AccessType.FIELD)
 public class PolicyInsuredPersonAttachment {
 	@Transient

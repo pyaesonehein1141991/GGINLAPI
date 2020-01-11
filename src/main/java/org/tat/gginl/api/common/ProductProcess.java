@@ -27,11 +27,13 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 import org.tat.gginl.api.domains.Product;
+import org.tat.gginl.api.domains.Process;
 
 @Entity
 @Table(name = TableName.PRODUCTPROCESS)
 @TableGenerator(name = "PRODUCTPROCESS_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "PRODUCTPROCESS_GEN", allocationSize = 10)
-@NamedQueries(value = { @NamedQuery(name = "ProductProcess.findById", query = "SELECT a FROM ProductProcess a WHERE a.id = :id"),
+@NamedQueries(value = {
+		@NamedQuery(name = "ProductProcess.findById", query = "SELECT a FROM ProductProcess a WHERE a.id = :id"),
 		@NamedQuery(name = "ProductProcess.findAll", query = "SELECT a FROM ProductProcess a") })
 @EntityListeners(IDInterceptor.class)
 public class ProductProcess implements Serializable {
@@ -46,9 +48,11 @@ public class ProductProcess implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PRODUCTID", referencedColumnName = "ID")
 	private Product product;
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PROCESSID", referencedColumnName = "ID")
 	private Process process;
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "productProcess", orphanRemoval = true)
 	private List<ProductProcessQuestionLink> productProcessQuestionLinkList;
 	private String questionSetNo;
@@ -78,14 +82,6 @@ public class ProductProcess implements Serializable {
 
 	public void setProduct(Product product) {
 		this.product = product;
-	}
-
-	public Process getProcess() {
-		return process;
-	}
-
-	public void setProcess(Process process) {
-		this.process = process;
 	}
 
 	public List<ProductProcessQuestionLink> getProductProcessQuestionLinkList() {
@@ -164,6 +160,14 @@ public class ProductProcess implements Serializable {
 
 	public void setCommonCreateAndUpateMarks(CommonCreateAndUpateMarks commonCreateAndUpateMarks) {
 		this.commonCreateAndUpateMarks = commonCreateAndUpateMarks;
+	}
+
+	public Process getProcess() {
+		return process;
+	}
+
+	public void setProcess(Process process) {
+		this.process = process;
 	}
 
 	@Override

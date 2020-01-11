@@ -190,6 +190,7 @@ public class Organization implements Serializable {
 		this.activedDate = activedDate;
 	}
 
+	@Transient
 	public String getFullAddress() {
 		String fullAddress = "";
 		if (address != null) {

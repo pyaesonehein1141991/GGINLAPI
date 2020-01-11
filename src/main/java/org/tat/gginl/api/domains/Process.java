@@ -1,4 +1,4 @@
-package org.tat.gginl.api.common;
+package org.tat.gginl.api.domains;
 
 import java.io.Serializable;
 
@@ -8,32 +8,39 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.persistence.Version;
 
+import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
+import org.tat.gginl.api.common.IDInterceptor;
+import org.tat.gginl.api.common.TableName;
 
 @Entity
-@Table(name = TableName.RESOURCEQUESTION)
-@TableGenerator(name = "RESOURCE_QUESTION_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "RESOURCE_QUESTION_GEN", allocationSize = 10)
+@Table(name = TableName.PROCESS)
+@TableGenerator(name = "PROCESS_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "PROCESS_GEN", allocationSize = 10)
+@NamedQueries(value = { @NamedQuery(name = "Process.findAll", query = "SELECT m FROM Process m "),
+		@NamedQuery(name = "Process.findById", query = "SELECT a FROM Process a WHERE a.id = :id"),
+		@NamedQuery(name = "Process.findByName", query = "SELECT a.id FROM Process a WHERE a.name = :processName") })
 @EntityListeners(IDInterceptor.class)
-public class ResourceQuestion implements Serializable {
+public class Process implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "RESOURCE_QUESTION_GEN")
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "PROCESS_GEN")
 	private String id;
 	private String name;
+	private String description;
 	@Version
 	private int version;
+	private String prefix;
+	
 	@Embedded
 	private CommonCreateAndUpateMarks commonCreateAndUpateMarks;
 
-	public ResourceQuestion() {
+	public Process() {
 
-	}
-
-	public ResourceQuestion(String name) {
-		this.name = name;
 	}
 
 	public String getId() {
@@ -52,6 +59,14 @@ public class ResourceQuestion implements Serializable {
 		this.name = name;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public int getVersion() {
 		return version;
 	}
@@ -60,11 +75,20 @@ public class ResourceQuestion implements Serializable {
 		this.version = version;
 	}
 
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+	
 	public CommonCreateAndUpateMarks getCommonCreateAndUpateMarks() {
 		return commonCreateAndUpateMarks;
 	}
 
-	public void setCommonCreateAndUpateMarks(CommonCreateAndUpateMarks commonCreateAndUpateMarks) {
+	public void setCommonCreateAndUpateMarks(
+			CommonCreateAndUpateMarks commonCreateAndUpateMarks) {
 		this.commonCreateAndUpateMarks = commonCreateAndUpateMarks;
 	}
 
@@ -73,8 +97,10 @@ public class ResourceQuestion implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((commonCreateAndUpateMarks == null) ? 0 : commonCreateAndUpateMarks.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
 		result = prime * result + version;
 		return result;
 	}
@@ -87,7 +113,12 @@ public class ResourceQuestion implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ResourceQuestion other = (ResourceQuestion) obj;
+		Process other = (Process) obj;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
 		if (commonCreateAndUpateMarks == null) {
 			if (other.commonCreateAndUpateMarks != null)
 				return false;
@@ -102,6 +133,11 @@ public class ResourceQuestion implements Serializable {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
+			return false;
+		if (prefix == null) {
+			if (other.prefix != null)
+				return false;
+		} else if (!prefix.equals(other.prefix))
 			return false;
 		if (version != other.version)
 			return false;

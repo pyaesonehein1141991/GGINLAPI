@@ -9,7 +9,6 @@
 package org.tat.gginl.api.domains;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,7 +46,6 @@ import org.tat.gginl.api.common.ResidentAddress;
 
 import lombok.Data;
 
-
 @Entity
 @Data
 public class Agent implements Serializable {
@@ -67,6 +65,7 @@ public class Agent implements Serializable {
 	private String remark;
 	private String training;
 	private String outstandingEvent;
+
 	@Embedded
 	private Name name;
 
@@ -79,8 +78,9 @@ public class Agent implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date appointedDate;
 
+	@Access(AccessType.FIELD)
 	@ElementCollection
-	@CollectionTable(name = "AGENT_FAMILY_LINK", joinColumns = @JoinColumn(name = "AGENTID", referencedColumnName = "ID"))
+	@CollectionTable(name = "AGENT_FAMILY_LINK", joinColumns = @JoinColumn(referencedColumnName = "ID", name = "AGENTID", updatable = false, insertable = false))
 	private List<FamilyInfo> familyInfo;
 
 	@OneToOne(fetch = FetchType.LAZY)
@@ -88,29 +88,36 @@ public class Agent implements Serializable {
 	private Qualification qualification;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "BANKBRANCHID", referencedColumnName = "ID")
-	private BankBranch bankBranch;
-
-	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "RELIGIONID", referencedColumnName = "ID")
 	private Religion religion;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "NATIONALITYID", referencedColumnName = "ID")
+	@JoinColumn(name = "NATIONALITYID", referencedColumnName = "ID",insertable = false, updatable = false)
 	private Country country;
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ORGANIZATIONID", referencedColumnName = "ID")
+	@JoinColumn(name = "BANKBRANCHID", referencedColumnName = "ID", insertable = false, updatable = false)
+	private BankBranch bankBranch;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ORGANIZATIONID", referencedColumnName = "ID", insertable = false, updatable = false)
 	private Organization organization;
 
 	@Embedded
 	private PermanentAddress permanentAddress;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "agent", orphanRemoval = true)
-	private AgentAttachment attachment;
-
+	
 	@Embedded
 	private ResidentAddress residentAddress;
+	
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "BRANCHID", referencedColumnName = "ID",updatable = false, insertable = false)
+	private Branch branch;
+
+	
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "agent", orphanRemoval = true)
+	private AgentAttachment attachment;
 
 	@Temporal(TemporalType.DATE)
 	private Date dateOfBirth;
@@ -124,10 +131,6 @@ public class Agent implements Serializable {
 
 	@Embedded
 	private ContentInfo contentInfo;
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "BRANCHID", referencedColumnName = "ID")
-	private Branch branch;
 
 	@Version
 	private int version;
@@ -187,13 +190,6 @@ public class Agent implements Serializable {
 		this.contentInfo = contentInfo;
 	}
 
-	public Branch getBranch() {
-		return this.branch;
-	}
-
-	public void setBranch(Branch branch) {
-		this.branch = branch;
-	}
 
 	public int getVersion() {
 		return version;
@@ -243,20 +239,22 @@ public class Agent implements Serializable {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+	@Transient
 	public String getFullName() {
 		return initialId + name.getFullName();
 	}
 
-	public String getFullAddress() {
-		String result = "";
-		if (residentAddress.getResidentAddress() != null && !residentAddress.getResidentAddress().isEmpty()) {
-			result = result + residentAddress.getResidentAddress();
-		}
-		if (residentAddress.getTownship() != null && !residentAddress.getTownship().getFullTownShip().isEmpty()) {
-			result = result + ", " + residentAddress.getTownship().getFullTownShip();
-		}
-		return result;
-	}
+//	@Transient
+//	public String getFullAddress() {
+//		String result = "";
+//		if (residentAddress.getResidentAddress() != null && !residentAddress.getResidentAddress().isEmpty()) {
+//			result = result + residentAddress.getResidentAddress();
+//		}
+//		if (residentAddress.getTownship() != null && !residentAddress.getTownship().getFullTownShip().isEmpty()) {
+//			result = result + ", " + residentAddress.getTownship().getFullTownShip();
+//		}
+//		return result;
+//	}
 
 	public String getFatherName() {
 		return fatherName;
@@ -330,17 +328,6 @@ public class Agent implements Serializable {
 		this.appointedDate = appointedDate;
 	}
 
-	public List<FamilyInfo> getFamilyInfo() {
-		if (this.familyInfo == null) {
-			this.familyInfo = new ArrayList<FamilyInfo>();
-		}
-		return this.familyInfo;
-	}
-
-	public void setFamilyInfo(List<FamilyInfo> familyInfo) {
-		this.familyInfo = familyInfo;
-	}
-
 	public Qualification getQualification() {
 		return qualification;
 	}
@@ -349,13 +336,6 @@ public class Agent implements Serializable {
 		this.qualification = qualification;
 	}
 
-	public BankBranch getBankBranch() {
-		return bankBranch;
-	}
-
-	public void setBankBranch(BankBranch bankBranch) {
-		this.bankBranch = bankBranch;
-	}
 
 	public Religion getReligion() {
 		return religion;
@@ -390,27 +370,21 @@ public class Agent implements Serializable {
 		attachment.setAgent(this);
 	}
 
-	public PermanentAddress getPermanentAddress() {
-		if (this.permanentAddress == null) {
-			this.permanentAddress = new PermanentAddress();
-		}
-		return permanentAddress;
-	}
+//	public PermanentAddress getPermanentAddress() {
+//		if (this.permanentAddress == null) {
+//			this.permanentAddress = new PermanentAddress();
+//		}
+//		return permanentAddress;
+//	}
 
-	public void setPermanentAddress(PermanentAddress permanentAddress) {
-		this.permanentAddress = permanentAddress;
-	}
 
-	public ResidentAddress getResidentAddress() {
-		if (this.residentAddress == null) {
-			this.residentAddress = new ResidentAddress();
-		}
-		return this.residentAddress;
-	}
+//	public ResidentAddress getResidentAddress() {
+//		if (this.residentAddress == null) {
+//			this.residentAddress = new ResidentAddress();
+//		}
+//		return this.residentAddress;
+//	}
 
-	public void setResidentAddress(ResidentAddress residentAddress) {
-		this.residentAddress = residentAddress;
-	}
 
 	public String getPrefix() {
 		return prefix;
@@ -420,13 +394,6 @@ public class Agent implements Serializable {
 		this.prefix = prefix;
 	}
 
-	public Organization getOrganization() {
-		return organization;
-	}
-
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
-	}
 
 	public StateCode getStateCode() {
 		return stateCode;
@@ -460,140 +427,6 @@ public class Agent implements Serializable {
 		this.fullIdNo = fullIdNo;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((accountNo == null) ? 0 : accountNo.hashCode());
-		result = prime * result + ((appointedDate == null) ? 0 : appointedDate.hashCode());
-		result = prime * result + ((birthMark == null) ? 0 : birthMark.hashCode());
-		result = prime * result + ((codeNo == null) ? 0 : codeNo.hashCode());
-		result = prime * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
-		result = prime * result + ((fatherName == null) ? 0 : fatherName.hashCode());
-		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
-		result = prime * result + ((groupType == null) ? 0 : groupType.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((idNo == null) ? 0 : idNo.hashCode());
-		result = prime * result + ((idType == null) ? 0 : idType.hashCode());
-		result = prime * result + ((initialId == null) ? 0 : initialId.hashCode());
-		result = prime * result + ((liscenseNo == null) ? 0 : liscenseNo.hashCode());
-		result = prime * result + ((maritalStatus == null) ? 0 : maritalStatus.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((outstandingEvent == null) ? 0 : outstandingEvent.hashCode());
-		result = prime * result + ((permanentAddress == null) ? 0 : permanentAddress.hashCode());
-		result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
-		result = prime * result + ((remark == null) ? 0 : remark.hashCode());
-		result = prime * result + ((residentAddress == null) ? 0 : residentAddress.hashCode());
-		result = prime * result + ((training == null) ? 0 : training.hashCode());
-		result = prime * result + version;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Agent other = (Agent) obj;
-		if (accountNo == null) {
-			if (other.accountNo != null)
-				return false;
-		} else if (!accountNo.equals(other.accountNo))
-			return false;
-		if (appointedDate == null) {
-			if (other.appointedDate != null)
-				return false;
-		} else if (!appointedDate.equals(other.appointedDate))
-			return false;
-		if (birthMark == null) {
-			if (other.birthMark != null)
-				return false;
-		} else if (!birthMark.equals(other.birthMark))
-			return false;
-		if (codeNo == null) {
-			if (other.codeNo != null)
-				return false;
-		} else if (!codeNo.equals(other.codeNo))
-			return false;
-		if (dateOfBirth == null) {
-			if (other.dateOfBirth != null)
-				return false;
-		} else if (!dateOfBirth.equals(other.dateOfBirth))
-			return false;
-		if (fatherName == null) {
-			if (other.fatherName != null)
-				return false;
-		} else if (!fatherName.equals(other.fatherName))
-			return false;
-		if (gender != other.gender)
-			return false;
-		if (groupType != other.groupType)
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (idNo == null) {
-			if (other.idNo != null)
-				return false;
-		} else if (!idNo.equals(other.idNo))
-			return false;
-		if (idType != other.idType)
-			return false;
-		if (initialId == null) {
-			if (other.initialId != null)
-				return false;
-		} else if (!initialId.equals(other.initialId))
-			return false;
-		if (liscenseNo == null) {
-			if (other.liscenseNo != null)
-				return false;
-		} else if (!liscenseNo.equals(other.liscenseNo))
-			return false;
-		if (maritalStatus != other.maritalStatus)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (outstandingEvent == null) {
-			if (other.outstandingEvent != null)
-				return false;
-		} else if (!outstandingEvent.equals(other.outstandingEvent))
-			return false;
-		if (permanentAddress == null) {
-			if (other.permanentAddress != null)
-				return false;
-		} else if (!permanentAddress.equals(other.permanentAddress))
-			return false;
-		if (prefix == null) {
-			if (other.prefix != null)
-				return false;
-		} else if (!prefix.equals(other.prefix))
-			return false;
-		if (remark == null) {
-			if (other.remark != null)
-				return false;
-		} else if (!remark.equals(other.remark))
-			return false;
-		if (residentAddress == null) {
-			if (other.residentAddress != null)
-				return false;
-		} else if (!residentAddress.equals(other.residentAddress))
-			return false;
-		if (training == null) {
-			if (other.training != null)
-				return false;
-		} else if (!training.equals(other.training))
-			return false;
-		if (version != other.version)
-			return false;
-		return true;
-	}
+	
 
 }

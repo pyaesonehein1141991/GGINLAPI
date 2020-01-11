@@ -52,7 +52,7 @@ public class CustomerFactory {
 			}
 		}
 		if (dto.getCommonCreateAndUpateMarks() != null) {
-			customer.setCommonCreateAndUpateMarks(dto.getCommonCreateAndUpateMarks());
+			customer.setRecorder(dto.getCommonCreateAndUpateMarks());
 		}
 		return customer;
 	}
@@ -104,8 +104,8 @@ public class CustomerFactory {
 				dto.addCustomerInfoStatus(cis);
 			}
 		}
-		if (customer.getCommonCreateAndUpateMarks() != null) {
-			dto.setCommonCreateAndUpateMarks(customer.getCommonCreateAndUpateMarks());
+		if (customer.getRecorder() != null) {
+			dto.setCommonCreateAndUpateMarks(customer.getRecorder());
 		}
 		return dto;
 	}

@@ -1,18 +1,18 @@
 package org.tat.gginl.api.domains;
 	import java.io.Serializable;
-	import java.util.Date;
+import java.util.Date;
 
-	import javax.persistence.Column;
-	import javax.persistence.Embeddable;
-	import javax.persistence.Embedded;
-	import javax.persistence.EnumType;
-	import javax.persistence.Enumerated;
-	import javax.persistence.FetchType;
-	import javax.persistence.JoinColumn;
-	import javax.persistence.OneToOne;
-	import javax.persistence.Temporal;
-	import javax.persistence.TemporalType;
-	import javax.persistence.Transient;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.tat.gginl.api.common.FamilyInfoDto;
 import org.tat.gginl.api.common.IdType;
@@ -22,9 +22,9 @@ import lombok.Data;
 
 	
 
-	@Embeddable
-	@Data
-	public class FamilyInfo implements Serializable {
+@Embeddable
+@Data
+public class FamilyInfo implements Serializable {
 		private static final long serialVersionUID = 1L;
 
 		private String initialId;
@@ -146,6 +146,7 @@ import lombok.Data;
 			this.relationShip = relationShip;
 		}
 
+		@Transient
 		public String getFullName() {
 			return name.getFullName();
 		}

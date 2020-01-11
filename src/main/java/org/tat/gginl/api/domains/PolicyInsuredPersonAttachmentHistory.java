@@ -23,8 +23,8 @@ import org.tat.gginl.api.common.TableName;
 @Table(name=TableName.LIFEPOLICYINSUREDPERSONATTACHMENTHISTORY)
 @TableGenerator(name = "LPOLINSUREDPERSONATTACHMENTHIS_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "LPOLINSUREDPERSONATTACHMENTHIS_GEN", allocationSize = 10)
 @NamedQueries(value = {
-		@NamedQuery(name = "InsuredPersonAttachment.findAll", query = "SELECT m FROM InsuredPersonAttachment m "),
-		@NamedQuery(name = "InsuredPersonAttachment.findById", query = "SELECT m FROM InsuredPersonAttachment m WHERE m.id = :id") })
+		@NamedQuery(name = "PolicyInsuredPersonAttachmentHistory.findAll", query = "SELECT m FROM InsuredPersonAttachment m "),
+		@NamedQuery(name = "PolicyInsuredPersonAttachmentHistory.findById", query = "SELECT m FROM InsuredPersonAttachment m WHERE m.id = :id") })
 @Access(value = AccessType.FIELD)
 public class PolicyInsuredPersonAttachmentHistory {
 	@Transient

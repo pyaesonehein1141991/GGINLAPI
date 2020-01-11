@@ -18,7 +18,6 @@ public class SurveyQuestionDTO extends CommonDTO implements ISorter {
 	private String tureLabel;
 	private String falseLabel;
 	private InputType inputType;
-	private MedProInsuDTO insuDTO;
 	private List<ProductProcessQuestionLinkDTO> questionLinks;
 	private List<ResourceQuestionDTO> resourceQuestionList;
 	private int version;
@@ -50,13 +49,6 @@ public class SurveyQuestionDTO extends CommonDTO implements ISorter {
 
 	}
 
-	public MedProInsuDTO getInsuDTO() {
-		return insuDTO;
-	}
-
-	public void setInsuDTO(MedProInsuDTO insuDTO) {
-		this.insuDTO = insuDTO;
-	}
 
 	public String getId() {
 		return id;
