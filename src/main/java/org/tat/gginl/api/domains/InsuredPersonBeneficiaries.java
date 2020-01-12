@@ -1,5 +1,7 @@
 package org.tat.gginl.api.domains;
 
+import java.util.Date;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Embedded;
@@ -64,6 +66,8 @@ public class InsuredPersonBeneficiaries {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "INSUREDPERSONID", referencedColumnName = "ID")
 	private ProposalInsuredPerson proposalInsuredPerson;
+	
+	private Date dateOfBirth;
 
 	@Version
 	private int version;
@@ -230,6 +234,16 @@ public class InsuredPersonBeneficiaries {
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+	
+	
+
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	public String getFullName() {

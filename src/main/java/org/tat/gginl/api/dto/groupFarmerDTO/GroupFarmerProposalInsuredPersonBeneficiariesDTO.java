@@ -1,5 +1,7 @@
 package org.tat.gginl.api.dto.groupFarmerDTO;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -15,7 +17,7 @@ public class GroupFarmerProposalInsuredPersonBeneficiariesDTO {
 	private String initialId;
 	
 	@NotNull(message = "dob is mandatory")
-	private String dob;
+	private Date dob;
 	
 	@NotNull(message = "percentage is mandatory")
 	private float percentage;
