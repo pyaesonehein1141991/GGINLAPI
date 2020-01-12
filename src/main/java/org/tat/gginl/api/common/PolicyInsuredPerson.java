@@ -167,6 +167,9 @@ public class PolicyInsuredPerson implements IInsuredItem, Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "policyInsuredPerson", orphanRemoval = true)
 	private List<PolicyInsuredPersonBeneficiaries> policyInsuredPersonBeneficiariesList;
+	
+	@Transient
+	private String bpmsInsuredPersonId;
 
 	@Version
 	private int version;
@@ -211,6 +214,7 @@ public class PolicyInsuredPerson implements IInsuredItem, Serializable {
 		this.relationShip = insuredPerson.getRelationship();
 		this.school = insuredPerson.getSchool();
 		this.gradeInfo = insuredPerson.getGradeInfo();
+		this.bpmsInsuredPersonId = insuredPerson.getBpmsInsuredPersonId();
 		for (InsuredPersonAttachment attachment : insuredPerson.getAttachmentList()) {
 			addAttachment(new PolicyInsuredPersonAttachment(attachment));
 		}
@@ -997,6 +1001,15 @@ public class PolicyInsuredPerson implements IInsuredItem, Serializable {
 		if (gradeInfo != null)
 			return gradeInfo.getName();
 		return "-";
+	}
+
+	
+	public String getBpmsInsuredPersonId() {
+		return bpmsInsuredPersonId;
+	}
+
+	public void setBpmsInsuredPersonId(String bpmsInsuredPersonId) {
+		this.bpmsInsuredPersonId = bpmsInsuredPersonId;
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.tat.gginl.api.common.Name;
+import org.tat.gginl.api.common.ProposalType;
 import org.tat.gginl.api.common.ResidentAddress;
 import org.tat.gginl.api.domains.Agent;
 import org.tat.gginl.api.domains.Branch;
@@ -27,6 +28,7 @@ import org.tat.gginl.api.domains.Township;
 import org.tat.gginl.api.domains.repository.AgentRepository;
 import org.tat.gginl.api.domains.repository.BranchRepository;
 import org.tat.gginl.api.domains.repository.CustomerRepository;
+import org.tat.gginl.api.domains.repository.LifePolicyRepository;
 import org.tat.gginl.api.domains.repository.LifeProposalRepository;
 import org.tat.gginl.api.domains.repository.OccupationRepository;
 import org.tat.gginl.api.domains.repository.OrganizationRepository;
@@ -45,6 +47,9 @@ public class LifeProposalService {
 
 	@Autowired
 	private LifeProposalRepository lifeProposalRepo;
+	
+	@Autowired
+	private LifePolicyRepository lifePolicyRepo;
 
 	@Autowired
 	private BranchRepository branchRepo;
@@ -79,10 +84,13 @@ public class LifeProposalService {
 	@Autowired
 	private RelationshipRepository relationshipRepo;
 
+	@Autowired
+	private ICustomIdGenerator customIdRepo;
+
 	@Value("${farmerProductId}")
 	private String productId;
 
-	public List<String> createGroupFarmerProposalToPolicy(GroupFarmerProposalDTO groupFarmerProposalDTO) {
+	public List<LifePolicy> createGroupFarmerProposalToPolicy(GroupFarmerProposalDTO groupFarmerProposalDTO) {
 
 		// convert groupFarmerProposalDTO to lifeproposal
 		List<LifeProposal> farmerProposalList = convertGroupFarmerProposalDTOToProposal(groupFarmerProposalDTO);
@@ -91,10 +99,10 @@ public class LifeProposalService {
 		List<LifePolicy> policyList = convertGroupFarmerProposalToPolicy(farmerProposalList);
 
 		// create lifepolicy and return policynoList
-
+		policyList = lifePolicyRepo.saveAll(policyList);
 		// carete payment process
 
-		return new ArrayList<>();
+		return policyList;
 	}
 
 	private List<LifeProposal> convertGroupFarmerProposalDTOToProposal(GroupFarmerProposalDTO groupFarmerProposalDTO) {
@@ -107,10 +115,12 @@ public class LifeProposalService {
 		Optional<Agent> agentOptional = agentRepo.findById(groupFarmerProposalDTO.getAgentID());
 		Optional<SaleMan> saleManOptional = saleManRepo.findById(groupFarmerProposalDTO.getSaleManId());
 		Optional<SalePoint> salePointOptional = salePointRepo.findById(groupFarmerProposalDTO.getSalePointId());
+		Optional<Product> productOptional = productRepo.findById(productId);
 
 		List<LifeProposal> lifeProposalList = new ArrayList<>();
 		groupFarmerProposalDTO.getProposalInsuredPersonList().forEach(insuredPerson -> {
 			LifeProposal lifeProposal = new LifeProposal();
+			lifeProposal.setProposalType(ProposalType.UNDERWRITING);
 			lifeProposal.setSubmittedDate(groupFarmerProposalDTO.getSubmittedDate());
 			lifeProposal.setBranch(branchOptional.get());
 			lifeProposal.setReferral(referralOptional.get());
@@ -120,11 +130,16 @@ public class LifeProposalService {
 			lifeProposal.setSaleMan(saleManOptional.get());
 			lifeProposal.setSalePoint(salePointOptional.get());
 			lifeProposal.getProposalInsuredPersonList().add(createInsuredPerson(insuredPerson));
+			String proposalNo = customIdRepo.getNextId("FARMER_LIFE_PROPOSAL_NO",
+					productOptional.get().getProductGroup().getProposalNoPrefix());
+			lifeProposal.setProposalNo(proposalNo);
+			lifeProposal.setPrefix("ISLIF001");
 			lifeProposalList.add(lifeProposal);
+		
 
 		});
 
-		return new ArrayList<>();
+		return lifeProposalList;
 	}
 
 	private ProposalInsuredPerson createInsuredPerson(GroupFarmerProposalInsuredPersonDTO dto) {
@@ -162,6 +177,9 @@ public class LifeProposalService {
 		insuredPerson.setName(name);
 		insuredPerson.setOccupation(occupationOptional.get());
 		insuredPerson.setCustomer(customerOptional.get());
+		String insPersonCodeNo = customIdRepo.getNextId("LIFE_INSUREDPERSON_CODENO", null);
+		insuredPerson.setInsPersonCodeNo(insPersonCodeNo);
+		insuredPerson.setPrefix("ISLIF008");
 		dto.getInsuredPersonBeneficiariesList().forEach(beneficiary -> {
 			insuredPerson.getInsuredPersonBeneficiariesList().add(createInsuredPersonBeneficiareis(beneficiary));
 		});
@@ -194,13 +212,25 @@ public class LifeProposalService {
 		beneficiary.setResidentAddress(residentAddress);
 		beneficiary.setName(name);
 		beneficiary.setRelationship(relationshipOptional.get());
-
+		String beneficiaryNo = customIdRepo.getNextId("LIFE_BENEFICIARY_NO", null);
+		beneficiary.setBeneficiaryNo(beneficiaryNo);
+		beneficiary.setPrefix("ISLIF004");
 		return beneficiary;
 	}
 
 	private List<LifePolicy> convertGroupFarmerProposalToPolicy(List<LifeProposal> farmerProposalList) {
-
-		return new ArrayList<>();
+		Optional<Product> productOptional = productRepo.findById(productId);
+		List<LifePolicy> policyList = new ArrayList<>();
+		farmerProposalList.forEach(proposal->{
+			LifePolicy policy = new LifePolicy(proposal);
+			String policyNo = customIdRepo.getNextId("FARMER_LIFE_POLICY_NO",
+					productOptional.get().getProductGroup().getProposalNoPrefix());
+			policy.setPolicyNo(policyNo);
+			policy.setActivedPolicyStartDate(policy.getPolicyInsuredPersonList().get(0).getStartDate());
+			policy.setActivedPolicyEndDate(policy.getPolicyInsuredPersonList().get(0).getEndDate());
+			policyList.add(policy);
+		});
+		return policyList;
 	}
 
 }

@@ -133,7 +133,7 @@ public class LifePolicy implements IPolicy, Serializable, ISorter {
 	@JoinColumn(name = "SALEMANID", referencedColumnName = "ID")
 	private SaleMan saleMan;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
 	@JoinColumn(name = "PROPOSALID")
 	private LifeProposal lifeProposal;
 

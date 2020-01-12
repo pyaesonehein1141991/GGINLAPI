@@ -5,4 +5,5 @@ import org.tat.gginl.api.domains.LifeProposal;
 
 public interface LifeProposalRepository extends JpaRepository<LifeProposal, String>{
 
+
 }

@@ -704,10 +704,10 @@ public class Utils {
 		return bigValue.negate().doubleValue();
 	}
 
-	public static void main(String[] arg) {
-
-		System.out.println(nagateIfNagative(-5000));
-	}
+//	public static void main(String[] arg) {
+//
+//		System.out.println(nagateIfNagative(-5000));
+//	}
 
 	public static int daysOfFinancialYear(Date paramDate) {
 		Calendar calendar = Calendar.getInstance();

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.tat.gginl.api.domains.LifePolicy;
 import org.tat.gginl.api.domains.services.LifeProposalService;
 import org.tat.gginl.api.dto.ResponseDTO;
 import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalDTO;
@@ -18,34 +19,32 @@ import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerResponseDTO;
 @RestController
 @RequestMapping("/groupfarmer")
 public class GroupFarmerController {
-	
+
 	@Autowired
 	private LifeProposalService lifeProposalService;
-	
+
 	@PostMapping("/submitproposal")
 	public ResponseDTO<Object> submitproposal(@Valid @RequestBody GroupFarmerProposalDTO groupFarmerProposalDTO) {
-		
-		//create farmer proposal
-		lifeProposalService.createGroupFarmerProposalToPolicy(groupFarmerProposalDTO);
-		
-		//create response object
-		
+		List<LifePolicy> policyList = new ArrayList<>();
+		// create farmer proposal
+		policyList = lifeProposalService.createGroupFarmerProposalToPolicy(groupFarmerProposalDTO);
+
+		// create response object
+
 		List<GroupFarmerResponseDTO> responseList = new ArrayList<>();
-		
-		groupFarmerProposalDTO.getProposalInsuredPersonList().forEach(insuredPerson->{
+
+		policyList.forEach(policy -> {
 			GroupFarmerResponseDTO dto = GroupFarmerResponseDTO.builder()
-					.bpmsInsuredPersonId(insuredPerson.getBpmsInsuredPersonId())
-					.policyNo("")
+					.bpmsInsuredPersonId(policy.getPolicyInsuredPersonList().get(0).getBpmsInsuredPersonId())
+					.policyNo(policy.getPolicyNo())
 					.build();
-			
+
 			responseList.add(dto);
 		});
-		
-		ResponseDTO<Object> responseDTO = ResponseDTO.builder()
-				.responseStatus("Success!")
-				.responseBody(responseList)
+
+		ResponseDTO<Object> responseDTO = ResponseDTO.builder().responseStatus("Success!").responseBody(responseList)
 				.build();
-		
+
 		return responseDTO;
 	}
 

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -67,6 +68,7 @@ public class InsuredPersonBeneficiaries {
 	@JoinColumn(name = "INSUREDPERSONID", referencedColumnName = "ID")
 	private ProposalInsuredPerson proposalInsuredPerson;
 	
+	@Column(name = "DOB")
 	private Date dateOfBirth;
 
 	@Version

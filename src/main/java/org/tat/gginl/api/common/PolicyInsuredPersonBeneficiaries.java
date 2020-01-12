@@ -1,9 +1,11 @@
 package org.tat.gginl.api.common;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -70,6 +72,9 @@ public class PolicyInsuredPersonBeneficiaries implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "INSUREDPERSONID", referencedColumnName = "ID")
 	private PolicyInsuredPerson policyInsuredPerson;
+	
+	@Column(name = "DOB")
+	private Date dateOfBirth;
 
 	@Version
 	private int version;
@@ -90,7 +95,7 @@ public class PolicyInsuredPersonBeneficiaries implements Serializable {
 		this.residentAddress = insuredPersonBeneficiaries.getResidentAddress();
 		this.name = insuredPersonBeneficiaries.getName();
 		this.relationship = insuredPersonBeneficiaries.getRelationship();
-
+		this.dateOfBirth = insuredPersonBeneficiaries.getDateOfBirth();
 	}
 
 	public PolicyInsuredPersonBeneficiaries(PolicyInsuredPersonBeneficiariesHistory insuredPersonBeneficiaries) {
