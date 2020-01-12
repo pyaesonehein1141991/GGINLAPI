@@ -42,7 +42,9 @@ import lombok.Data;
 public class Organization implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Transient
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "ORGANIZATION_GEN")
+	@Access(AccessType.PROPERTY)
 	private String id;
 	@Transient
 	private String prefix;
@@ -91,9 +93,7 @@ public class Organization implements Serializable {
 
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "ORGANIZATION_GEN")
-	@Access(AccessType.PROPERTY)
+	
 	public String getId() {
 		return id;
 	}

@@ -8,6 +8,9 @@ import javax.validation.constraints.NotNull;
 
 import org.tat.gginl.api.common.Gender;
 import org.tat.gginl.api.common.IdType;
+import org.tat.gginl.api.configuration.DateHandler;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -56,14 +59,17 @@ public class GroupFarmerProposalInsuredPersonDTO {
 
 	@ApiModelProperty(position = 10, example = "2019-12-16", required = true)
 	@NotNull(message = "startDate is mandatory")
+	@JsonDeserialize(using = DateHandler.class)
 	private Date startDate;
 
 	@ApiModelProperty(position = 11, example = "2019-12-16", required = true)
 	@NotNull(message = "endDate is mandatory")
+	@JsonDeserialize(using = DateHandler.class)
 	private Date endDate;
 
 	@ApiModelProperty(position = 12, example = "1999-12-16", required = true)
 	@NotNull(message = "dateOfBirth is mandatory")
+	@JsonDeserialize(using = DateHandler.class)
 	private Date dateOfBirth;
 
 

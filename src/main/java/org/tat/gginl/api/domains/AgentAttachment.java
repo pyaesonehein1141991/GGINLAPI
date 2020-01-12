@@ -2,8 +2,6 @@ package org.tat.gginl.api.domains;
 
 import java.io.Serializable;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
@@ -21,10 +20,12 @@ import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "AGENT_ATTACH_LINK")
 public class AgentAttachment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Transient
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "LPRL_GEN")
 	private String id;
 	@Transient
 	private String prefix;
@@ -47,9 +48,7 @@ public class AgentAttachment implements Serializable {
 		this.filePath = filePath;
 	}
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "LPRL_GEN")
-	@Access(value = AccessType.PROPERTY)
+	
 	public String getId() {
 		return id;
 	}

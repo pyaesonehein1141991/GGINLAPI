@@ -7,6 +7,9 @@ import javax.validation.constraints.NotNull;
 
 import org.tat.gginl.api.common.Gender;
 import org.tat.gginl.api.common.IdType;
+import org.tat.gginl.api.configuration.DateHandler;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -21,6 +24,7 @@ public class GroupFarmerProposalInsuredPersonBeneficiariesDTO {
 	
 	@ApiModelProperty(position = 1, example = "2019-12-16", required = true)
 	@NotNull(message = "dob is mandatory")
+	@JsonDeserialize(using = DateHandler.class)
 	private Date dob;
 	
 	@ApiModelProperty(position = 2, example = "5", required = true)
@@ -42,7 +46,7 @@ public class GroupFarmerProposalInsuredPersonBeneficiariesDTO {
 	@NotBlank(message = "residentAddress is mandatory")
 	private String residentAddress;
 	
-	@ApiModelProperty(position =11, example = "ISSYS011000009823001042019", required = true)
+	@ApiModelProperty(position =11, example = "ISSYS004002000000127620082014", required = true)
 	@NotBlank(message = "townshipId is mandatory")
 	private String townshipId;
 	

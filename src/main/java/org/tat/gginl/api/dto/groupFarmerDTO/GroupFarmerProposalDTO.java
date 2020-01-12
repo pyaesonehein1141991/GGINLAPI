@@ -6,6 +6,10 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.tat.gginl.api.configuration.DateHandler;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -13,9 +17,10 @@ import lombok.Data;
 public class GroupFarmerProposalDTO {
 	@ApiModelProperty(position = 0, example = "2019-12-16", required = true)
 	@NotNull(message = "SubmittedDate is mandatory")
+	@JsonDeserialize(using = DateHandler.class)
 	private Date submittedDate;
 
-	@ApiModelProperty(position = 3, example = "BANCH0000000000000012903201", required = true)
+	@ApiModelProperty(position = 3, example = "BANCH00000000000000129032018", required = true)
 	@NotBlank(message = "branchId is mandatory")
 	private String branchId;
 

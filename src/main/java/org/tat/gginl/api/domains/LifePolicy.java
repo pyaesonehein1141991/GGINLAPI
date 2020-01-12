@@ -18,8 +18,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -43,25 +41,12 @@ import org.tat.gginl.api.common.Utils;
 @Entity
 @Table(name = TableName.LIFEPOLICY)
 @TableGenerator(name = "LIFEPOLICY_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "LIFEPOLICY_GEN", allocationSize = 10)
-@NamedQueries(value = { @NamedQuery(name = "LifePolicy.findAll", query = "SELECT l FROM LifePolicy l "),
-		@NamedQuery(name = "LifePolicy.findAllActiveLifePolicy", query = "SELECT l FROM LifePolicy l WHERE l.policyNo IS NOT NULL AND l.isEndorsementApplied!=1"),
-		@NamedQuery(name = "LifePolicy.findByCustomer", query = "SELECT l FROM LifePolicy l WHERE l.policyNo IS NOT NULL AND l.customer.id = :customerId"),
-		@NamedQuery(name = "LifePolicy.findByProposalId", query = "SELECT l FROM LifePolicy l WHERE l.lifeProposal.id = :lifeProposalId"),
-		@NamedQuery(name = "LifePolicy.findByLifeProposalId", query = "SELECT l FROM LifePolicy l WHERE l.lifeProposal.id = :lifeProposalId"),
-		@NamedQuery(name = "LifePolicy.findById", query = "SELECT l FROM LifePolicy l WHERE l.id = :id"),
-		@NamedQuery(name = "LifePolicy.findByPolicyId", query = "SELECT l FROM LifePolicy l WHERE l.id = :lifePolicyId"),
-		@NamedQuery(name = "LifePolicy.findByPolicyNo", query = "SELECT l FROM LifePolicy l WHERE l.policyNo = :policyNo"),
-		@NamedQuery(name = "LifePolicy.findPaymentOrderByReceiptNo", query = "SELECT DISTINCT l FROM LifePolicy l, Payment p WHERE p.receiptNo = :receiptNo AND l.id = p.referenceNo AND p.isPO = TRUE "),
-		@NamedQuery(name = "LifePolicy.findPolicyNoById", query = "SELECT l.policyNo FROM LifePolicy l WHERE l.id = :id"),
-		@NamedQuery(name = "LifePolicy.increasePrintCount", query = "UPDATE LifePolicy l SET l.printCount = l.printCount + 1 WHERE l.id = :id"),
-		@NamedQuery(name = "LifePolicy.updatePaymentDate", query = "UPDATE LifePolicy l SET l.activedPolicyStartDate = :paymentDate, l.activedPolicyEndDate = :paymentValidDate where l.id = :id"),
-		@NamedQuery(name = "LifePolicy.updateCommenmanceDate", query = "UPDATE LifePolicy l SET l.commenmanceDate = :commenceDate WHERE l.id = :id"),
-		@NamedQuery(name = "LifePolicy.updateEndorsementStatus", query = "UPDATE LifePolicy l SET l.isEndorsementApplied = :isEndorsementApplied WHERE l.id = :id") })
 @Access(value = AccessType.FIELD)
 public class LifePolicy implements IPolicy, Serializable, ISorter {
 	private static final long serialVersionUID = 2379164707215020929L;
 
-	@Transient
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "LIFEPOLICY_GEN")
 	private String id;
 	@Transient
 	private String prefix;
@@ -228,9 +213,7 @@ public class LifePolicy implements IPolicy, Serializable, ISorter {
 		getPolicyInsuredPersonList().add(policyInsuredPerson);
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "LIFEPOLICY_GEN")
-	@Access(value = AccessType.PROPERTY)
+	
 	public String getId() {
 		return id;
 	}

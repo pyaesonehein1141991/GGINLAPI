@@ -39,7 +39,6 @@ import org.tat.gginl.api.common.KeyFactor;
 import org.tat.gginl.api.common.PremiumRateType;
 import org.tat.gginl.api.common.TableName;
 
-
 @Entity
 @Table(name = TableName.PRODUCT)
 @TableGenerator(name = "PRODUCT_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "PRODUCT_GEN", allocationSize = 10)
@@ -50,7 +49,8 @@ import org.tat.gginl.api.common.TableName;
 @Access(value = AccessType.FIELD)
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@Transient
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "PRODUCT_GEN")
 	private String id;
 	@Transient
 	private String prefix;
@@ -86,18 +86,21 @@ public class Product implements Serializable {
 	private ProductGroup productGroup;
 
 	@OneToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "PRODUCT_PAYMENTTYPE_LINK", joinColumns = { @JoinColumn(name = "PRODUCTID", referencedColumnName = "ID") }, inverseJoinColumns = {
-			@JoinColumn(name = "PAYMENTTYPEID", referencedColumnName = "ID") })
+	@JoinTable(name = "PRODUCT_PAYMENTTYPE_LINK", joinColumns = {
+			@JoinColumn(name = "PRODUCTID", referencedColumnName = "ID") }, inverseJoinColumns = {
+					@JoinColumn(name = "PAYMENTTYPEID", referencedColumnName = "ID") })
 	private List<PaymentType> paymentTypeList;
 
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "PRODUCT_ADDON_LINK", joinColumns = { @JoinColumn(name = "PRODUCTID", referencedColumnName = "ID") }, inverseJoinColumns = {
-			@JoinColumn(name = "ADDONID", referencedColumnName = "ID") })
+	@JoinTable(name = "PRODUCT_ADDON_LINK", joinColumns = {
+			@JoinColumn(name = "PRODUCTID", referencedColumnName = "ID") }, inverseJoinColumns = {
+					@JoinColumn(name = "ADDONID", referencedColumnName = "ID") })
 	private List<AddOn> addOnList;
 
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "PRODUCT_KEYFACTOR_LINK", joinColumns = { @JoinColumn(name = "PRODUCTID", referencedColumnName = "ID") }, inverseJoinColumns = {
-			@JoinColumn(name = "KEYFACTORID", referencedColumnName = "ID") })
+	@JoinTable(name = "PRODUCT_KEYFACTOR_LINK", joinColumns = {
+			@JoinColumn(name = "PRODUCTID", referencedColumnName = "ID") }, inverseJoinColumns = {
+					@JoinColumn(name = "KEYFACTORID", referencedColumnName = "ID") })
 	private List<KeyFactor> keyFactorList;
 
 	@OneToOne(fetch = FetchType.LAZY)
@@ -110,9 +113,6 @@ public class Product implements Serializable {
 	public Product() {
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "PRODUCT_GEN")
-	@Access(value = AccessType.PROPERTY)
 	public String getId() {
 		return id;
 	}

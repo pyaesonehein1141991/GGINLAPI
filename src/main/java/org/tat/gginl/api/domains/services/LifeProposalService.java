@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.ProposalType;
 import org.tat.gginl.api.common.ResidentAddress;
@@ -90,6 +92,7 @@ public class LifeProposalService {
 	@Value("${farmerProductId}")
 	private String productId;
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public List<LifePolicy> createGroupFarmerProposalToPolicy(GroupFarmerProposalDTO groupFarmerProposalDTO) {
 
 		// convert groupFarmerProposalDTO to lifeproposal
@@ -177,7 +180,7 @@ public class LifeProposalService {
 		insuredPerson.setName(name);
 		insuredPerson.setOccupation(occupationOptional.get());
 		insuredPerson.setCustomer(customerOptional.get());
-		String insPersonCodeNo = customIdRepo.getNextId("LIFE_INSUREDPERSON_CODENO", null);
+		String insPersonCodeNo = customIdRepo.getNextId("LIFE_INSUREDPERSON_CODENO_ID_GEN",null);
 		insuredPerson.setInsPersonCodeNo(insPersonCodeNo);
 		insuredPerson.setPrefix("ISLIF008");
 		dto.getInsuredPersonBeneficiariesList().forEach(beneficiary -> {
@@ -195,6 +198,7 @@ public class LifeProposalService {
 
 		ResidentAddress residentAddress = new ResidentAddress();
 		residentAddress.setResidentAddress(dto.getResidentAddress());
+		
 		residentAddress.setResidentTownship(townshipOptional.get());
 
 		Name name = new Name();
@@ -211,8 +215,10 @@ public class LifeProposalService {
 		beneficiary.setGender(dto.getGender());
 		beneficiary.setResidentAddress(residentAddress);
 		beneficiary.setName(name);
-		beneficiary.setRelationship(relationshipOptional.get());
-		String beneficiaryNo = customIdRepo.getNextId("LIFE_BENEFICIARY_NO", null);
+		if(relationshipOptional.isPresent()) {
+			beneficiary.setRelationship(relationshipOptional.get());
+		}
+		String beneficiaryNo = customIdRepo.getNextId("LIFE_BENEFICIARY_ID_GEN", null);
 		beneficiary.setBeneficiaryNo(beneficiaryNo);
 		beneficiary.setPrefix("ISLIF004");
 		return beneficiary;

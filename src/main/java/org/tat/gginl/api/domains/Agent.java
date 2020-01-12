@@ -51,7 +51,8 @@ import lombok.Data;
 public class Agent implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Transient
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "AGENT_GEN")
 	private String id;
 	@Transient
 	private String prefix;
@@ -112,11 +113,11 @@ public class Agent implements Serializable {
 	
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "BRANCHID", referencedColumnName = "ID",updatable = false, insertable = false)
+	@JoinColumn(name = "BRANCHID", referencedColumnName = "ID", updatable = false, insertable = false)
 	private Branch branch;
 
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "agent", orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "agent", orphanRemoval = true)
 	private AgentAttachment attachment;
 
 	@Temporal(TemporalType.DATE)
@@ -150,9 +151,7 @@ public class Agent implements Serializable {
 	public Agent() {
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "AGENT_GEN")
-	@Access(value = AccessType.PROPERTY)
+	
 	public String getId() {
 		return id;
 	}
