@@ -28,6 +28,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -48,11 +49,12 @@ import lombok.Data;
 
 @Entity
 @Data
+@TableGenerator(name = "AGENT_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "AGENT_GEN", allocationSize = 10)
+@Access(value = AccessType.FIELD)
 public class Agent implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "AGENT_GEN")
+	@Transient
 	private String id;
 	@Transient
 	private String prefix;
@@ -151,7 +153,9 @@ public class Agent implements Serializable {
 	public Agent() {
 	}
 
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "AGENT_GEN")
+	@Access(value = AccessType.PROPERTY)
 	public String getId() {
 		return id;
 	}

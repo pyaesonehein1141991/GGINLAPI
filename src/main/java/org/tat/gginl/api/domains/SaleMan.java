@@ -44,8 +44,7 @@ import org.tat.gginl.api.common.TableName;
 public class SaleMan implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "SALEMAN_GEN")
+	@Transient
 	private String id;
 	@Transient
 	private String prefix;
@@ -109,7 +108,9 @@ public class SaleMan implements Serializable {
 		this.prefix = saleMan.getPrefix();
 	}
 
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "SALEMAN_GEN")
+	@Access(value = AccessType.PROPERTY)
 	public String getId() {
 		return id;
 	}
