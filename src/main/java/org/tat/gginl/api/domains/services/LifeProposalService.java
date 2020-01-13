@@ -102,6 +102,9 @@ public class LifeProposalService {
 		List<LifePolicy> policyList = convertGroupFarmerProposalToPolicy(farmerProposalList);
 
 		// create lifepolicy and return policynoList
+		LifePolicy policy = new LifePolicy();
+		policy.setPrefix("F");
+//		lifePolicyRepo.save(policy);
 		policyList = lifePolicyRepo.saveAll(policyList);
 		// carete payment process
 
