@@ -28,7 +28,7 @@ public class AgentScheduler {
 	@Autowired
 	private AgentService agentService;
 	
-	@Scheduled(cron = "* 22 11 *  * ?")
+	@Scheduled(cron = "0 * * ? * *")
 	public void createAgentFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());
