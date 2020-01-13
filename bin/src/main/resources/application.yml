@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://acehawksvr3;databaseName=GGIP
+    url: jdbc:sqlserver://localhost;databaseName=ggip
     username: sa
-    password: 123@ace
+    password: sasa
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jackson:
     date-format: dd.MM.yyyy
@@ -18,4 +18,6 @@ spring:
       hibernate: dialect:org.hibernate.dialect.SQLServer2012Dialect
   
 server:
-   port: ${PORT:8080} # This is the default port anyway, but you can change it here
+   port: ${PORT:8081} # This is the default port anyway, but you can change it here
+   
+farmerProductId: ISPRD003001000009376125072017
