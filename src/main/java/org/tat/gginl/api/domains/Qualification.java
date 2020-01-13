@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
@@ -17,6 +18,8 @@ import lombok.Data;
 
 	@Entity
 	@Data
+	@TableGenerator(name = "QUALIFICATION_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "QUALIFICATION_GEN", allocationSize = 10)
+	@Access(value = AccessType.FIELD)
 	public class Qualification implements Serializable {
 		/**
 		 * 

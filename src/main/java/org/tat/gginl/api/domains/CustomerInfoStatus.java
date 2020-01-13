@@ -2,22 +2,30 @@ package org.tat.gginl.api.domains;
 
 	import java.io.Serializable;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.TableGenerator;
 import javax.persistence.Version;
 
 import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.CustomerStatus;
+import org.tat.gginl.api.common.IDInterceptor;
 
 import lombok.Data;
 
 	@Entity
 	@Data
+	@TableGenerator(name = "CUSTOMERSTATUS_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "CUSTOMERSTATUS_GEN", allocationSize = 10)
+	@Access(value = AccessType.FIELD)
+	@EntityListeners(IDInterceptor.class)
 	public class CustomerInfoStatus implements Serializable {
 		private static final long serialVersionUID = 1L;
 

@@ -4,18 +4,25 @@ package org.tat.gginl.api.domains;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.TableGenerator;
 import javax.persistence.Version;
 
 import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
+import org.tat.gginl.api.common.IDInterceptor;
 
 import lombok.Data;
 
 
 	@Entity
 	@Data
+	@TableGenerator(name = "STATECODE_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "STATECODE_GEN", allocationSize = 10)
+	@EntityListeners(IDInterceptor.class)
 	public class StateCode implements Serializable {
 		private static final long serialVersionUID = 1L;
 		@Id

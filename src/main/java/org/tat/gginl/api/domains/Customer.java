@@ -16,10 +16,13 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -45,9 +48,11 @@ import lombok.Data;
 
 @Entity
 @Data
+@TableGenerator(name = "CUSTOMER_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "CUSTOMER_GEN", allocationSize = 10)
+@Access(value = AccessType.FIELD)
 public class Customer implements Serializable {
 	private static final long serialVersionUID = -6982490830051621004L;
-	@Id
+	@Transient
 	private String id;
 	
 	@Transient
@@ -177,7 +182,9 @@ public class Customer implements Serializable {
 		this.name = customerDto.getName() != null ? new Name(customerDto.getName()) : null;
 	}
 
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "CUSTOMER_GEN")
+	@Access(value = AccessType.PROPERTY)
 	public String getId() {
 		return id;
 	}

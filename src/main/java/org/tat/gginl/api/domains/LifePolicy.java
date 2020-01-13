@@ -45,8 +45,7 @@ import org.tat.gginl.api.common.Utils;
 public class LifePolicy implements IPolicy, Serializable, ISorter {
 	private static final long serialVersionUID = 2379164707215020929L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "LIFEPOLICY_GEN")
+	
 	private String id;
 	@Transient
 	private String prefix;
@@ -213,7 +212,9 @@ public class LifePolicy implements IPolicy, Serializable, ISorter {
 		getPolicyInsuredPersonList().add(policyInsuredPerson);
 	}
 
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "LIFEPOLICY_GEN")
+	@Access(AccessType.PROPERTY)
 	public String getId() {
 		return id;
 	}
