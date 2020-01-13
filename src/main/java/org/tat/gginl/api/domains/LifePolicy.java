@@ -45,7 +45,7 @@ import org.tat.gginl.api.common.Utils;
 public class LifePolicy implements IPolicy, Serializable, ISorter {
 	private static final long serialVersionUID = 2379164707215020929L;
 
-	
+	@Transient
 	private String id;
 	@Transient
 	private String prefix;
