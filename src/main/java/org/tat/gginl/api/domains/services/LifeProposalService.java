@@ -49,7 +49,7 @@ public class LifeProposalService {
 
 	@Autowired
 	private LifeProposalRepository lifeProposalRepo;
-	
+
 	@Autowired
 	private LifePolicyRepository lifePolicyRepo;
 
@@ -136,12 +136,10 @@ public class LifeProposalService {
 			lifeProposal.setSaleMan(saleManOptional.get());
 			lifeProposal.setSalePoint(salePointOptional.get());
 			lifeProposal.getProposalInsuredPersonList().add(createInsuredPerson(insuredPerson));
-			String proposalNo = customIdRepo.getNextId("FARMER_LIFE_PROPOSAL_NO",
-					productOptional.get().getProductGroup().getProposalNoPrefix());
+			String proposalNo = customIdRepo.getNextId("FARMER_LIFE_PROPOSAL_NO", null);
 			lifeProposal.setProposalNo(proposalNo);
 			lifeProposal.setPrefix("ISLIF001");
 			lifeProposalList.add(lifeProposal);
-		
 
 		});
 
@@ -183,7 +181,7 @@ public class LifeProposalService {
 		insuredPerson.setName(name);
 		insuredPerson.setOccupation(occupationOptional.get());
 		insuredPerson.setCustomer(customerOptional.get());
-		String insPersonCodeNo = customIdRepo.getNextId("LIFE_INSUREDPERSON_CODENO_ID_GEN",null);
+		String insPersonCodeNo = customIdRepo.getNextId("LIFE_INSUREDPERSON_CODENO_ID_GEN", null);
 		insuredPerson.setInsPersonCodeNo(insPersonCodeNo);
 		insuredPerson.setPrefix("ISLIF008");
 		dto.getInsuredPersonBeneficiariesList().forEach(beneficiary -> {
@@ -201,7 +199,7 @@ public class LifeProposalService {
 
 		ResidentAddress residentAddress = new ResidentAddress();
 		residentAddress.setResidentAddress(dto.getResidentAddress());
-		
+
 		residentAddress.setResidentTownship(townshipOptional.get());
 
 		Name name = new Name();
@@ -218,7 +216,7 @@ public class LifeProposalService {
 		beneficiary.setGender(dto.getGender());
 		beneficiary.setResidentAddress(residentAddress);
 		beneficiary.setName(name);
-		if(relationshipOptional.isPresent()) {
+		if (relationshipOptional.isPresent()) {
 			beneficiary.setRelationship(relationshipOptional.get());
 		}
 		String beneficiaryNo = customIdRepo.getNextId("LIFE_BENEFICIARY_ID_GEN", null);
@@ -230,10 +228,9 @@ public class LifeProposalService {
 	private List<LifePolicy> convertGroupFarmerProposalToPolicy(List<LifeProposal> farmerProposalList) {
 		Optional<Product> productOptional = productRepo.findById(productId);
 		List<LifePolicy> policyList = new ArrayList<>();
-		farmerProposalList.forEach(proposal->{
+		farmerProposalList.forEach(proposal -> {
 			LifePolicy policy = new LifePolicy(proposal);
-			String policyNo = customIdRepo.getNextId("FARMER_LIFE_POLICY_NO",
-					productOptional.get().getProductGroup().getProposalNoPrefix());
+			String policyNo = customIdRepo.getNextId("FARMER_LIFE_POLICY_NO", null);
 			policy.setPolicyNo(policyNo);
 			policy.setActivedPolicyStartDate(policy.getPolicyInsuredPersonList().get(0).getStartDate());
 			policy.setActivedPolicyEndDate(policy.getPolicyInsuredPersonList().get(0).getEndDate());

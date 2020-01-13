@@ -17,10 +17,10 @@ public class CustomIdGenerator implements ICustomIdGenerator {
 	private IdGenRepository idGenRepo;
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyMM");
 	@Override
-	public String getNextId(String key, String productCode) {
+	public String getNextId(String key, String branchId) {
 		String id = null;
 		try {
-			id = formatId(idGenRepo.getNextId(key));
+			id = formatId(idGenRepo.getNextId(key,branchId));
 		} catch (PersistenceException p) {
 			p.printStackTrace();
 		}

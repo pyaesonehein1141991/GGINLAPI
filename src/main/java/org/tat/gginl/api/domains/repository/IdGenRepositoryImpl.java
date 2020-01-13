@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.tat.gginl.api.common.IDGen;
 
 @Repository
-public class IdGenRepositoryImpl implements IdGenRepository{
+public class IdGenRepositoryImpl implements IdGenRepository {
 
 	@PersistenceContext
 	private EntityManager em;
@@ -23,22 +23,29 @@ public class IdGenRepositoryImpl implements IdGenRepository{
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public IDGen getNextId(String generatedItem) {
+	public IDGen getNextId(String generatedItem, String branchID) {
 		IDGen idGen = null;
 		try {
 			StringBuffer query = new StringBuffer();
-			query.append("SELECT g FROM IDGen g WHERE g.generateItem = :generateItem");
+			if (branchID == null) {
+				query.append("SELECT g FROM IDGen g WHERE g.generateItem = :generateItem and g.branch is null");
+			} else {
+				query.append("SELECT g FROM IDGen g WHERE g.generateItem = :generateItem and g.branch.id=:branchId");
+			}
 			Query selectQuery = em.createQuery(query.toString());
 			selectQuery.setLockMode(LockModeType.PESSIMISTIC_WRITE);
 			selectQuery.setHint("javax.persistence.lock.timeout", 30000);
 			selectQuery.setParameter("generateItem", generatedItem);
+			if (branchID != null) {
+				selectQuery.setParameter("branchId", branchID);
+			}
 			idGen = (IDGen) selectQuery.getSingleResult();
 			idGen.setMaxValue(idGen.getMaxValue() + 1);
 			idGen = em.merge(idGen);
 			em.flush();
 		} catch (PersistenceException e) {
 			return null;
-		} 
+		}
 		return idGen;
 	}
 

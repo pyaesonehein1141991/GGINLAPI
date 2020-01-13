@@ -3,7 +3,10 @@ package org.tat.gginl.api.common;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -27,9 +30,9 @@ public class IDGen implements Serializable {
 	private String description;
 	private int length;
 	private boolean isDateBased;
-//	@OneToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name = "BRANCHID", referencedColumnName = "ID")
-//	private Branch branch;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "BRANCHID", referencedColumnName = "ID")
+	private Branch branch;
 	@Version
 	private int version;
 
