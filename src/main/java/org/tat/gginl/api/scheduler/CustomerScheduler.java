@@ -1,42 +1,25 @@
 package org.tat.gginl.api.scheduler;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.tat.gginl.api.domains.Customer;
-import org.tat.gginl.api.domains.SalePoint;
 import org.tat.gginl.api.domains.services.CustomerService;
 import org.tat.gginl.api.domains.services.FileService;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.opencsv.CSVWriter;
-import com.opencsv.bean.ColumnPositionMappingStrategy;
-import com.opencsv.bean.MappingStrategy;
-import com.opencsv.bean.StatefulBeanToCsv;
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
 @Component
 public class CustomerScheduler {
@@ -46,7 +29,7 @@ public class CustomerScheduler {
 	private CustomerService customerService;
 	
 	
-	@Scheduled(cron = "0 * * ? * *")
+	@Scheduled(cron = "0 0 0 * * ?")
 	public void createCustomerFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());

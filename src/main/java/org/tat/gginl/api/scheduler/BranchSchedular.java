@@ -30,7 +30,7 @@ public class BranchSchedular {
 	@Autowired
 	private BranchRepository branchRepo;
 	
-	@Scheduled(cron = "0 * * ? * *")
+	@Scheduled(cron = "0 0 0 * * ?")
 	public void createAgentFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());

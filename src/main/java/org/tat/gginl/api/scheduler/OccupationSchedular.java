@@ -15,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.tat.gginl.api.domains.Occupation;
-import org.tat.gginl.api.domains.SalePoint;
 import org.tat.gginl.api.domains.repository.OccupationRepository;
 import org.tat.gginl.api.domains.services.FileService;
-import org.tat.gginl.api.domains.services.SalePointService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -29,7 +27,7 @@ public class OccupationSchedular {
 	private OccupationRepository occupationRepo;
 
 	
-	@Scheduled(cron = "0 * * ? * *")
+	@Scheduled(cron = "0 0 0 * * ?")
 	 public void createSalePointFolder() throws Exception {
 			
 			Date startDate =FileService.resetStartDate(new Date());

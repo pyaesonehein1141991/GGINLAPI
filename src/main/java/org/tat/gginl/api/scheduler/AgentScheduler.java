@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.zip.ZipOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.tat.gginl.api.domains.Agent;
-import org.tat.gginl.api.domains.Customer;
 import org.tat.gginl.api.domains.services.AgentService;
 import org.tat.gginl.api.domains.services.FileService;
 
@@ -28,7 +28,9 @@ public class AgentScheduler {
 	@Autowired
 	private AgentService agentService;
 	
-	@Scheduled(cron = "0 * * ? * *")
+	
+	
+	@Scheduled(cron = "0 0 0 * * ?")
 	public void createAgentFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());

@@ -27,7 +27,7 @@ public class SaleManSchedular {
 	private SaleManRepository saleManRepo;
 
 	
-	@Scheduled(cron = "0 * * ? * *")
+	@Scheduled(cron = "0 0 0 * * ?")
 	 public void createSalePointFolder() throws Exception {
 			
 			Date startDate =FileService.resetStartDate(new Date());

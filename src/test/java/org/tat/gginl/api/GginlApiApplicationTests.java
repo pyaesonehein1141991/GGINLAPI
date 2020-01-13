@@ -173,7 +173,7 @@ class GginlApiApplicationTests {
 	
 //	@Scheduled(cron = "* 22 11 *  * ?")
 	
-	@BeforeEach
+//	@BeforeEach
 	public void createAgentFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());

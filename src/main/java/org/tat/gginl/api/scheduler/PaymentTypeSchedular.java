@@ -30,7 +30,7 @@ public class PaymentTypeSchedular {
 	private PaymentTypeRepository paymentTypeRepo;
 
 	
-	@Scheduled(cron = "0 * * ? * *")
+	@Scheduled(cron = "0 0 0 * * ?")
 	 public void createSalePointFolder() throws Exception {
 			
 			Date startDate =FileService.resetStartDate(new Date());
