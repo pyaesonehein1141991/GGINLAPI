@@ -29,7 +29,7 @@ public class AgentScheduler {
 	private AgentService agentService;
 	
 	@Scheduled(cron = "* 22 11 *  * ?")
-	public void createCustomerFolder() throws Exception {
+	public void createAgentFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());
 		startDate =FileService.minusDays(startDate, 2);
