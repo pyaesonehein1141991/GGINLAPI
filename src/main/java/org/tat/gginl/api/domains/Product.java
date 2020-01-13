@@ -42,10 +42,6 @@ import org.tat.gginl.api.common.TableName;
 @Entity
 @Table(name = TableName.PRODUCT)
 @TableGenerator(name = "PRODUCT_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "PRODUCT_GEN", allocationSize = 10)
-@NamedQueries(value = { @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p ORDER by p.name ASC"),
-		@NamedQuery(name = "Product.findById", query = "SELECT p FROM Product p WHERE p.id = :id"),
-		@NamedQuery(name = "Product.findByInsuranceType", query = "SELECT p FROM Product p WHERE p.insuranceType = :insuranceType"),
-		@NamedQuery(name = "Product.findProductByCurrencyType", query = "SELECT p FROM Product p WHERE p.insuranceType = :insuranceType AND p.currency = :currency ") })
 @Access(value = AccessType.FIELD)
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -113,7 +109,7 @@ public class Product implements Serializable {
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "PRODUCT_GEN")
-	@Access(value = AccessType.FIELD)
+	@Access(value = AccessType.PROPERTY)
 	public String getId() {
 		return id;
 	}
