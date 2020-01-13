@@ -49,8 +49,7 @@ import org.tat.gginl.api.common.TableName;
 @Access(value = AccessType.FIELD)
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "PRODUCT_GEN")
+	@Transient
 	private String id;
 	@Transient
 	private String prefix;
@@ -112,7 +111,9 @@ public class Product implements Serializable {
 
 	public Product() {
 	}
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "PRODUCT_GEN")
+	@Access(value = AccessType.FIELD)
 	public String getId() {
 		return id;
 	}

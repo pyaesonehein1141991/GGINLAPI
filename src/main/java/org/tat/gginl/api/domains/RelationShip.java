@@ -2,10 +2,13 @@ package org.tat.gginl.api.domains;
 
 import java.io.Serializable;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
@@ -15,10 +18,11 @@ import lombok.Data;
 
 @Entity
 @Data
+@TableGenerator(name = "RELATIONSHIP_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "RELATIONSHIP_GEN", allocationSize = 10)
+@Access(value = AccessType.FIELD)
 public class RelationShip implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "RELATIONSHIP_GEN")
+	@Transient
 	private String id;
 	@Transient
 	private String prefix;
@@ -31,6 +35,9 @@ public class RelationShip implements Serializable {
 	public RelationShip() {
 	}
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "RELATIONSHIP_GEN")
+	@Access(value = AccessType.PROPERTY)
 	public String getId() {
 		return id;
 	}
