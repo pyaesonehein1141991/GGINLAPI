@@ -17,11 +17,7 @@ public class UserDataDTO {
   @ApiModelProperty(position = 3)
   List<org.tat.gginl.api.common.Role> roles;
 
-  private String fatherName;
-	private String dateOfBirth;
-	private String gender;
-	private String address;
-	private String phoneNo;
+
   public String getUsername() {
     return username;
   }
@@ -53,46 +49,6 @@ public class UserDataDTO {
   public void setRoles(List<Role> roles) {
     this.roles = roles;
   }
-
-public String getFatherName() {
-	return fatherName;
-}
-
-public void setFatherName(String fatherName) {
-	this.fatherName = fatherName;
-}
-
-public String getDateOfBirth() {
-	return dateOfBirth;
-}
-
-public void setDateOfBirth(String dateOfBirth) {
-	this.dateOfBirth = dateOfBirth;
-}
-
-public String getGender() {
-	return gender;
-}
-
-public void setGender(String gender) {
-	this.gender = gender;
-}
-
-public String getAddress() {
-	return address;
-}
-
-public void setAddress(String address) {
-	this.address = address;
-}
-
-public String getPhoneNo() {
-	return phoneNo;
-}
-
-public void setPhoneNo(String phoneNo) {
-	this.phoneNo = phoneNo;
-}
 
   
 }
