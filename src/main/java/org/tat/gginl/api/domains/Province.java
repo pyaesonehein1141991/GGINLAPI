@@ -72,6 +72,7 @@ public class Province implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "PROVINCE_GEN")
+	@Access(value = AccessType.PROPERTY)
 	public String getId() {
 		return id;
 	}
