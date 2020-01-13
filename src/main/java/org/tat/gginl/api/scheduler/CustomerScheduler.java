@@ -46,7 +46,7 @@ public class CustomerScheduler {
 	private CustomerService customerService;
 	
 	
-	@Scheduled(cron = "* 20 10 *  * ?")
+	@Scheduled(cron = "0 * * ? * *")
 	public void createCustomerFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());

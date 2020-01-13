@@ -9,12 +9,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.tat.gginl.api.common.Role;
 import org.tat.gginl.api.common.SecurityUser;
 import org.tat.gginl.api.domains.services.UserService;
 
 
 @SpringBootApplication
+@EnableScheduling
 public class GginlApiApplication implements CommandLineRunner {
 	@Autowired
 	 private UserService userService;
@@ -37,7 +39,7 @@ public class GginlApiApplication implements CommandLineRunner {
 	    admin.setEmail("admin@email.com");
 	    admin.setRoles(new ArrayList<Role>(Arrays.asList(Role.ROLE_ADMIN)));
 
-	    userService.signup(admin);
+//	    userService.signup(admin);
 
 	    SecurityUser client = new SecurityUser();
 	    client.setUsername("client");

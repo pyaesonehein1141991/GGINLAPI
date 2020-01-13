@@ -14,7 +14,9 @@ import java.util.zip.ZipOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.tat.gginl.api.domains.Organization;
 import org.tat.gginl.api.domains.SalePoint;
+import org.tat.gginl.api.domains.repository.OrganizationRepository;
 import org.tat.gginl.api.domains.services.FileService;
 import org.tat.gginl.api.domains.services.SalePointService;
 
@@ -22,10 +24,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @Component
-public class SalePointScheduler {
+public class OrganizationSchedular {
 	
 	@Autowired
-	private SalePointService salePointService;
+	private OrganizationRepository organizationRepo;
 
 	
 	@Scheduled(cron = "0 * * ? * *")
@@ -35,18 +37,18 @@ public class SalePointScheduler {
 			startDate = FileService.minusDays(startDate, 2);
 			Date endDate = FileService.resetEndDate(new Date());
 			
-			List<SalePoint> salePointList = salePointService.findAll();
+			List<Organization> organizationList = organizationRepo.findAll();
 			
-			if(salePointList.size()>0) {
+			if(organizationList.size()>0) {
 				
 				ObjectMapper objectMapper = new ObjectMapper();
 				objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 				
-				File salePointsFile = new File("SalePoints.csv");
+				File salePointsFile = new File("Organization.csv");
 				
-				FileService.writesCsvFromBean(Paths.get(salePointsFile.getPath()),salePointList);
+				FileService.writesCsvFromBean(Paths.get(salePointsFile.getPath()),organizationList);
 				
-				FileOutputStream fos = new FileOutputStream("SalePoints.zip");
+				FileOutputStream fos = new FileOutputStream("Organization.zip");
 				ZipOutputStream zipOs = new ZipOutputStream(fos);
 
 				FileService.writeToZipFile(salePointsFile, zipOs);
@@ -54,32 +56,33 @@ public class SalePointScheduler {
 				zipOs.close();
 				fos.close();
 				
-				File toCheckSumFile = new File("SalePoints.zip");
+				File toCheckSumFile = new File("Organization.zip");
 
 				MessageDigest md5Digest = MessageDigest.getInstance("MD5");
 
 				// Get the checksum
 				String checksum =FileService.getFileChecksum(md5Digest, toCheckSumFile);
-				File checksumFile = new File("SalePointsInfoChecksum".concat(".md5"));
+				File checksumFile = new File("OrganizationInfoChecksum".concat(".md5"));
 				
 				objectMapper.writeValue(checksumFile,checksum);
-				String tempDir= "D:\\AceApi\\SalePointInfo".concat(FileService.getDateToString(new Date()));
+				String tempDir= "D:\\AceApi\\OrganizationInfo".concat(FileService.getDateToString(new Date()));
 				
-				Path filePath = Paths.get(tempDir.concat("\\SalePoints.zip"));
+				Path filePath = Paths.get(tempDir.concat("\\Organization.zip"));
 				Files.createDirectories(filePath.getParent());
 				
-				Files.move(Paths.get(toCheckSumFile.getPath()),Paths.get(tempDir.concat("\\SalePoints.zip")),StandardCopyOption.REPLACE_EXISTING);
-				Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\SalePointsInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
+				Files.move(Paths.get(toCheckSumFile.getPath()),Paths.get(tempDir.concat("\\Organization.zip")),StandardCopyOption.REPLACE_EXISTING);
+				Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\OrganizationInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
 				
 				
 				Files.deleteIfExists(Paths.get(salePointsFile.getPath()));
-				Files.deleteIfExists(Paths.get("SalePointsTest.zip"));
-				Files.deleteIfExists(Paths.get("SalePointsInfochecksum.md5"));
+				Files.deleteIfExists(Paths.get("Organization.zip"));
+				Files.deleteIfExists(Paths.get("OrganizationInfochecksum.md5"));
 
 
 			}
 			
 		}
 		
+
 
 }
