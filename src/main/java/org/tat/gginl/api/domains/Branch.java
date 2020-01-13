@@ -69,7 +69,7 @@ public class Branch implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "BRANCH_GEN")
-	@Access(AccessType.PROPERTY)
+	@Access(value = AccessType.PROPERTY)
 	public String getId() {
 		return id;
 	}

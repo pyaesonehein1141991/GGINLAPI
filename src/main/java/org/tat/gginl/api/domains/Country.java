@@ -59,7 +59,6 @@ public class Country implements Serializable {
 			this.id = FormatID.formatId(id, getPrefix(), 10);
 		}
 	}
-
 	public String getPrefix() {
 		return prefix;
 	}

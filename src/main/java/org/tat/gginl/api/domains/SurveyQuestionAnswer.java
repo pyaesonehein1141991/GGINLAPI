@@ -25,7 +25,6 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.tat.gginl.api.common.ClaimType;
 import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.IDInterceptor;
 import org.tat.gginl.api.common.InputType;
@@ -81,8 +80,6 @@ public class SurveyQuestionAnswer {
 	@Enumerated(EnumType.STRING)
 	private SurveyType surveyType;
 
-	@Enumerated(EnumType.STRING)
-	private ClaimType claimType;
 
 	@Embedded
 	private CommonCreateAndUpateMarks commonCreateAndUpateMarks;
@@ -254,13 +251,7 @@ public class SurveyQuestionAnswer {
 		this.version = version;
 	}
 
-	public ClaimType getClaimType() {
-		return claimType;
-	}
-
-	public void setClaimType(ClaimType claimType) {
-		this.claimType = claimType;
-	}
+	
 
 	public String getQuestionId() {
 		return questionId;
@@ -363,7 +354,6 @@ public class SurveyQuestionAnswer {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((behindLabel == null) ? 0 : behindLabel.hashCode());
-		result = prime * result + ((claimType == null) ? 0 : claimType.hashCode());
 		result = prime * result + ((commonCreateAndUpateMarks == null) ? 0 : commonCreateAndUpateMarks.hashCode());
 		result = prime * result + (deleteFlag ? 1231 : 1237);
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
@@ -394,8 +384,6 @@ public class SurveyQuestionAnswer {
 			if (other.behindLabel != null)
 				return false;
 		} else if (!behindLabel.equals(other.behindLabel))
-			return false;
-		if (claimType != other.claimType)
 			return false;
 		if (commonCreateAndUpateMarks == null) {
 			if (other.commonCreateAndUpateMarks != null)

@@ -37,7 +37,7 @@ public class GginlApiApplication implements CommandLineRunner {
 	    admin.setEmail("admin@email.com");
 	    admin.setRoles(new ArrayList<Role>(Arrays.asList(Role.ROLE_ADMIN)));
 
-//	    userService.signup(admin);
+	    userService.signup(admin);
 
 	    SecurityUser client = new SecurityUser();
 	    client.setUsername("client");

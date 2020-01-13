@@ -105,6 +105,7 @@ public class Product implements Serializable {
 
 	public Product() {
 	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "PRODUCT_GEN")
 	@Access(value = AccessType.PROPERTY)
@@ -117,6 +118,7 @@ public class Product implements Serializable {
 			this.id = FormatID.formatId(id, getPrefix(), 10);
 		}
 	}
+
 
 	public String getPrefix() {
 		return prefix;

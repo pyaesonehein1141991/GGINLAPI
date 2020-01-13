@@ -14,8 +14,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import lombok.Data;
+
 @Entity
 @Table(name = "SECURITYUSER")
+@Data
 public class SecurityUser {
 
   @Id

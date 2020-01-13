@@ -20,7 +20,6 @@ public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable<Obj
 	private ProductProcess productProcess;
 	private List<ResourceQuestionAnswerDTO> resourceQuestionList;
 	private SurveyType surveyType;
-	private ClaimType claimType;
 
 	// Form Data
 	private Date answerDate;
@@ -216,13 +215,6 @@ public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable<Obj
 		this.tureLabelValue = tureLabelValue;
 	}
 
-	public ClaimType getClaimType() {
-		return claimType;
-	}
-
-	public void setClaimType(ClaimType claimType) {
-		this.claimType = claimType;
-	}
 
 
 	public String getAnswer() {
@@ -250,7 +242,6 @@ public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable<Obj
 		result = prime * result + ((answer == null) ? 0 : answer.hashCode());
 		result = prime * result + ((answerDate == null) ? 0 : answerDate.hashCode());
 		result = prime * result + ((behindLabel == null) ? 0 : behindLabel.hashCode());
-		result = prime * result + ((claimType == null) ? 0 : claimType.hashCode());
 		result = prime * result + (deleteFlag ? 1231 : 1237);
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((falseLabel == null) ? 0 : falseLabel.hashCode());
@@ -293,8 +284,6 @@ public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable<Obj
 			if (other.behindLabel != null)
 				return false;
 		} else if (!behindLabel.equals(other.behindLabel))
-			return false;
-		if (claimType != other.claimType)
 			return false;
 		if (deleteFlag != other.deleteFlag)
 			return false;

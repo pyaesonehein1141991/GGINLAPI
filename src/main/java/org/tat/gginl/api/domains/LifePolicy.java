@@ -15,18 +15,20 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.tat.gginl.api.common.EndorsementStatus;
+import org.tat.gginl.api.common.FormatID;
 import org.tat.gginl.api.common.IInsuredItem;
 import org.tat.gginl.api.common.IPolicy;
 import org.tat.gginl.api.common.ISorter;
@@ -38,6 +40,7 @@ import org.tat.gginl.api.common.Utils;
 
 @Entity
 @Table(name = TableName.LIFEPOLICY)
+@TableGenerator(name = "LIFEPOLICY_GEN", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", pkColumnValue = "LIFEPOLICY_GEN", allocationSize = 10)
 @Access(value = AccessType.FIELD)
 public class LifePolicy implements IPolicy, Serializable, ISorter {
 	private static final long serialVersionUID = 2379164707215020929L;
@@ -72,7 +75,6 @@ public class LifePolicy implements IPolicy, Serializable, ISorter {
 	@Column(name = "ACTIVEDPOLICYENDDATE")
 	private Date activedPolicyEndDate;
 
-	@Transient
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date paymentEndDate;
 
@@ -211,18 +213,16 @@ public class LifePolicy implements IPolicy, Serializable, ISorter {
 	}
 
 	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
-	@Access(AccessType.PROPERTY)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "LIFEPOLICY_GEN")
+	@Access(value = AccessType.PROPERTY)
 	public String getId() {
 		return id;
 	}
-	
+
 	public void setId(String id) {
-//		if (id != null) {
-//			this.id = FormatID.formatId(id, getPrefix(), 10);
-//		}
-		this.id = id;
+		if (id != null) {
+			this.id = FormatID.formatId(id, getPrefix(), 10);
+		}
 	}
 
 	public void overwriteId(String id) {

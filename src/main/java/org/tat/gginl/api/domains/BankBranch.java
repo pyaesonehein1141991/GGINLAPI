@@ -64,6 +64,7 @@ public class BankBranch implements Serializable {
 		}
 	}
 
+
 	public String getName() {
 		return this.name;
 	}

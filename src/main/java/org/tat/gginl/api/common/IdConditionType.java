@@ -1,9 +1,5 @@
 package org.tat.gginl.api.common;
-	import javax.xml.bind.annotation.XmlEnum;
-	import javax.xml.bind.annotation.XmlType;
-
-	@XmlType(name = "IdConditionType")
-	@XmlEnum
+	
 	public enum IdConditionType {
 		N("N"), P("P"), E("E"), A("A"), D("D");
 
