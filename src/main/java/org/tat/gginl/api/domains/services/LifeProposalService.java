@@ -106,6 +106,9 @@ public class LifeProposalService {
 		// convert groupFarmerProposalDTO to lifeproposal
 		List<LifeProposal> farmerProposalList = convertGroupFarmerProposalDTOToProposal(groupFarmerProposalDTO);
 
+		
+		
+		
 		// convert lifeproposal to lifepolicy
 		
 		
