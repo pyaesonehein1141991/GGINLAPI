@@ -1,8 +1,10 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://192.168.223.2;databaseName=ggli
+    url: jdbc:sqlserver://localhost;databaseName=ggli
+    url: jdbc:sqlserver://localhost;databaseName=ggliNew
     username: sa
-    password: Test20L9
+    password: 123@tat
+    password: 123@ace
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jackson:
     date-format: dd.MM.yyyy

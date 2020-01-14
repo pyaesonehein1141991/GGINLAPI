@@ -283,7 +283,22 @@ public class LifeProposalService {
 		return paymentList;
 	}
 	
-	
+	private List<TLF> convertGroupFarmerPolicyToTLF(List<LifePolicy> farmerPolicyList) {
+		List<AgentCommission> agentCommissionList = null;
+		List<TLF> TLFList = new ArrayList<TLF>();
+
+		 farmerPolicyList.forEach(lifePolicy ->{
+		if (lifePolicy.getAgent() != null) {
+				agentCommissionList = new ArrayList<AgentCommission>();
+				double firstAgentCommission = lifePolicy.getAgentCommission();
+				agentCommissionList.add(new AgentCommission(lifePolicy.getId(), PolicyReferenceType.LIFE_POLICY, lifePolicy.getAgent(), firstAgentCommission, new Date()));
+				
+				
+				
+			}
+		});
+		return TLFList;
+	}
 
 
 }
