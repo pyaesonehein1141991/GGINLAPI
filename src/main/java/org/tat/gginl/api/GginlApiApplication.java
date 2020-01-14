@@ -16,7 +16,7 @@ import org.tat.gginl.api.domains.services.UserService;
 
 
 @SpringBootApplication
-@EnableScheduling
+//@EnableScheduling
 public class GginlApiApplication implements CommandLineRunner {
 	@Autowired
 	 private UserService userService;
