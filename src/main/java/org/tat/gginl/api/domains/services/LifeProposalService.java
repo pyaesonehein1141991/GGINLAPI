@@ -5,17 +5,28 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.SystemException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.tat.gginl.api.common.AccountPayment;
+import org.tat.gginl.api.common.COACode;
+import org.tat.gginl.api.common.DoubleEntry;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.PaymentChannel;
 import org.tat.gginl.api.common.PolicyReferenceType;
 import org.tat.gginl.api.common.ProposalType;
 import org.tat.gginl.api.common.ResidentAddress;
+import org.tat.gginl.api.common.TLFBuilder;
+import org.tat.gginl.api.common.TranCode;
+import org.tat.gginl.api.common.Utils;
+import org.tat.gginl.api.common.emumdata.Status;
 import org.tat.gginl.api.domains.Agent;
+import org.tat.gginl.api.domains.AgentCommission;
 import org.tat.gginl.api.domains.Branch;
 import org.tat.gginl.api.domains.Customer;
 import org.tat.gginl.api.domains.InsuredPersonBeneficiaries;
@@ -30,6 +41,7 @@ import org.tat.gginl.api.domains.ProposalInsuredPerson;
 import org.tat.gginl.api.domains.RelationShip;
 import org.tat.gginl.api.domains.SaleMan;
 import org.tat.gginl.api.domains.SalePoint;
+import org.tat.gginl.api.domains.TLF;
 import org.tat.gginl.api.domains.Township;
 import org.tat.gginl.api.domains.repository.AgentRepository;
 import org.tat.gginl.api.domains.repository.BranchRepository;
@@ -44,6 +56,7 @@ import org.tat.gginl.api.domains.repository.ProductRepository;
 import org.tat.gginl.api.domains.repository.RelationshipRepository;
 import org.tat.gginl.api.domains.repository.SaleManRepository;
 import org.tat.gginl.api.domains.repository.SalePointRepository;
+import org.tat.gginl.api.domains.repository.TLFRepository;
 import org.tat.gginl.api.domains.repository.TownshipRepository;
 import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalDTO;
 import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalInsuredPersonBeneficiariesDTO;
@@ -96,6 +109,9 @@ public class LifeProposalService {
 	
 	@Autowired
 	private PaymentRepository paymentRepository;
+	
+	@Autowired
+	private TLFRepository tlfRepository;
 
 	@Value("${farmerProductId}")
 	private String productId;
@@ -124,6 +140,10 @@ public class LifeProposalService {
 		
 		List<Payment> paymentList = convertGroupFarmerPolicyToPayment(policyList);
 		paymentRepository.saveAll(paymentList);
+		
+		List<TLF> tlfList =	convertGroupFarmerPolicyToTLF(policyList);
+		
+		tlfRepository.saveAll(tlfList);
 		// carete payment process
 
 		return policyList;
@@ -287,21 +307,229 @@ public class LifeProposalService {
 	}
 	
 	private List<TLF> convertGroupFarmerPolicyToTLF(List<LifePolicy> farmerPolicyList) {
-		List<AgentCommission> agentCommissionList = null;
 		List<TLF> TLFList = new ArrayList<TLF>();
-
-		 farmerPolicyList.forEach(lifePolicy ->{
-		if (lifePolicy.getAgent() != null) {
-				agentCommissionList = new ArrayList<AgentCommission>();
+		String accountCode = "Farmer_Premium" ;
+		for(LifePolicy lifePolicy : farmerPolicyList ) {
+			Payment payment =paymentRepository.findByPaymentReferenceNo(lifePolicy.getId());
+			TLF tlf1 = addNewTLF_For_CashDebitForPremium(payment,lifePolicy.getCustomer() == null ?lifePolicy.getOrganization().getId() :lifePolicy.getCustomer().getId(),lifePolicy.getBranch(),payment.getReceiptNo(),false,"KYT",lifePolicy.getSalePoint(),lifePolicy.getPolicyNo());
+			TLFList.add(tlf1);
+			TLF tlf2 = addNewTLF_For_PremiumCredit(payment,lifePolicy.getCustomer() == null ?lifePolicy.getOrganization().getId() :lifePolicy.getCustomer().getId(),lifePolicy.getBranch(),accountCode,payment.getReceiptNo(),false,"KYT",lifePolicy.getSalePoint(),lifePolicy.getPolicyNo());
+			TLFList.add(tlf2);
+			if (lifePolicy.getAgent() != null) {
 				double firstAgentCommission = lifePolicy.getAgentCommission();
-				agentCommissionList.add(new AgentCommission(lifePolicy.getId(), PolicyReferenceType.LIFE_POLICY, lifePolicy.getAgent(), firstAgentCommission, new Date()));
-				
-				
-				
+				AgentCommission ac =new AgentCommission(lifePolicy.getId(), PolicyReferenceType.FARMER_POLICY, lifePolicy.getAgent(), firstAgentCommission, new Date());
+				TLF tlf3= addNewTLF_For_AgentCommissionDr(ac,false,lifePolicy.getBranch(),payment,payment.getId(),false,"KYT",lifePolicy.getSalePoint(),lifePolicy.getPolicyNo());
+				TLFList.add(tlf3);
+			    TLF tlf4 = addNewTLF_For_AgentCommissionCredit(ac, false,lifePolicy.getBranch(),payment,payment.getId(),false,"KYT",lifePolicy.getSalePoint(),lifePolicy.getPolicyNo());
+			    TLFList.add(tlf4);
 			}
-		});
+		}
 		return TLFList;
 	}
+	
+	public TLF addNewTLF_For_CashDebitForPremium(Payment payment, String customerId, Branch branch, String tlfNo, boolean isRenewal, String currencyCode,
+			SalePoint salePoint,String policyNo) {
+		TLF tlf=null;
+		try {
+			double totalNetPremium = 0;
+			double homeAmount = 0;
+			String coaCode = null;
+			Product product;
+			totalNetPremium =payment.getNetPremium();
+			homeAmount = totalNetPremium;
+			// TLF COAID
+	       if (PaymentChannel.CASHED.equals(payment.getPaymentChannel())) {
+				coaCode = paymentRepository.findCheckOfAccountNameByCode(COACode.CASH, branch.getBranchCode(), currencyCode);
+				
+			TLFBuilder tlfBuilder = new TLFBuilder(DoubleEntry.DEBIT, homeAmount, customerId, branch.getBranchCode(), coaCode, tlfNo, getNarrationPremium(payment, isRenewal),
+					payment, isRenewal);
+			tlf = tlfBuilder.getTLFInstance();
+			tlf.setPolicyNo(policyNo);
+			tlf.setSalePoint(salePoint);
+			//setIDPrefixForInsert(tlf);
+			tlf.setPaymentChannel(payment.getPaymentChannel());
+	
+	       }
+		//	paymentDAO.insertTLF(tlf);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return tlf;
+		}
+	
+	private String getNarrationPremium(Payment payment, boolean isRenewal) {
+		StringBuffer nrBf = new StringBuffer();
+		String customerName = "";
+		String premiumString = "";
+		int totalInsuredPerson = 0;
+		double si = 0.0;
+		String unit = "";
+		double premium = 0.0;
 
+			nrBf.append("Being amount of ");
+			switch (payment.getReferenceType()) {
+				case FARMER_POLICY:
+				case LIFE_POLICY:
+					nrBf.append(" Life Premium ");
+					LifePolicy lifePolicy = lifePolicyRepo.getOne(payment.getReferenceNo());
+					si = lifePolicy.getTotalSumInsured();
+					premium = (lifePolicy.isEndorsementApplied()) ? lifePolicy.getTotalEndorsementPremium() : lifePolicy.getTotalPremium();
+					customerName = lifePolicy.getCustomerName();
+					totalInsuredPerson = lifePolicy.getInsuredPersonInfo().size() > 1 ? lifePolicy.getInsuredPersonInfo().size() : 0;
+					break;
+				default:
+					break;
+			}
+			nrBf.append(premiumString);
+			nrBf.append(" received by ");
+			nrBf.append(payment.getReceiptNo());
+			nrBf.append(" from ");
+			nrBf.append(customerName);
+			nrBf.append(" for Sum Insured ");
+			nrBf.append(Utils.getCurrencyFormatString(si));
+			nrBf.append(" and the premium amount of ");
+			nrBf.append(Utils.getCurrencyFormatString(premium));
+			nrBf.append(". ");
+		
+	
+		return nrBf.toString();
+	 }
+	
+	public TLF addNewTLF_For_PremiumCredit(Payment payment, String customerId, Branch branch, String accountName, String tlfNo, boolean isRenewal, String currenyCode,
+			SalePoint salePoint,String policyNo) {
+		TLF tlf=null;
+		try {
 
+			double homeAmount = payment.getNetPremium();
+			if (isRenewal) {
+				homeAmount = payment.getRenewalNetPremium();
+			}
+
+			String coaCode = paymentRepository.findCheckOfAccountNameByCode(accountName, branch.getBranchCode(), currenyCode);
+			TLFBuilder tlfBuilder = new TLFBuilder(DoubleEntry.CREDIT, homeAmount, customerId, branch.getBranchCode(), coaCode, tlfNo, getNarrationPremium(payment, isRenewal),
+					payment, isRenewal);
+			tlf = tlfBuilder.getTLFInstance();
+			tlf.setPaymentChannel(payment.getPaymentChannel());
+			tlf.setSalePoint(salePoint);
+			tlf.setPolicyNo(policyNo);
+		//	setIDPrefixForInsert(tlf);
+			///paymentDAO.insertTLF(tlf);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tlf;
+	}
+	
+	
+	
+	
+	public TLF addNewTLF_For_AgentCommissionDr(AgentCommission ac, boolean coInsureance, Branch branch, Payment payment, String eno, boolean isRenewal, String currencyCode,
+			SalePoint salePoint,String policyNo) {
+		TLF tlf = new TLF();
+		try {
+			String receiptNo = payment.getReceiptNo();
+			String coaCode = null;
+			String coaCodeMI = null;
+			String accountName = null;
+			double ownCommission = 0.0;
+			Product product;
+			
+			switch (ac.getReferenceType()) {
+				case FARMER_POLICY:
+					coaCode = COACode.FARMER_AGENT_COMMISSION;
+					break;
+				default:
+					break;
+			}
+			String cur = payment.getCur();
+			double rate = payment.getRate();
+			String narration = getNarrationAgent(payment, ac, isRenewal);
+
+			accountName = paymentRepository.findCheckOfAccountNameByCode(coaCode, branch.getBranchCode(), currencyCode);
+			ownCommission = Utils.getTwoDecimalPoint(ac.getCommission());
+
+			TLFBuilder tlfBuilder = new TLFBuilder(TranCode.TRDEBIT, Status.TDV, ownCommission, ac.getAgent().getId(), branch.getBranchCode(), accountName, receiptNo, narration,
+					eno, ac.getReferenceNo(), ac.getReferenceType(), isRenewal, cur, rate);
+			tlf = tlfBuilder.getTLFInstance();
+			tlf.setPaymentChannel(payment.getPaymentChannel());
+			tlf.setSalePoint(salePoint);
+			tlf.setPolicyNo(policyNo);
+			tlf.setAgentTransaction(true);
+		//	setIDPrefixForInsert(tlf);
+		//	paymentDAO.insertTLF(tlf);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tlf;
+	}
+	
+	private String getNarrationAgent(Payment payment, AgentCommission agentCommission, boolean isRenewal) {
+		StringBuffer nrBf = new StringBuffer();
+		double commission = 0.0;
+		String agentName = "";
+		String insuranceName = "";
+		// Agent Commission payable for Fire Insurance(Product Name), Received
+		// No to Agent Name for commission amount of Amount
+		nrBf.append("Agent Commission payable for ");
+		switch (payment.getReferenceType()) {
+
+			case FARMER_POLICY:
+				insuranceName = "Life Insurance, ";
+				break;
+			default:
+				break;
+		}
+		agentName = agentCommission.getAgent() == null ? "" : agentCommission.getAgent().getFullName();
+		commission = agentCommission.getCommission();
+		nrBf.append(insuranceName);
+		nrBf.append(payment.getReceiptNo());
+		nrBf.append(" to ");
+		nrBf.append(agentName);
+		nrBf.append(" for commission amount of ");
+		nrBf.append(Utils.getCurrencyFormatString(commission));
+		nrBf.append(".");
+
+		return nrBf.toString();
+	}
+	
+	public TLF addNewTLF_For_AgentCommissionCredit(AgentCommission ac, boolean coInsureance, Branch branch, Payment payment, String eno, boolean isRenewal, String currencyCode,
+			SalePoint salePoint,String policyNo) {
+		TLF tlf =new TLF();
+		try {
+			String receiptNo = payment.getReceiptNo();
+			String coaCode = null;
+			String accountName = null;
+			double commission = 0.0;
+
+			switch (ac.getReferenceType()) {
+				case FARMER_POLICY:
+					coaCode = COACode.FARMER_AGENT_PAYABLE;
+					break;
+				default:
+					break;
+			}
+
+			accountName = paymentRepository.findCheckOfAccountNameByCode(coaCode, branch.getBranchCode(), currencyCode);
+			commission = Utils.getTwoDecimalPoint(ac.getCommission());
+			String narration = getNarrationAgent(payment, ac, isRenewal);
+			String cur = payment.getCur();
+			double rate = payment.getRate();
+			TLFBuilder tlfBuilder = new TLFBuilder(TranCode.TRCREDIT, Status.TCV, commission, ac.getAgent().getId(), branch.getBranchCode(), accountName, receiptNo, narration, eno,
+					ac.getReferenceNo(), ac.getReferenceType(), isRenewal, cur, rate);
+			tlf = tlfBuilder.getTLFInstance();
+		//	setIDPrefixForInsert(tlf);
+			tlf.setPaymentChannel(payment.getPaymentChannel());
+			tlf.setSalePoint(salePoint);
+			tlf.setPolicyNo(policyNo);
+			tlf.setAgentTransaction(true);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tlf;
+	}
+
+	
+	
 }
+
