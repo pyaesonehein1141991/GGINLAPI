@@ -1,6 +1,7 @@
 package org.tat.gginl.api.domains.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.tat.gginl.api.common.Name;
+import org.tat.gginl.api.common.PaymentChannel;
+import org.tat.gginl.api.common.PolicyReferenceType;
 import org.tat.gginl.api.common.ProposalType;
 import org.tat.gginl.api.common.ResidentAddress;
 import org.tat.gginl.api.domains.Agent;
@@ -20,6 +23,7 @@ import org.tat.gginl.api.domains.LifePolicy;
 import org.tat.gginl.api.domains.LifeProposal;
 import org.tat.gginl.api.domains.Occupation;
 import org.tat.gginl.api.domains.Organization;
+import org.tat.gginl.api.domains.Payment;
 import org.tat.gginl.api.domains.PaymentType;
 import org.tat.gginl.api.domains.Product;
 import org.tat.gginl.api.domains.ProposalInsuredPerson;
@@ -34,6 +38,7 @@ import org.tat.gginl.api.domains.repository.LifePolicyRepository;
 import org.tat.gginl.api.domains.repository.LifeProposalRepository;
 import org.tat.gginl.api.domains.repository.OccupationRepository;
 import org.tat.gginl.api.domains.repository.OrganizationRepository;
+import org.tat.gginl.api.domains.repository.PaymentRepository;
 import org.tat.gginl.api.domains.repository.PaymentTypeRepository;
 import org.tat.gginl.api.domains.repository.ProductRepository;
 import org.tat.gginl.api.domains.repository.RelationshipRepository;
@@ -88,6 +93,9 @@ public class LifeProposalService {
 
 	@Autowired
 	private ICustomIdGenerator customIdRepo;
+	
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	@Value("${farmerProductId}")
 	private String productId;
@@ -99,13 +107,20 @@ public class LifeProposalService {
 		List<LifeProposal> farmerProposalList = convertGroupFarmerProposalDTOToProposal(groupFarmerProposalDTO);
 
 		// convert lifeproposal to lifepolicy
+		
+		
 		List<LifePolicy> policyList = convertGroupFarmerProposalToPolicy(farmerProposalList);
+		
+		
 
 		// create lifepolicy and return policynoList
 		LifePolicy policy = new LifePolicy();
 		policy.setPrefix("F");
 //		lifePolicyRepo.save(policy);
 		policyList = lifePolicyRepo.saveAll(policyList);
+		
+		List<Payment> paymentList = convertGroupFarmerPolicyToPayment(policyList);
+		paymentRepository.saveAll(paymentList);
 		// carete payment process
 
 		return policyList;
@@ -238,5 +253,37 @@ public class LifeProposalService {
 		});
 		return policyList;
 	}
+	
+	
+	private List<Payment> convertGroupFarmerPolicyToPayment(List<LifePolicy> farmerPolicyList) {
+		List<Payment> paymentList = new ArrayList<Payment>();
+         farmerPolicyList.forEach(lifePolicy -> {
+            Payment payment = new Payment();
+			Product product = lifePolicy.getPolicyInsuredPersonList().get(0).getProduct();
+		    String  receiptNo = customIdRepo.getNextId("CASH_RECEIPT_ID_GEN", null);
+		    payment.setReceiptNo(receiptNo);
+			payment.setPaymentType(lifePolicy.getPaymentType());
+			payment.setPaymentChannel(PaymentChannel.CASHED);
+			payment.setReferenceType(PolicyReferenceType.LIFE_POLICY);
+			payment.setConfirmDate(new Date());
+			payment.setPaymentDate(new Date());
+			payment.setReferenceNo(lifePolicy.getId());
+			payment.setBasicPremium(lifePolicy.getTotalBasicTermPremium());
+			payment.setAddOnPremium(lifePolicy.getTotalAddOnTermPremium());
+			payment.setFromTerm(1);
+			payment.setToTerm(1);
+			payment.setCur("KYT");
+			payment.setAmount(payment.getNetPremium());
+			payment.setHomeAmount(payment.getNetPremium());
+			payment.setHomePremium(payment.getBasicPremium());
+			payment.setHomeAddOnPremium(payment.getAddOnPremium());
+			paymentList.add(payment);
+		    
+		});
+		return paymentList;
+	}
+	
+	
+
 
 }

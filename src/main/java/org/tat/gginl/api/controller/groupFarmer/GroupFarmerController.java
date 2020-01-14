@@ -26,6 +26,9 @@ public class GroupFarmerController {
 	@PostMapping("/submitproposal")
 	public ResponseDTO<Object> submitproposal(@Valid @RequestBody GroupFarmerProposalDTO groupFarmerProposalDTO) {
 		List<LifePolicy> policyList = new ArrayList<>();
+		
+	
+		
 		// create farmer proposal
 		policyList = lifeProposalService.createGroupFarmerProposalToPolicy(groupFarmerProposalDTO);
 
