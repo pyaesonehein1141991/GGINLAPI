@@ -5,17 +5,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.SystemException;
-
-import org.apache.commons.collections.functors.TruePredicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.tat.gginl.api.common.AccountPayment;
 import org.tat.gginl.api.common.COACode;
+import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.DoubleEntry;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.PaymentChannel;
@@ -122,27 +119,25 @@ public class LifeProposalService {
 
 		// convert groupFarmerProposalDTO to lifeproposal
 		List<LifeProposal> farmerProposalList = convertGroupFarmerProposalDTOToProposal(groupFarmerProposalDTO);
-
-		
-		
 		
 		// convert lifeproposal to lifepolicy
-		
-		
 		List<LifePolicy> policyList = convertGroupFarmerProposalToPolicy(farmerProposalList);
-		
-		
 
 		// create lifepolicy and return policynoList
 		LifePolicy policy = new LifePolicy();
 		policy.setPrefix("F");
+		
 //		lifePolicyRepo.save(policy);
 		policyList = lifePolicyRepo.saveAll(policyList);
 		
 		List<Payment> paymentList = convertGroupFarmerPolicyToPayment(policyList);
 		paymentRepository.saveAll(paymentList);
-		
+		CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
+		recorder.setCreatedDate(new Date());
 		List<TLF> tlfList =	convertGroupFarmerPolicyToTLF(policyList);
+		tlfList.forEach(tlf->{
+			tlf.setCommonCreateAndUpateMarks(recorder);
+		});
 		
 		tlfRepository.saveAll(tlfList);
 		// carete payment process

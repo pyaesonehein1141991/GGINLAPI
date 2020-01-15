@@ -8,7 +8,6 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -30,7 +29,6 @@ import javax.persistence.Version;
 
 import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.FormatID;
-import org.tat.gginl.api.common.IDInterceptor;
 import org.tat.gginl.api.common.InterfaceFile;
 import org.tat.gginl.api.common.PaymentChannel;
 import org.tat.gginl.api.common.PolicyReferenceType;
@@ -42,7 +40,6 @@ import org.tat.gginl.api.common.TableName;
 @NamedQueries(value = { @NamedQuery(name = "findByEno",query = "SELECT t FROM TLF t WHERE t.enoNo = :enoNo"),
 		@NamedQuery(name = "TLF.reverseByTLFNo",query = "UPDATE TLF t SET t.reverse=true WHERE t.tlfNo = :tlfNo ")})
 @Access(value = AccessType.FIELD)
-@EntityListeners(IDInterceptor.class)
 public class TLF implements Serializable {
 	private static final long serialVersionUID = -299125992570974772L;
 	@Transient
