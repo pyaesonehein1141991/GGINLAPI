@@ -104,7 +104,8 @@ public class LifeProposal implements Serializable, IDataModel, IProposal {
 	@JoinColumn(name = "LIFEPOLICYID", referencedColumnName = "ID")
 	private LifePolicy lifePolicy;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lifeProposal", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JoinColumn(name = "LIFEPROPOSALID", referencedColumnName = "ID")
 	private List<ProposalInsuredPerson> proposalInsuredPersonList;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lifeProposal", orphanRemoval = true)
@@ -276,7 +277,7 @@ public class LifeProposal implements Serializable, IDataModel, IProposal {
 		if (this.proposalInsuredPersonList == null) {
 			proposalInsuredPersonList = new ArrayList<ProposalInsuredPerson>();
 		}
-		proposalInsuredPerson.setLifeProposal(this);
+	//	proposalInsuredPerson.setLifeProposal(this);
 		this.proposalInsuredPersonList.add(proposalInsuredPerson);
 	}
 

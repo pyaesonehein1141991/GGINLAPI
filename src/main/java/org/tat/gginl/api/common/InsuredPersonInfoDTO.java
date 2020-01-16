@@ -481,8 +481,7 @@ public class InsuredPersonInfoDTO {
 			for (BeneficiariesInfoDTO beneficiairesInfoDTO : beneficiariesInfoDTOList) {
 				InsuredPersonBeneficiaries insPesBenf = new InsuredPersonBeneficiaries(beneficiairesInfoDTO.getBeneficiaryNo(), beneficiairesInfoDTO.getAge(),
 						beneficiairesInfoDTO.getPercentage(), beneficiairesInfoDTO.getInitialId(), beneficiairesInfoDTO.getFullIdNo(), beneficiairesInfoDTO.getGender(),
-						beneficiairesInfoDTO.getIdType(), beneficiairesInfoDTO.getResidentAddress(), beneficiairesInfoDTO.getName(), beneficiairesInfoDTO.getRelationship());
-				insPesBenf.setProposalInsuredPerson(proposalInsuredPerson);
+						beneficiairesInfoDTO.getIdType(), beneficiairesInfoDTO.getResidentAddress(), beneficiairesInfoDTO.getName(), beneficiairesInfoDTO.getRelationship());;
 				result.add(insPesBenf);
 			}
 		}

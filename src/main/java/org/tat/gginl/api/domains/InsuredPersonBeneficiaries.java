@@ -64,9 +64,6 @@ public class InsuredPersonBeneficiaries {
 	@JoinColumn(name = "RELATIONSHIPID", referencedColumnName = "ID")
 	private RelationShip relationship;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "INSUREDPERSONID", referencedColumnName = "ID")
-	private ProposalInsuredPerson proposalInsuredPerson;
 	
 	@Column(name = "DOB")
 	private Date dateOfBirth;
@@ -174,14 +171,7 @@ public class InsuredPersonBeneficiaries {
 		this.relationship = relationship;
 	}
 
-	public ProposalInsuredPerson getProposalInsuredPerson() {
-		return proposalInsuredPerson;
-	}
-
-	public void setProposalInsuredPerson(ProposalInsuredPerson proposalInsuredPerson) {
-		this.proposalInsuredPerson = proposalInsuredPerson;
-	}
-
+	
 	public String getInitialId() {
 		return initialId;
 	}

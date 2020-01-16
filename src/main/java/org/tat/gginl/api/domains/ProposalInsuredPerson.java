@@ -138,10 +138,6 @@ public class ProposalInsuredPerson implements Serializable {
 	@JoinColumn(name = "CUSTOMERID", referencedColumnName = "ID")
 	private Customer customer;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "LIFEPROPOSALID", referencedColumnName = "ID")
-	private LifeProposal lifeProposal;
-
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "RELATIONSHIPID", referencedColumnName = "ID")
 	private RelationShip relationship;
@@ -171,7 +167,8 @@ public class ProposalInsuredPerson implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "proposalInsuredPerson", orphanRemoval = true)
 	private List<InsuredPersonKeyFactorValue> keyFactorValueList;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "proposalInsuredPerson", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,  orphanRemoval = true)
+	@JoinColumn(name = "INSUREDPERSONID", referencedColumnName = "ID")
 	private List<InsuredPersonBeneficiaries> insuredPersonBeneficiariesList;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lifeproposalInsuredPerson", orphanRemoval = true)
@@ -256,7 +253,7 @@ public class ProposalInsuredPerson implements Serializable {
 
 	public ProposalInsuredPerson(InsuredPersonInfoDTO insuredPersonInfoDTO, LifeProposal lifeProposal) {
 		this.id = insuredPersonInfoDTO.getId();
-		this.lifeProposal = lifeProposal;
+	//	this.lifeProposal = lifeProposal;
 		this.dateOfBirth = insuredPersonInfoDTO.getDateOfBirth();
 		this.proposedSumInsured = insuredPersonInfoDTO.getSumInsuredInfo();
 		this.product = insuredPersonInfoDTO.getProduct();
@@ -298,7 +295,7 @@ public class ProposalInsuredPerson implements Serializable {
 		this.dateOfBirth = dateOfBirth;
 		this.proposedSumInsured = proposedSumInsured;
 		this.product = product;
-		this.lifeProposal = lifeproposal;
+	//	this.lifeProposal = lifeproposal;
 		this.periodMonth = periodMonth;
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -565,14 +562,7 @@ public class ProposalInsuredPerson implements Serializable {
 		this.product = product;
 	}
 
-	public LifeProposal getLifeProposal() {
-		return lifeProposal;
-	}
-
-	public void setLifeProposal(LifeProposal lifeProposal) {
-		this.lifeProposal = lifeProposal;
-	}
-
+	
 	public RelationShip getRelationship() {
 		return relationship;
 	}
@@ -706,7 +696,7 @@ public class ProposalInsuredPerson implements Serializable {
 	}
 
 	public void addBeneficiaries(InsuredPersonBeneficiaries insuredPersonBeneficiaries) {
-		insuredPersonBeneficiaries.setProposalInsuredPerson(this);
+		//insuredPersonBeneficiaries.setProposalInsuredPerson(this);
 		getInsuredPersonBeneficiariesList().add(insuredPersonBeneficiaries);
 	}
 
@@ -944,7 +934,7 @@ public class ProposalInsuredPerson implements Serializable {
 		result.add(startDate);
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(startDate);
-		int months = lifeProposal.getPaymentType().getMonth();
+		int months =0;
 		if (months > 0) {
 			int a = 12 / months;
 			for (int i = 1; i < a; i++) {

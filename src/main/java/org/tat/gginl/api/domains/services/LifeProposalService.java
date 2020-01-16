@@ -124,6 +124,9 @@ public class LifeProposalService {
 	public List<LifePolicy> createGroupFarmerProposalToPolicy(GroupFarmerProposalDTO groupFarmerProposalDTO) {
 		// convert groupFarmerProposalDTO to lifeproposal
 		List<LifeProposal> farmerProposalList = convertGroupFarmerProposalDTOToProposal(groupFarmerProposalDTO);
+		
+	//	lifeProposalRepo.saveAll(farmerProposalList);
+		
 		// convert lifeproposal to lifepolicy
 		List<LifePolicy> policyList = convertGroupFarmerProposalToPolicy(farmerProposalList);
 		// create lifepolicy and return policynoList
@@ -156,6 +159,7 @@ public class LifeProposalService {
 
 		List<LifeProposal> lifeProposalList = new ArrayList<>();
 		groupFarmerProposalDTO.getProposalInsuredPersonList().forEach(insuredPerson -> {
+		
 			LifeProposal lifeProposal = new LifeProposal();
 			lifeProposal.setProposalType(ProposalType.UNDERWRITING);
 			lifeProposal.setSubmittedDate(groupFarmerProposalDTO.getSubmittedDate());
@@ -193,6 +197,7 @@ public class LifeProposalService {
 		name.setLastName(dto.getLastName());
 
 		ProposalInsuredPerson insuredPerson = new ProposalInsuredPerson();
+		
 		insuredPerson.setProduct(productOptional.get());
 		insuredPerson.setInitialId(dto.getInitialId());
 		insuredPerson.setBpmsInsuredPersonId(dto.getBpmsInsuredPersonId());
@@ -212,6 +217,7 @@ public class LifeProposalService {
 		insuredPerson.setName(name);
 		insuredPerson.setOccupation(occupationOptional.get());
 		insuredPerson.setCustomer(customerOptional.get());
+		
 		String insPersonCodeNo = customIdRepo.getNextId("LIFE_INSUREDPERSON_CODENO_ID_GEN", null);
 		insuredPerson.setInsPersonCodeNo(insPersonCodeNo);
 		insuredPerson.setPrefix("ISLIF008");
