@@ -15,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.tat.gginl.api.domains.Organization;
-import org.tat.gginl.api.domains.SalePoint;
 import org.tat.gginl.api.domains.repository.OrganizationRepository;
 import org.tat.gginl.api.domains.services.FileService;
-import org.tat.gginl.api.domains.services.SalePointService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
