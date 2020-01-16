@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.tat.gginl.api.common.AgentCommissionEntryType;
 import org.tat.gginl.api.common.COACode;
 import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
-import org.tat.gginl.api.common.CurrencyUtils;
 import org.tat.gginl.api.common.DoubleEntry;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.PaymentChannel;

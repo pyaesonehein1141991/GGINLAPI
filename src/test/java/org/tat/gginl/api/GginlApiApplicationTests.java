@@ -21,11 +21,9 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.tat.gginl.api.domains.Agent;
 import org.tat.gginl.api.domains.Customer;
 import org.tat.gginl.api.domains.services.AgentService;

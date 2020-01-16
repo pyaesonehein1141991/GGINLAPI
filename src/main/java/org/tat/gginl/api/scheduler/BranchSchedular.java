@@ -14,10 +14,8 @@ import java.util.zip.ZipOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.tat.gginl.api.domains.Agent;
 import org.tat.gginl.api.domains.Branch;
 import org.tat.gginl.api.domains.repository.BranchRepository;
-import org.tat.gginl.api.domains.services.AgentService;
 import org.tat.gginl.api.domains.services.FileService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
