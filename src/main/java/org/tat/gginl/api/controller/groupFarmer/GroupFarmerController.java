@@ -16,31 +16,37 @@ import org.tat.gginl.api.dto.ResponseDTO;
 import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalDTO;
 import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerResponseDTO;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
 @RequestMapping("/groupfarmer")
+@Api(tags = "GroupFarmer Proposal")
 public class GroupFarmerController {
 
 	@Autowired
 	private LifeProposalService lifeProposalService;
 
 	@PostMapping("/submitproposal")
+
+	@ApiResponses(value = { 
+			@ApiResponse(code = 400, message = "Something went wrong"), 
+			@ApiResponse(code = 403, message = "Access denied"), 
+			@ApiResponse(code = 500, message = "Expired or invalid JWT token") })
 	public ResponseDTO<Object> submitproposal(@Valid @RequestBody GroupFarmerProposalDTO groupFarmerProposalDTO) {
 		List<LifePolicy> policyList = new ArrayList<>();
-		
-	
-		
+
 		// create farmer proposal
 		policyList = lifeProposalService.createGroupFarmerProposalToPolicy(groupFarmerProposalDTO);
 
 		// create response object
-
 		List<GroupFarmerResponseDTO> responseList = new ArrayList<>();
 
 		policyList.forEach(policy -> {
 			GroupFarmerResponseDTO dto = GroupFarmerResponseDTO.builder()
 					.bpmsInsuredPersonId(policy.getPolicyInsuredPersonList().get(0).getBpmsInsuredPersonId())
-					.policyNo(policy.getPolicyNo())
-					.build();
+					.policyNo(policy.getPolicyNo()).build();
 
 			responseList.add(dto);
 		});
