@@ -7,6 +7,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,6 +27,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.FormatID;
 import org.tat.gginl.api.common.IDataModel;
 import org.tat.gginl.api.common.PaymentChannel;
@@ -213,6 +215,10 @@ public class Payment implements Serializable, IDataModel {
 	private boolean isReinstate;
 
 	private boolean reverse;
+	
+	@Embedded
+	private CommonCreateAndUpateMarks commonCreateAndUpateMarks;
+
 
 	@Version
 	private int version;
@@ -327,6 +333,16 @@ public class Payment implements Serializable, IDataModel {
 
 	public void setOutstanding(boolean isOutstanding) {
 		this.isOutstanding = isOutstanding;
+	}
+
+	
+	
+	public CommonCreateAndUpateMarks getCommonCreateAndUpateMarks() {
+		return commonCreateAndUpateMarks;
+	}
+
+	public void setCommonCreateAndUpateMarks(CommonCreateAndUpateMarks commonCreateAndUpateMarks) {
+		this.commonCreateAndUpateMarks = commonCreateAndUpateMarks;
 	}
 
 	public boolean isAlreadyGenerated() {
