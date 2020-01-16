@@ -25,6 +25,8 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.tat.gginl.api.common.emumdata.AddOnType;
+
 
 @Entity
 @Table(name = TableName.ADDON)

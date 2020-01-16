@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import org.tat.gginl.api.common.emumdata.Role;
+
 import lombok.Data;
 
 @Entity

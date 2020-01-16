@@ -22,9 +22,9 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.tat.gginl.api.common.FormatID;
-import org.tat.gginl.api.common.NcbYear;
-import org.tat.gginl.api.common.ProductGroupType;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.emumdata.NcbYear;
+import org.tat.gginl.api.common.emumdata.ProductGroupType;
 
 
 @Entity

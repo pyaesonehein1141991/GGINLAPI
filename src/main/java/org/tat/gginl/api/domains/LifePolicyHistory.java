@@ -29,9 +29,9 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.tat.gginl.api.common.FormatID;
-import org.tat.gginl.api.common.PolicyHistoryEntryType;
-import org.tat.gginl.api.common.PolicyStatus;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.emumdata.PolicyHistoryEntryType;
+import org.tat.gginl.api.common.emumdata.PolicyStatus;
 
 
 @Entity

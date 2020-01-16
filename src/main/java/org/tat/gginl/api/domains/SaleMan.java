@@ -30,10 +30,10 @@ import javax.persistence.Version;
 
 import org.tat.gginl.api.common.ContentInfo;
 import org.tat.gginl.api.common.FormatID;
-import org.tat.gginl.api.common.IdType;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.PermanentAddress;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.emumdata.IdType;
 
 @Entity
 @Table(name = TableName.SALEMAN)

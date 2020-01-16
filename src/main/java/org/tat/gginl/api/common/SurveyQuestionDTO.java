@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.tat.gginl.api.domains.SurveyQuestion;
+import org.tat.gginl.api.common.emumdata.InputType;
 import org.tat.gginl.api.domains.ResourceQuestion; 
 
 

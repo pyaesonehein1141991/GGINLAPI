@@ -15,8 +15,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.tat.gginl.api.common.FamilyInfoDto;
-import org.tat.gginl.api.common.IdType;
 import org.tat.gginl.api.common.Name;
+import org.tat.gginl.api.common.emumdata.IdType;
 
 import lombok.Data;
 

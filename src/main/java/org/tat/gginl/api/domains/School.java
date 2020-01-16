@@ -16,9 +16,9 @@ import javax.persistence.TableGenerator;
 
 import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.IDInterceptor;
-import org.tat.gginl.api.common.SchoolLevelType;
-import org.tat.gginl.api.common.SchoolType;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.emumdata.SchoolLevelType;
+import org.tat.gginl.api.common.emumdata.SchoolType;
 
 @Entity
 @Table(name = TableName.SCHOOL)

@@ -2,6 +2,8 @@ package org.tat.gginl.api.common;
 
 import java.util.StringTokenizer;
 
+import org.tat.gginl.api.common.emumdata.Gender;
+import org.tat.gginl.api.common.emumdata.IdType;
 import org.tat.gginl.api.domains.InsuredPersonBeneficiaries;
 import org.tat.gginl.api.domains.RelationShip;
 

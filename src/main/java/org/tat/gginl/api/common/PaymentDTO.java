@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.tat.gginl.api.common.emumdata.PaymentChannel;
+import org.tat.gginl.api.common.emumdata.PolicyReferenceType;
+import org.tat.gginl.api.common.emumdata.PolicyStatus;
 import org.tat.gginl.api.domains.Bank;
 import org.tat.gginl.api.domains.Payment;
 import org.tat.gginl.api.domains.PaymentType;

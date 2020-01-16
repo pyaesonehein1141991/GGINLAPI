@@ -30,9 +30,9 @@ import javax.persistence.Version;
 import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.FormatID;
 import org.tat.gginl.api.common.InterfaceFile;
-import org.tat.gginl.api.common.PaymentChannel;
-import org.tat.gginl.api.common.PolicyReferenceType;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.emumdata.PaymentChannel;
+import org.tat.gginl.api.common.emumdata.PolicyReferenceType;
 
 @Entity
 @Table(name = TableName.TLF)

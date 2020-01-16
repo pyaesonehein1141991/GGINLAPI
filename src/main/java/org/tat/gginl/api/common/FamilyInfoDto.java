@@ -3,6 +3,8 @@ package org.tat.gginl.api.common;
 	import java.io.Serializable;
 import java.util.Date;
 
+import org.tat.gginl.api.common.emumdata.IdType;
+
 	
 
 	public class FamilyInfoDto implements Serializable {

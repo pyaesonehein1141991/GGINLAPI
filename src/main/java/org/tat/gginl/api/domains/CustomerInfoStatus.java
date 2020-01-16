@@ -16,8 +16,8 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Version;
 
 import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
-import org.tat.gginl.api.common.CustomerStatus;
 import org.tat.gginl.api.common.IDInterceptor;
+import org.tat.gginl.api.common.emumdata.CustomerStatus;
 
 import lombok.Data;
 

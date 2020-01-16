@@ -8,7 +8,7 @@ import javax.persistence.Enumerated;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.tat.gginl.api.common.NcbYear;
+import org.tat.gginl.api.common.emumdata.NcbYear;
 
 @Embeddable
 public class NcbRate implements Serializable {

@@ -24,6 +24,9 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.tat.gginl.api.common.emumdata.ClaimStatus;
+import org.tat.gginl.api.common.emumdata.Gender;
+import org.tat.gginl.api.common.emumdata.IdType;
 import org.tat.gginl.api.domains.InsuredPersonBeneficiaries;
 import org.tat.gginl.api.domains.PolicyInsuredPersonBeneficiariesHistory;
 import org.tat.gginl.api.domains.RelationShip;

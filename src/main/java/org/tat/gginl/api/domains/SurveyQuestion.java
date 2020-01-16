@@ -25,9 +25,9 @@ import javax.persistence.Version;
 import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.IDInterceptor;
 import org.tat.gginl.api.common.ISorter;
-import org.tat.gginl.api.common.InputType;
 import org.tat.gginl.api.common.ProductProcessQuestionLink;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.emumdata.InputType;
 
 @Entity
 @Table(name = TableName.SURVEYQUESTION)

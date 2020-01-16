@@ -1,5 +1,7 @@
 package org.tat.gginl.api.common;
 
+import org.tat.gginl.api.common.emumdata.Scale;
+
 public class HundredProcessor extends AbstractProcessor {
 	static public Scale SCALE = Scale.SHORT;
 	private int EXPONENT = 2;

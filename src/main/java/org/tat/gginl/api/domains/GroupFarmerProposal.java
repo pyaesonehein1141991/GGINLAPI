@@ -29,9 +29,9 @@ import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.IDInterceptor;
 import org.tat.gginl.api.common.IInsuredItem;
 import org.tat.gginl.api.common.IPolicy;
-import org.tat.gginl.api.common.InsuranceType;
-import org.tat.gginl.api.common.ProposalType;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.emumdata.InsuranceType;
+import org.tat.gginl.api.common.emumdata.ProposalType;
 
 @Entity
 @Table(name = TableName.GROUPFARMERPROPOSAL)

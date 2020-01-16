@@ -1,5 +1,7 @@
 package org.tat.gginl.api.common;
 
+import org.tat.gginl.api.common.emumdata.Scale;
+
 public class DefaultProcessor extends AbstractProcessor {
 	static public Scale SCALE = Scale.SHORT;
 	static private String MINUS = "Minus";

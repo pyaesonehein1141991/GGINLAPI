@@ -28,6 +28,7 @@ import org.joda.time.Months;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.joda.time.chrono.GregorianChronology;
+import org.tat.gginl.api.common.emumdata.MonthType;
 import org.tat.gginl.api.domains.LifePolicy;
 import org.tat.gginl.api.domains.LifeProposal;
 

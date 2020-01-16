@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.tat.gginl.api.common.emumdata.Gender;
+import org.tat.gginl.api.common.emumdata.IdType;
+import org.tat.gginl.api.common.emumdata.MaritalStatus;
+
 	public class CustomerDto implements Serializable {
 		private static final long serialVersionUID = 1L;
 

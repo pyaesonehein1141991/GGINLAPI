@@ -31,6 +31,11 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.tat.gginl.api.common.emumdata.ClaimStatus;
+import org.tat.gginl.api.common.emumdata.ClassificationOfHealth;
+import org.tat.gginl.api.common.emumdata.EndorsementStatus;
+import org.tat.gginl.api.common.emumdata.Gender;
+import org.tat.gginl.api.common.emumdata.IdType;
 import org.tat.gginl.api.domains.Attachment;
 import org.tat.gginl.api.domains.Customer;
 import org.tat.gginl.api.domains.GradeInfo;

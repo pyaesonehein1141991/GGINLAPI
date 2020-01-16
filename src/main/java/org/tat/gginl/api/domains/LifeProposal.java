@@ -27,16 +27,16 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.tat.gginl.api.common.ClassificationOfHealth;
-import org.tat.gginl.api.common.EndorsementStatus;
 import org.tat.gginl.api.common.FormatID;
 import org.tat.gginl.api.common.IDataModel;
 import org.tat.gginl.api.common.IProposal;
-import org.tat.gginl.api.common.ProposalStatus;
-import org.tat.gginl.api.common.ProposalType;
 import org.tat.gginl.api.common.TableName;
-import org.tat.gginl.api.common.UserType;
 import org.tat.gginl.api.common.Utils;
+import org.tat.gginl.api.common.emumdata.ClassificationOfHealth;
+import org.tat.gginl.api.common.emumdata.EndorsementStatus;
+import org.tat.gginl.api.common.emumdata.ProposalStatus;
+import org.tat.gginl.api.common.emumdata.ProposalType;
+import org.tat.gginl.api.common.emumdata.UserType;
 
 
 

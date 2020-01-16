@@ -27,16 +27,16 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.tat.gginl.api.common.EndorsementStatus;
 import org.tat.gginl.api.common.FormatID;
 import org.tat.gginl.api.common.IInsuredItem;
 import org.tat.gginl.api.common.IPolicy;
 import org.tat.gginl.api.common.ISorter;
-import org.tat.gginl.api.common.InsuranceType;
 import org.tat.gginl.api.common.PolicyInsuredPerson;
-import org.tat.gginl.api.common.PolicyStatus;
 import org.tat.gginl.api.common.TableName;
 import org.tat.gginl.api.common.Utils;
+import org.tat.gginl.api.common.emumdata.EndorsementStatus;
+import org.tat.gginl.api.common.emumdata.InsuranceType;
+import org.tat.gginl.api.common.emumdata.PolicyStatus;
 
 @Entity
 @Table(name = TableName.LIFEPOLICY)

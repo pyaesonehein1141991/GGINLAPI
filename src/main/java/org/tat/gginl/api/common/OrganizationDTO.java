@@ -2,6 +2,7 @@ package org.tat.gginl.api.common;
 
 import java.util.Date;
 
+import org.tat.gginl.api.common.emumdata.HealthType;
 import org.tat.gginl.api.domains.Branch;
 import org.tat.gginl.api.domains.Organization;
 

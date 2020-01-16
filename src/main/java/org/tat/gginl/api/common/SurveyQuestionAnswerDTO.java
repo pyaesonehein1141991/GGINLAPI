@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.tat.gginl.api.common.emumdata.InputType;
+import org.tat.gginl.api.common.emumdata.SurveyType;
 import org.tat.gginl.api.domains.ResourceQuestion;
 
 public class SurveyQuestionAnswerDTO extends CommonDTO implements Comparable<Object> {

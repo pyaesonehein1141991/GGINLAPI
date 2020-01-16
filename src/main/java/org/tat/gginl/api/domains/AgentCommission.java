@@ -23,12 +23,12 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.tat.gginl.api.common.AgentCommissionEntryType;
 import org.tat.gginl.api.common.FormatID;
 import org.tat.gginl.api.common.IDataModel;
-import org.tat.gginl.api.common.PaymentChannel;
-import org.tat.gginl.api.common.PolicyReferenceType;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.emumdata.AgentCommissionEntryType;
+import org.tat.gginl.api.common.emumdata.PaymentChannel;
+import org.tat.gginl.api.common.emumdata.PolicyReferenceType;
 
 
 @Entity

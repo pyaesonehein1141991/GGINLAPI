@@ -20,14 +20,14 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
-import org.tat.gginl.api.common.ClaimStatus;
 import org.tat.gginl.api.common.FormatID;
-import org.tat.gginl.api.common.Gender;
-import org.tat.gginl.api.common.IdType;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.PolicyInsuredPersonBeneficiaries;
 import org.tat.gginl.api.common.ResidentAddress;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.emumdata.ClaimStatus;
+import org.tat.gginl.api.common.emumdata.Gender;
+import org.tat.gginl.api.common.emumdata.IdType;
 
 
 @Entity

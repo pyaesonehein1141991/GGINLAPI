@@ -32,15 +32,15 @@ import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.ContentInfo;
 import org.tat.gginl.api.common.CustomerDto;
 import org.tat.gginl.api.common.FormatID;
-import org.tat.gginl.api.common.Gender;
-import org.tat.gginl.api.common.IdConditionType;
-import org.tat.gginl.api.common.IdType;
-import org.tat.gginl.api.common.MaritalStatus;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.OfficeAddress;
-import org.tat.gginl.api.common.PassportType;
 import org.tat.gginl.api.common.PermanentAddress;
 import org.tat.gginl.api.common.ResidentAddress;
+import org.tat.gginl.api.common.emumdata.Gender;
+import org.tat.gginl.api.common.emumdata.IdConditionType;
+import org.tat.gginl.api.common.emumdata.IdType;
+import org.tat.gginl.api.common.emumdata.MaritalStatus;
+import org.tat.gginl.api.common.emumdata.PassportType;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 

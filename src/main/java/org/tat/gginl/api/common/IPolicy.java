@@ -6,6 +6,7 @@ package org.tat.gginl.api.common;
 import java.util.Date;
 import java.util.List;
 
+import org.tat.gginl.api.common.emumdata.InsuranceType;
 import org.tat.gginl.api.domains.Agent;
 import org.tat.gginl.api.domains.Branch;
 import org.tat.gginl.api.domains.Customer;

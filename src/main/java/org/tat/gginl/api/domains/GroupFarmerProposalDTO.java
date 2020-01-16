@@ -3,7 +3,7 @@ package org.tat.gginl.api.domains;
 import java.util.Date;
 import java.util.List;
 
-import org.tat.gginl.api.common.ProposalType;
+import org.tat.gginl.api.common.emumdata.ProposalType;
 
 
 public class GroupFarmerProposalDTO {

@@ -11,8 +11,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.tat.gginl.api.common.ItemType;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.emumdata.ItemType;
 
 
 @Table(name = TableName.WEBPAGE)

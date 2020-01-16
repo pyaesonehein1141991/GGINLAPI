@@ -32,10 +32,10 @@ import javax.persistence.Version;
 
 import org.tat.gginl.api.common.AddOn;
 import org.tat.gginl.api.common.FormatID;
-import org.tat.gginl.api.common.InsuranceType;
 import org.tat.gginl.api.common.KeyFactor;
-import org.tat.gginl.api.common.PremiumRateType;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.emumdata.InsuranceType;
+import org.tat.gginl.api.common.emumdata.PremiumRateType;
 
 @Entity
 @Table(name = TableName.PRODUCT)

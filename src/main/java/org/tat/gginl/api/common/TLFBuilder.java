@@ -3,6 +3,9 @@ package org.tat.gginl.api.common;
 import java.util.Date;
 
 import org.springframework.stereotype.Service;
+import org.tat.gginl.api.common.emumdata.DoubleEntry;
+import org.tat.gginl.api.common.emumdata.PaymentChannel;
+import org.tat.gginl.api.common.emumdata.PolicyReferenceType;
 import org.tat.gginl.api.common.emumdata.Status;
 import org.tat.gginl.api.domains.Payment;
 import org.tat.gginl.api.domains.TLF;

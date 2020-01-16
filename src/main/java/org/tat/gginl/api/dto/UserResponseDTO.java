@@ -2,7 +2,7 @@ package org.tat.gginl.api.dto;
 
 import java.util.List;
 
-import org.tat.gginl.api.common.Role;
+import org.tat.gginl.api.common.emumdata.Role;
 
 import io.swagger.annotations.ApiModelProperty;
 

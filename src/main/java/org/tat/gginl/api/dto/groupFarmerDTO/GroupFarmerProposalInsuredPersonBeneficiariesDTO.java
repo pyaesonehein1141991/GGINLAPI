@@ -5,8 +5,8 @@ import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.tat.gginl.api.common.Gender;
-import org.tat.gginl.api.common.IdType;
+import org.tat.gginl.api.common.emumdata.Gender;
+import org.tat.gginl.api.common.emumdata.IdType;
 import org.tat.gginl.api.configuration.DateHandler;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

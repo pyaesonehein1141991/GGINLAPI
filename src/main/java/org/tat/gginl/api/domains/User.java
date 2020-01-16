@@ -36,8 +36,8 @@ import javax.persistence.Version;
 
 import org.tat.gginl.api.common.FormatID;
 import org.tat.gginl.api.common.TableName;
-import org.tat.gginl.api.common.WorkFlowType;
-import org.tat.gginl.api.common.WorkflowTask;
+import org.tat.gginl.api.common.emumdata.WorkFlowType;
+import org.tat.gginl.api.common.emumdata.WorkflowTask;
 
 @Entity
 @Table(name = TableName.USER)

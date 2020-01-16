@@ -20,13 +20,13 @@ import javax.persistence.Version;
 
 import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.ContentInfo;
-import org.tat.gginl.api.common.Gender;
 import org.tat.gginl.api.common.IDInterceptor;
-import org.tat.gginl.api.common.IdConditionType;
-import org.tat.gginl.api.common.IdType;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.ResidentAddress;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.emumdata.Gender;
+import org.tat.gginl.api.common.emumdata.IdConditionType;
+import org.tat.gginl.api.common.emumdata.IdType;
 
 
 @Entity

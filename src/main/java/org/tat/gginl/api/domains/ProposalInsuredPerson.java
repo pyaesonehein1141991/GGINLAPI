@@ -31,11 +31,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.tat.gginl.api.common.BeneficiariesInfoDTO;
-import org.tat.gginl.api.common.ClassificationOfHealth;
-import org.tat.gginl.api.common.EndorsementStatus;
 import org.tat.gginl.api.common.FormatID;
-import org.tat.gginl.api.common.Gender;
-import org.tat.gginl.api.common.IdType;
 import org.tat.gginl.api.common.InsuredPersonAddOnDTO;
 import org.tat.gginl.api.common.InsuredPersonInfoDTO;
 import org.tat.gginl.api.common.Name;
@@ -45,6 +41,10 @@ import org.tat.gginl.api.common.PolicyInsuredPersonBeneficiaries;
 import org.tat.gginl.api.common.ResidentAddress;
 import org.tat.gginl.api.common.TableName;
 import org.tat.gginl.api.common.Utils;
+import org.tat.gginl.api.common.emumdata.ClassificationOfHealth;
+import org.tat.gginl.api.common.emumdata.EndorsementStatus;
+import org.tat.gginl.api.common.emumdata.Gender;
+import org.tat.gginl.api.common.emumdata.IdType;
 
 @Entity
 @Table(name = TableName.PROPOSALINSUREDPERSON)

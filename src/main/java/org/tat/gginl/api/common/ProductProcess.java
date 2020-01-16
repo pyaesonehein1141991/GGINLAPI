@@ -27,6 +27,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 import org.tat.gginl.api.domains.Product;
+import org.tat.gginl.api.common.emumdata.ActiveStatus;
+import org.tat.gginl.api.common.emumdata.StudentAgeType;
 import org.tat.gginl.api.domains.Process;
 
 @Entity

@@ -7,16 +7,16 @@ import java.util.List;
 
 import org.tat.gginl.api.common.CommonDTO;
 import org.tat.gginl.api.common.ContentInfo;
-import org.tat.gginl.api.common.Gender;
-import org.tat.gginl.api.common.HealthType;
-import org.tat.gginl.api.common.IdConditionType;
-import org.tat.gginl.api.common.IdType;
-import org.tat.gginl.api.common.MaritalStatus;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.OfficeAddress;
-import org.tat.gginl.api.common.PassportType;
 import org.tat.gginl.api.common.PermanentAddress;
 import org.tat.gginl.api.common.ResidentAddress;
+import org.tat.gginl.api.common.emumdata.Gender;
+import org.tat.gginl.api.common.emumdata.HealthType;
+import org.tat.gginl.api.common.emumdata.IdConditionType;
+import org.tat.gginl.api.common.emumdata.IdType;
+import org.tat.gginl.api.common.emumdata.MaritalStatus;
+import org.tat.gginl.api.common.emumdata.PassportType;
 
 
 public class CustomerDTO extends CommonDTO {
