@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.zip.ZipOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.tat.gginl.api.domains.SalePoint;
@@ -26,7 +27,9 @@ public class SalePointScheduler {
 	
 	@Autowired
 	private SalePointService salePointService;
-
+	
+	@Value("${fileDir}")
+	private String fileDir;
 	
 	@Scheduled(cron = "0 0 0 * * ?")
 	 public void createSalePointFolder() throws Exception {
@@ -63,7 +66,7 @@ public class SalePointScheduler {
 				File checksumFile = new File("SalePointsInfoChecksum".concat(".md5"));
 				
 				objectMapper.writeValue(checksumFile,checksum);
-				String tempDir= "D:\\AceApi\\SalePointInfo".concat(FileService.getDateToString(new Date()));
+				String tempDir= fileDir.concat("D:\\AceApi\\SalePointInfo").concat(FileService.getDateToString(new Date()));
 				
 				Path filePath = Paths.get(tempDir.concat("\\SalePoints.zip"));
 				Files.createDirectories(filePath.getParent());

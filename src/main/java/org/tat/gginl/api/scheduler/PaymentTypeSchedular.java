@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.zip.ZipOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.tat.gginl.api.domains.PaymentType;
@@ -29,6 +30,8 @@ public class PaymentTypeSchedular {
 	@Autowired
 	private PaymentTypeRepository paymentTypeRepo;
 
+	@Value("${fileDir}")
+	private String fileDir;
 	
 	@Scheduled(cron = "0 0 0 * * ?")
 	 public void createSalePointFolder() throws Exception {
@@ -65,7 +68,7 @@ public class PaymentTypeSchedular {
 				File checksumFile = new File("PaymentTypeInfoChecksum".concat(".md5"));
 				
 				objectMapper.writeValue(checksumFile,checksum);
-				String tempDir= "D:\\AceApi\\PaymentTypeInfo".concat(FileService.getDateToString(new Date()));
+				String tempDir= fileDir.concat(":\\AceApi\\PaymentTypeInfo").concat(FileService.getDateToString(new Date()));
 				
 				Path filePath = Paths.get(tempDir.concat("\\PaymentType.zip"));
 				Files.createDirectories(filePath.getParent());
