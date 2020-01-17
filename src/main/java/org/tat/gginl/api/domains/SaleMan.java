@@ -8,6 +8,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.AssociationOverride;
 import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -33,6 +34,7 @@ import org.tat.gginl.api.common.FormatID;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.PermanentAddress;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.ViberContent;
 import org.tat.gginl.api.common.emumdata.IdType;
 
 @Entity
@@ -60,9 +62,19 @@ public class SaleMan implements Serializable {
 
 	@Embedded
 	private Name name;
-
+	@AttributeOverrides({
+		@AttributeOverride(name="phone",column=@Column(name="VoicePhoneNo")),
+		@AttributeOverride(name="mobile",column=@Column(name="SMSPhoneNo"))
+	})
 	@Embedded
 	private ContentInfo contentInfo;
+	
+	@AttributeOverrides({
+		@AttributeOverride(name="viberPhone",column=@Column(name="ViberPhoneNo"))
+	})
+	@Embedded
+	private ViberContent vibercontent;
+
 
 	@Embedded
 	@AttributeOverride(name = "permanentAddress", column = @Column(name = "ADDRESS"))
@@ -72,6 +84,10 @@ public class SaleMan implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "BRANCHID", referencedColumnName = "ID")
 	private Branch branch;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "SALEPOINTID", referencedColumnName = "ID")
+	private SalePoint salePoint;
 
 	@Version
 	private int version;
@@ -259,6 +275,24 @@ public class SaleMan implements Serializable {
 
 	public String getIdConditionType() {
 		return idConditionType;
+	}
+
+	
+	
+	public ViberContent getVibercontent() {
+		return vibercontent;
+	}
+
+	public void setVibercontent(ViberContent vibercontent) {
+		this.vibercontent = vibercontent;
+	}
+
+	public SalePoint getSalePoint() {
+		return salePoint;
+	}
+
+	public void setSalePoint(SalePoint salePoint) {
+		this.salePoint = salePoint;
 	}
 
 	public void setIdConditionType(String idConditionType) {

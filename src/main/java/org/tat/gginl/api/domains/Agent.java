@@ -14,6 +14,8 @@ import java.util.List;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -39,6 +41,7 @@ import org.tat.gginl.api.common.FormatID;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.PermanentAddress;
 import org.tat.gginl.api.common.ResidentAddress;
+import org.tat.gginl.api.common.ViberContent;
 import org.tat.gginl.api.common.emumdata.Gender;
 import org.tat.gginl.api.common.emumdata.IdConditionType;
 import org.tat.gginl.api.common.emumdata.IdType;
@@ -132,6 +135,10 @@ public class Agent implements Serializable {
 	@Enumerated(value = EnumType.STRING)
 	private ProductGroupType groupType;
 
+	@AttributeOverrides({
+		@AttributeOverride(name="phone",column=@Column(name="VoicePhoneNo")),
+		@AttributeOverride(name="mobile",column=@Column(name="SMSPhoneNo"))
+	})
 	@Embedded
 	private ContentInfo contentInfo;
 
@@ -149,6 +156,20 @@ public class Agent implements Serializable {
 
 	@Transient
 	private String fullIdNo;
+	
+	
+	
+	@AttributeOverrides({
+		@AttributeOverride(name="viberPhone",column=@Column(name="ViberPhoneNo"))
+	})
+	@Embedded
+	private ViberContent viberContent;
+	
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "SALEPOINTID", referencedColumnName = "ID")
+	private SalePoint salePoint;
+
 
 	public Agent() {
 	}
@@ -429,6 +450,8 @@ public class Agent implements Serializable {
 	public void setFullIdNo(String fullIdNo) {
 		this.fullIdNo = fullIdNo;
 	}
+	
+	
 
 	
 
