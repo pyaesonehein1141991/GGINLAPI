@@ -66,7 +66,7 @@ public class TowshipSchedular {
 				File checksumFile = new File("SalePointsInfoChecksum".concat(".md5"));
 				
 				objectMapper.writeValue(checksumFile,checksum);
-				String tempDir= fileDir.concat(":\\AceApi\\TownshipInfo").concat(FileService.getDateToString(new Date()));
+				String tempDir= fileDir.concat(":\\AceSharedFolder\\TownshipInfo").concat(FileService.getDateToString(new Date()));
 				
 				Path filePath = Paths.get(tempDir.concat("\\Township.zip"));
 				Files.createDirectories(filePath.getParent());

@@ -67,7 +67,7 @@ public class BranchSchedular {
 			File checksumFile = new File("BranchInfoChecksum".concat(".md5"));
 			
 			objectMapper.writeValue(checksumFile,checksum);
-			String tempDir= fileDir.concat(":\\AceApi\\BranchInfo").concat(FileService.getDateToString(new Date()));
+			String tempDir= fileDir.concat(":\\AceSharedFolder\\BranchInfo").concat(FileService.getDateToString(new Date()));
 			
 			Path filePath = Paths.get(tempDir.concat("\\Branch.zip"));
 			Files.createDirectories(filePath.getParent());

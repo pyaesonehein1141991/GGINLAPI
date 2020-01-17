@@ -68,7 +68,7 @@ public class RelationShipSchedular {
 				File checksumFile = new File("RelationShipInfoChecksum".concat(".md5"));
 				
 				objectMapper.writeValue(checksumFile,checksum);
-				String tempDir= fileDir.concat(":\\AceApi\\RelationShipInfo").concat(FileService.getDateToString(new Date()));
+				String tempDir= fileDir.concat(":\\AceSharedFolder\\RelationShipInfo").concat(FileService.getDateToString(new Date()));
 				
 				Path filePath = Paths.get(tempDir.concat("\\RelationShip.zip"));
 				Files.createDirectories(filePath.getParent());

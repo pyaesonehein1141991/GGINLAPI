@@ -65,7 +65,7 @@ public class OccupationSchedular {
 				File checksumFile = new File("OccupationInfoChecksum".concat(".md5"));
 				
 				objectMapper.writeValue(checksumFile,checksum);
-				String tempDir= fileDir.concat(":\\AceApi\\OccupationInfo").concat(FileService.getDateToString(new Date()));
+				String tempDir= fileDir.concat(":\\AceSharedFolder\\OccupationInfo").concat(FileService.getDateToString(new Date()));
 				
 				Path filePath = Paths.get(tempDir.concat("\\Occupation.zip"));
 				Files.createDirectories(filePath.getParent());

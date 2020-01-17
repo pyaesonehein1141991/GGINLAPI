@@ -66,7 +66,7 @@ public class AgentScheduler {
 			File checksumFile = new File("AgentsInfoChecksum".concat(".md5"));
 			
 			objectMapper.writeValue(checksumFile,checksum);
-			String tempDir= fileDir.concat(":\\AceApi\\AgentInfo").concat(FileService.getDateToString(new Date()));
+			String tempDir= fileDir.concat(":\\AceSharedFolder\\AgentInfo").concat(FileService.getDateToString(new Date()));
 			
 			Path filePath = Paths.get(tempDir.concat("\\Agents.zip"));
 			Files.createDirectories(filePath.getParent());

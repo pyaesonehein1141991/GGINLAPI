@@ -66,7 +66,7 @@ public class OrganizationSchedular {
 				File checksumFile = new File("OrganizationInfoChecksum".concat(".md5"));
 				
 				objectMapper.writeValue(checksumFile,checksum);
-				String tempDir= fileDir.concat(":\\AceApi\\OrganizationInfo").concat(FileService.getDateToString(new Date()));
+				String tempDir= fileDir.concat(":\\AceSharedFolder\\OrganizationInfo").concat(FileService.getDateToString(new Date()));
 				
 				Path filePath = Paths.get(tempDir.concat("\\Organization.zip"));
 				Files.createDirectories(filePath.getParent());

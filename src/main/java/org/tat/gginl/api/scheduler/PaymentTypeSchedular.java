@@ -68,7 +68,7 @@ public class PaymentTypeSchedular {
 				File checksumFile = new File("PaymentTypeInfoChecksum".concat(".md5"));
 				
 				objectMapper.writeValue(checksumFile,checksum);
-				String tempDir= fileDir.concat(":\\AceApi\\PaymentTypeInfo").concat(FileService.getDateToString(new Date()));
+				String tempDir= fileDir.concat(":\\AceSharedFolder\\PaymentTypeInfo").concat(FileService.getDateToString(new Date()));
 				
 				Path filePath = Paths.get(tempDir.concat("\\PaymentType.zip"));
 				Files.createDirectories(filePath.getParent());

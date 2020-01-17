@@ -67,7 +67,7 @@ public class CustomerScheduler {
 			File checksumFile = new File("CustomerInfoChecksum".concat(".md5"));
 			
 			objectMapper.writeValue(checksumFile,checksum);
-			String tempDir= fileDir.concat(":\\tempCustomer\\CustomerInfo").concat(FileService.getDateToString(new Date()));
+			String tempDir= fileDir.concat(":\\AceSharedFolder\\CustomerInfo").concat(FileService.getDateToString(new Date()));
 			
 			Path filePath = Paths.get(tempDir.concat("\\Customer.zip"));
 			Files.createDirectories(filePath.getParent());

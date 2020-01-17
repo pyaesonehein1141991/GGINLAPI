@@ -66,7 +66,7 @@ public class SalePointScheduler {
 				File checksumFile = new File("SalePointsInfoChecksum".concat(".md5"));
 				
 				objectMapper.writeValue(checksumFile,checksum);
-				String tempDir= fileDir.concat("D:\\AceApi\\SalePointInfo").concat(FileService.getDateToString(new Date()));
+				String tempDir= fileDir.concat(":\\AceSharedFolder\\SalePointInfo").concat(FileService.getDateToString(new Date()));
 				
 				Path filePath = Paths.get(tempDir.concat("\\SalePoints.zip"));
 				Files.createDirectories(filePath.getParent());
