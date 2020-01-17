@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.tat.gginl.api.common.COACode;
 import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
+import org.tat.gginl.api.common.KeyFactorChecker;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.ResidentAddress;
 import org.tat.gginl.api.common.TLFBuilder;
@@ -132,7 +133,7 @@ public class LifeProposalService {
 		// create lifepolicy and return policynoList
 		policyList = lifePolicyRepo.saveAll(policyList);
 
-		List<Payment> paymentList = convertGroupFarmerPolicyToPayment(policyList);
+		List<Payment> paymentList = convertPolicyToPayment(policyList);
 		paymentRepository.saveAll(paymentList);
 
 		CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
@@ -315,9 +316,14 @@ public class LifeProposalService {
 		return policyList;
 	}
 
-	private List<Payment> convertGroupFarmerPolicyToPayment(List<LifePolicy> farmerPolicyList) {
+	private List<Payment> convertPolicyToPayment(List<LifePolicy> farmerPolicyList) {
 		List<Payment> paymentList = new ArrayList<Payment>();
 		farmerPolicyList.forEach(lifePolicy -> {
+			Product product = lifePolicy.getInsuredPersonInfo().get(0).getProduct();
+			boolean isStudentLife = KeyFactorChecker.isStudentLife(product.getId());
+			boolean isFarmer=KeyFactorChecker.isFarmer(product);
+			PolicyReferenceType referenceType = isFarmer ? PolicyReferenceType.FARMER_POLICY : isStudentLife ? PolicyReferenceType.STUDENT_LIFE_POLICY 
+					:PolicyReferenceType.LIFE_POLICY;
 			Payment payment = new Payment();
 			double rate = 1.0;
 			CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
@@ -326,7 +332,7 @@ public class LifeProposalService {
 			payment.setReceiptNo(receiptNo);
 			payment.setPaymentType(lifePolicy.getPaymentType());
 			payment.setPaymentChannel(PaymentChannel.CASHED);
-			payment.setReferenceType(PolicyReferenceType.LIFE_POLICY);
+			payment.setReferenceType(referenceType);
 			payment.setConfirmDate(new Date());
 			payment.setPaymentDate(new Date());
 			payment.setReferenceNo(lifePolicy.getId());
