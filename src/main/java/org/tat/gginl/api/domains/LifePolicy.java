@@ -36,6 +36,7 @@ import org.tat.gginl.api.common.TableName;
 import org.tat.gginl.api.common.Utils;
 import org.tat.gginl.api.common.emumdata.EndorsementStatus;
 import org.tat.gginl.api.common.emumdata.InsuranceType;
+import org.tat.gginl.api.common.emumdata.PaymentChannel;
 import org.tat.gginl.api.common.emumdata.PolicyStatus;
 
 @Entity
@@ -134,9 +135,21 @@ public class LifePolicy implements IPolicy, Serializable, ISorter {
 	@OneToOne
 	@JoinColumn(name = "SALEPOINTID")
 	private SalePoint salePoint;
+	
+	@Transient
+	private PaymentChannel paymentChannel;
+	
+	@Transient
+	private String fromBank;
+	
+	@Transient
+	private String toBank;
 
 	@Version
 	private int version;
+	
+	@Transient
+	private String chequeNo;
 
 	public LifePolicy() {
 	}
@@ -205,6 +218,15 @@ public class LifePolicy implements IPolicy, Serializable, ISorter {
 			addCustomerMedicalChkUpAttachment(medicalAttach);
 		}
 
+	}
+	
+
+	public String getChequeNo() {
+		return chequeNo;
+	}
+
+	public void setChequeNo(String chequeNo) {
+		this.chequeNo = chequeNo;
 	}
 
 	public void addInsuredPerson(PolicyInsuredPerson policyInsuredPerson) {
@@ -815,6 +837,16 @@ public class LifePolicy implements IPolicy, Serializable, ISorter {
 	public void setCustomerMedicalCheckUpAttachmentList(List<Attachment> customerMedicalCheckUpAttachmentList) {
 		this.customerMedicalCheckUpAttachmentList = customerMedicalCheckUpAttachmentList;
 	}
+	
+	
+
+	public PaymentChannel getPaymentChannel() {
+		return paymentChannel;
+	}
+
+	public void setPaymentChannel(PaymentChannel paymentChannel) {
+		this.paymentChannel = paymentChannel;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -987,6 +1019,22 @@ public class LifePolicy implements IPolicy, Serializable, ISorter {
 		if (version != other.version)
 			return false;
 		return true;
+	}
+
+	public String getFromBank() {
+		return fromBank;
+	}
+
+	public void setFromBank(String fromBank) {
+		this.fromBank = fromBank;
+	}
+
+	public String getToBank() {
+		return toBank;
+	}
+
+	public void setToBank(String toBank) {
+		this.toBank = toBank;
 	}
 
 }

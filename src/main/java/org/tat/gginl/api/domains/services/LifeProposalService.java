@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.SystemException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
@@ -26,6 +28,7 @@ import org.tat.gginl.api.common.emumdata.ProposalType;
 import org.tat.gginl.api.common.emumdata.Status;
 import org.tat.gginl.api.domains.Agent;
 import org.tat.gginl.api.domains.AgentCommission;
+import org.tat.gginl.api.domains.Bank;
 import org.tat.gginl.api.domains.Branch;
 import org.tat.gginl.api.domains.Customer;
 import org.tat.gginl.api.domains.InsuredPersonBeneficiaries;
@@ -44,6 +47,7 @@ import org.tat.gginl.api.domains.TLF;
 import org.tat.gginl.api.domains.Township;
 import org.tat.gginl.api.domains.repository.AgentCommissionRepository;
 import org.tat.gginl.api.domains.repository.AgentRepository;
+import org.tat.gginl.api.domains.repository.BankRepository;
 import org.tat.gginl.api.domains.repository.BranchRepository;
 import org.tat.gginl.api.domains.repository.CustomerRepository;
 import org.tat.gginl.api.domains.repository.LifePolicyRepository;
@@ -115,6 +119,9 @@ public class LifeProposalService {
 
 	@Autowired
 	private AgentCommissionRepository agentCommissionRepo;
+	
+	@Autowired
+	private BankRepository bankRepository;
 
 	@Value("${farmerProductId}")
 	private String productId;
@@ -129,15 +136,11 @@ public class LifeProposalService {
 
 		// create lifepolicy and return policynoList
 		policyList = lifePolicyRepo.saveAll(policyList);
-
+		
 		List<Payment> paymentList = convertGroupFarmerPolicyToPayment(policyList);
 		paymentRepository.saveAll(paymentList);
-
-		CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
-		recorder.setCreatedDate(new Date());
-
+	
 		if (null != groupFarmerProposalDTO.getAgentID()) {
-
 			List<AgentCommission> agentcommissionList = convertGroupFarmerPolicyToAgentCommission(policyList);
 			agentCommissionRepo.saveAll(agentcommissionList);
 
@@ -158,11 +161,26 @@ public class LifeProposalService {
 		Optional<Agent> agentOptional = agentRepo.findById(groupFarmerProposalDTO.getAgentID());
 		Optional<SaleMan> saleManOptional = saleManRepo.findById(groupFarmerProposalDTO.getSaleManId());
 		Optional<SalePoint> salePointOptional = salePointRepo.findById(groupFarmerProposalDTO.getSalePointId());
-
 		List<LifeProposal> lifeProposalList = new ArrayList<>();
 		groupFarmerProposalDTO.getProposalInsuredPersonList().forEach(insuredPerson -> {
-
 			LifeProposal lifeProposal = new LifeProposal();
+			if(groupFarmerProposalDTO.getPaymentChannel().equalsIgnoreCase("TRF")){
+				lifeProposal.setPaymentChannel(PaymentChannel.TRANSFER);
+				lifeProposal.setToBank(groupFarmerProposalDTO.getToBank());
+				lifeProposal.setFromBank(groupFarmerProposalDTO.getFromBank());
+			}else if(groupFarmerProposalDTO.getPaymentChannel().equalsIgnoreCase("CSH")) {
+				lifeProposal.setPaymentChannel(PaymentChannel.CASHED);
+			}else if(groupFarmerProposalDTO.getPaymentChannel().equalsIgnoreCase("CHQ")) {
+				lifeProposal.setPaymentChannel(PaymentChannel.CHEQUE);
+				lifeProposal.setChequeNo(groupFarmerProposalDTO.getChequeNo());
+				lifeProposal.setToBank(groupFarmerProposalDTO.getToBank());
+				lifeProposal.setFromBank(groupFarmerProposalDTO.getFromBank());
+			}else if(groupFarmerProposalDTO.getPaymentChannel().equalsIgnoreCase("RCV")) {
+				lifeProposal.setPaymentChannel(PaymentChannel.SUNDRY);
+				lifeProposal.setToBank(groupFarmerProposalDTO.getToBank());
+				lifeProposal.setFromBank(groupFarmerProposalDTO.getFromBank());
+			}
+			
 			lifeProposal.setProposalType(ProposalType.UNDERWRITING);
 			lifeProposal.setSubmittedDate(groupFarmerProposalDTO.getSubmittedDate());
 			lifeProposal.setBranch(branchOptional.get());
@@ -270,6 +288,10 @@ public class LifeProposalService {
 			LifePolicy policy = new LifePolicy(proposal);
 			String policyNo = customIdRepo.getNextId("FARMER_LIFE_POLICY_NO", null);
 			policy.setPolicyNo(policyNo);
+			policy.setFromBank(proposal.getFromBank());
+			policy.setToBank(proposal.getToBank());
+			policy.setChequeNo(proposal.getChequeNo());
+			policy.setPaymentChannel(proposal.getPaymentChannel());
 			policy.setActivedPolicyStartDate(policy.getPolicyInsuredPersonList().get(0).getStartDate());
 			policy.setActivedPolicyEndDate(policy.getPolicyInsuredPersonList().get(0).getEndDate());
 			policyList.add(policy);
@@ -279,18 +301,45 @@ public class LifeProposalService {
 
 	private List<Payment> convertGroupFarmerPolicyToPayment(List<LifePolicy> farmerPolicyList) {
 		List<Payment> paymentList = new ArrayList<Payment>();
+		
 		farmerPolicyList.forEach(lifePolicy -> {
+			Optional<Bank> fromBankOptional=Optional.empty();
+			Optional<Bank> toBankOptional =Optional.empty();
+			if(lifePolicy.getFromBank() !=null) {
+			fromBankOptional = bankRepository.findById(lifePolicy.getFromBank());
+			}if(lifePolicy.getToBank() !=null) {
+			toBankOptional = bankRepository.findById(lifePolicy.getToBank());
+			}
 			Payment payment = new Payment();
 			double rate = 1.0;
+			String receiptNo="";
 			CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
 			recorder.setCreatedDate(new Date());
-			String receiptNo = customIdRepo.getNextId("CASH_RECEIPT_ID_GEN", null);
+			if(PaymentChannel.CASHED.equals(lifePolicy.getPaymentChannel())) {
+				 receiptNo = customIdRepo.getNextId("CASH_RECEIPT_ID_GEN", null);
+			}else if(PaymentChannel.CHEQUE.equals(lifePolicy.getPaymentChannel())) {
+				 payment.setPO(true);
+				 receiptNo = customIdRepo.getNextId("CHEQUE_RECEIPT_ID_GEN", null);
+			}else if(PaymentChannel.TRANSFER.equals(lifePolicy.getPaymentChannel())) {
+				 receiptNo = customIdRepo.getNextId("TRANSFER_RECEIPT_ID_GEN", null);
+			}else {
+				 receiptNo = customIdRepo.getNextId("CHEQUE_RECEIPT_ID_GEN", null);
+				 payment.setPO(true);
+			}
+			
 			payment.setReceiptNo(receiptNo);
+			payment.setChequeNo(lifePolicy.getChequeNo());
 			payment.setPaymentType(lifePolicy.getPaymentType());
-			payment.setPaymentChannel(PaymentChannel.CASHED);
-			payment.setReferenceType(PolicyReferenceType.LIFE_POLICY);
+			payment.setPaymentChannel(lifePolicy.getPaymentChannel());
+			payment.setReferenceType(PolicyReferenceType.FARMER_POLICY);
 			payment.setConfirmDate(new Date());
 			payment.setPaymentDate(new Date());
+			if(toBankOptional.isPresent()) {
+				payment.setAccountBank(toBankOptional.get());
+			}
+			if(fromBankOptional.isPresent()) {
+				payment.setBank(fromBankOptional.get());	
+			}
 			payment.setReferenceNo(lifePolicy.getId());
 			payment.setBasicPremium(lifePolicy.getTotalBasicTermPremium());
 			payment.setAddOnPremium(lifePolicy.getTotalAddOnTermPremium());
@@ -304,13 +353,12 @@ public class LifeProposalService {
 			payment.setHomePremium(payment.getBasicPremium());
 			payment.setHomeAddOnPremium(payment.getAddOnPremium());
 			payment.setCommonCreateAndUpateMarks(recorder);
-
 			paymentList.add(payment);
 
 		});
 		return paymentList;
 	}
-
+	
 	// agent Commission
 	private List<AgentCommission> convertGroupFarmerPolicyToAgentCommission(List<LifePolicy> farmerPolicyList) {
 		List<AgentCommission> agentCommissionList = new ArrayList<AgentCommission>();
@@ -336,6 +384,7 @@ public class LifeProposalService {
 		String accountCode = "Farmer_Premium";
 		for (LifePolicy lifePolicy : farmerPolicyList) {
 			Payment payment = paymentRepository.findByPaymentReferenceNo(lifePolicy.getId());
+		
 			TLF tlf1 = addNewTLF_For_CashDebitForPremium(payment,
 					lifePolicy.getCustomer() == null ? lifePolicy.getOrganization().getId()
 							: lifePolicy.getCustomer().getId(),
@@ -347,17 +396,28 @@ public class LifeProposalService {
 							: lifePolicy.getCustomer().getId(),
 					lifePolicy.getBranch(), accountCode, payment.getReceiptNo(), false, "KYT",
 					lifePolicy.getSalePoint(), lifePolicy.getPolicyNo());
-			TLFList.add(tlf2);
+				TLFList.add(tlf2);
+			
+			if (lifePolicy.getPaymentChannel().equals(PaymentChannel.CHEQUE) || lifePolicy.getPaymentChannel().equals(PaymentChannel.SUNDRY)) {
+				String customerId=lifePolicy.getCustomer() == null ? lifePolicy.getOrganization().getId() : lifePolicy.getCustomer().getId();
+				TLF tlf3 = addNewTLF_For_PremiumDebitForRCVAndCHQ(payment,customerId,lifePolicy.getBranch(), payment.getAccountBank().getAcode(),false,payment.getReceiptNo(),true,
+						false,"KYT", lifePolicy.getSalePoint(), lifePolicy.getPolicyNo());
+				TLFList.add(tlf3);
+				TLF tlf4 = addNewTLF_For_CashCreditForPremiumForRCVAndCHQ(payment,customerId,lifePolicy.getBranch(),false,payment.getReceiptNo(),true,
+						false,"KYT", lifePolicy.getSalePoint(),lifePolicy.getPolicyNo());
+				TLFList.add(tlf4);
+			}				
+			
 			if (lifePolicy.getAgent() != null) {
 				double firstAgentCommission = lifePolicy.getAgentCommission();
 				AgentCommission ac = new AgentCommission(lifePolicy.getId(), PolicyReferenceType.FARMER_POLICY,
 						lifePolicy.getAgent(), firstAgentCommission, new Date());
-				TLF tlf3 = addNewTLF_For_AgentCommissionDr(ac, false, lifePolicy.getBranch(), payment, payment.getId(),
+				TLF tlf5 = addNewTLF_For_AgentCommissionDr(ac, false, lifePolicy.getBranch(), payment, payment.getId(),
 						false, "KYT", lifePolicy.getSalePoint(), lifePolicy.getPolicyNo());
-				TLFList.add(tlf3);
-				TLF tlf4 = addNewTLF_For_AgentCommissionCredit(ac, false, lifePolicy.getBranch(), payment,
+				TLFList.add(tlf5);
+				TLF tlf6 = addNewTLF_For_AgentCommissionCredit(ac, false, lifePolicy.getBranch(), payment,
 						payment.getId(), false, "KYT", lifePolicy.getSalePoint(), lifePolicy.getPolicyNo());
-				TLFList.add(tlf4);
+				TLFList.add(tlf6);
 			}
 		}
 		return TLFList;
@@ -374,11 +434,33 @@ public class LifeProposalService {
 			String coaCode = null;
 			totalNetPremium = payment.getNetPremium();
 			homeAmount = totalNetPremium;
-			// TLF COAID
 			if (PaymentChannel.CASHED.equals(payment.getPaymentChannel())) {
 				coaCode = paymentRepository.findCheckOfAccountNameByCode(COACode.CASH, branch.getBranchCode(),
 						currencyCode);
-
+			}else if (PaymentChannel.TRANSFER.equals(payment.getPaymentChannel())) {
+				coaCode = payment.getAccountBank() == null ? paymentRepository.findCheckOfAccountNameByCode(COACode.CHEQUE, branch.getBranchCode(), currencyCode)
+						: payment.getAccountBank().getAcode();
+			}else if (PaymentChannel.CHEQUE.equals(payment.getPaymentChannel())) {
+				String coaCodeType = "";
+				switch (payment.getReferenceType()) {
+				case FARMER_POLICY:
+					coaCodeType = COACode.FARMER_PAYMENT_ORDER;
+					break;
+					default:
+					break;
+				}
+				coaCode = paymentRepository.findCheckOfAccountNameByCode(coaCodeType, branch.getBranchCode(), currencyCode);
+			}else if (PaymentChannel.SUNDRY.equals(payment.getPaymentChannel())) {
+				String coaCodeType = "";
+				switch (payment.getReferenceType()) {
+			     case FARMER_POLICY:
+				 coaCodeType = COACode.FARMER_SUNDRY;
+				break;
+			     default:
+			 			break;
+			 }
+				coaCode = paymentRepository.findCheckOfAccountNameByCode(coaCodeType, branch.getBranchCode(), currencyCode);
+			}
 				TLFBuilder tlfBuilder = new TLFBuilder(DoubleEntry.DEBIT, homeAmount, customerId,
 						branch.getBranchCode(), coaCode, tlfNo, getNarrationPremium(payment, isRenewal), payment,
 						isRenewal);
@@ -390,7 +472,6 @@ public class LifeProposalService {
 				// setIDPrefixForInsert(tlf);
 				tlf.setPaymentChannel(payment.getPaymentChannel());
 
-			}
 			// paymentDAO.insertTLF(tlf);
 		} catch (DataAccessException e) {
 			e.printStackTrace();
@@ -507,6 +588,124 @@ public class LifeProposalService {
 			// paymentDAO.insertTLF(tlf);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		return tlf;
+	}
+	
+	public TLF addNewTLF_For_CashCreditForPremiumForRCVAndCHQ(Payment payment, String customerId, Branch branch, boolean isEndorse, String tlfNo, boolean isClearing,
+			boolean isRenewal, String currencyCode, SalePoint salePoint,String policyNo) {
+		TLF tlf =new TLF();
+		try {
+
+			double totalNetPremium = 0;
+			double homeAmount = 0;
+			String narration = null;
+			String coaCode = null;
+			String enoNo = payment.getReceiptNo();
+			Product product = null;
+
+			if (isRenewal) {
+					totalNetPremium = totalNetPremium + payment.getRenewalNetPremium();
+			} else {
+					totalNetPremium = totalNetPremium + payment.getNetPremium();
+				}
+			
+			totalNetPremium = totalNetPremium * (isEndorse ? -1 : 1);
+
+			// TLF Home Amount
+			homeAmount = totalNetPremium;
+
+			// TLF COAID
+			switch (payment.getPaymentChannel()) {
+				case TRANSFER: {
+					if (payment.getAccountBank() == null) {
+						coaCode = paymentRepository.findCheckOfAccountNameByCode(COACode.CHEQUE, branch.getBranchCode(), currencyCode);
+					} else {
+						coaCode = payment.getAccountBank().getAcode();
+					}
+				}
+					break;
+				case CASHED:
+					coaCode = paymentRepository.findCheckOfAccountNameByCode(COACode.CASH, branch.getBranchCode(), currencyCode);
+					break;
+				case CHEQUE: {
+					String coaCodeType = "";
+					switch (payment.getReferenceType()) {
+						case FARMER_POLICY:
+							coaCodeType = COACode.FARMER_PAYMENT_ORDER;
+							break;
+						default:
+							break;
+					}
+					coaCode = paymentRepository.findCheckOfAccountNameByCode(coaCodeType, branch.getBranchCode(), currencyCode);
+				}
+					break;
+				case SUNDRY: {
+					String coaCodeType = "";
+					switch (payment.getReferenceType()) {
+						case FARMER_POLICY:
+							coaCodeType = COACode.FARMER_SUNDRY;
+							break;
+						default:
+							break;
+					}
+					coaCode = paymentRepository.findCheckOfAccountNameByCode(coaCodeType, branch.getBranchCode(), currencyCode);
+				}
+					break;
+			}
+			// TLF Narration
+			narration = "Cash refund for " + enoNo;
+			TLFBuilder tlfBuilder = new TLFBuilder(DoubleEntry.CREDIT, homeAmount, customerId, branch.getBranchCode(), coaCode, tlfNo, narration, payment, isRenewal);
+			tlf = tlfBuilder.getTLFInstance();
+			tlf.setClearing(isClearing);
+			tlf.setPaymentChannel(payment.getPaymentChannel());
+			tlf.setSalePoint(salePoint);
+			tlf.setPolicyNo(policyNo);
+	//		setIDPrefixForInsert(tlf);
+	///		paymentDAO.insertTLF(tlf);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tlf;
+	}
+	
+	public TLF addNewTLF_For_PremiumDebitForRCVAndCHQ(Payment payment, String customerId, Branch branch, String accountName, boolean isEndorse, String tlfNo, boolean isClearing,
+			boolean isRenewal, String currencyCode, SalePoint salePoint,String policyNo) {
+		TLF tlf =new TLF();
+		try {
+			double netPremium = 0.0;
+			if (isRenewal) {
+				netPremium = payment.getRenewalNetPremium();
+			} else {
+				netPremium = payment.getNetPremium();
+			}
+
+			netPremium = netPremium * (isEndorse ? -1 : 1);
+			double homeAmount = 0;
+			// TLF Home Amount
+			homeAmount = netPremium;
+
+			// TLF COAID
+			String coaCode = "";
+			if (payment.getAccountBank() == null) {
+				coaCode = paymentRepository.findCheckOfAccountNameByCode(accountName, branch.getBranchCode(), currencyCode);
+			} else {
+				coaCode = payment.getAccountBank().getAcode();
+			}
+
+			TLFBuilder tlfBuilder = new TLFBuilder(DoubleEntry.DEBIT, homeAmount, customerId, branch.getBranchCode(), coaCode, tlfNo, getNarrationPremium(payment, isRenewal),
+					payment, isRenewal);
+			 tlf = tlfBuilder.getTLFInstance();
+			tlf.setPaymentChannel(payment.getPaymentChannel());
+			tlf.setSalePoint(salePoint);
+			tlf.setClearing(isClearing);
+			tlf.setPolicyNo(policyNo);
+			//setIDPrefixForInsert(tlf);
+		//	paymentDAO.insertTLF(tlf);
+  
+		} catch (Exception e) {
+		     e.printStackTrace();;
 		}
 		return tlf;
 	}

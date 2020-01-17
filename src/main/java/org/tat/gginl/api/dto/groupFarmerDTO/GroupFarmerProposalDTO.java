@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.tat.gginl.api.common.emumdata.PaymentChannel;
 import org.tat.gginl.api.configuration.DateHandler;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -49,7 +50,19 @@ public class GroupFarmerProposalDTO {
 	@NotBlank(message = "salePointId is mandatory")
 	private String salePointId;
 	
-	@ApiModelProperty(position = 12, example = "1234", required = true)
+	@ApiModelProperty(position = 12, example = "TRF", required = true)
+	private String paymentChannel;
+	
+	@ApiModelProperty(position = 13, example = "ISSYS010005000000021118072016", required = true)
+	private String toBank;
+	
+	@ApiModelProperty(position = 14, example = "ISSYS0100001000000000713032013", required = true)
+	private String fromBank;
+	
+	@ApiModelProperty(position = 15, example = "CH34345345", required = true)
+	private String chequeNo;
+	
+	@ApiModelProperty(position = 16, example = "1234", required = true)
 	@NotBlank(message = "userId is mandatory")
 	private String userId;
 

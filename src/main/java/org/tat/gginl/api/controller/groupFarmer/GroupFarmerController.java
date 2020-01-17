@@ -36,10 +36,8 @@ public class GroupFarmerController {
 			@ApiResponse(code = 500, message = "Expired or invalid JWT token") })
 	public ResponseDTO<Object> submitproposal(@Valid @RequestBody GroupFarmerProposalDTO groupFarmerProposalDTO) {
 		List<LifePolicy> policyList = new ArrayList<>();
-
 		// create farmer proposal
 		policyList = lifeProposalService.createGroupFarmerProposalToPolicy(groupFarmerProposalDTO);
-
 		// create response object
 		List<GroupFarmerResponseDTO> responseList = new ArrayList<>();
 

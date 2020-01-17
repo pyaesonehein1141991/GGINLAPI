@@ -34,6 +34,7 @@ import org.tat.gginl.api.common.TableName;
 import org.tat.gginl.api.common.Utils;
 import org.tat.gginl.api.common.emumdata.ClassificationOfHealth;
 import org.tat.gginl.api.common.emumdata.EndorsementStatus;
+import org.tat.gginl.api.common.emumdata.PaymentChannel;
 import org.tat.gginl.api.common.emumdata.ProposalStatus;
 import org.tat.gginl.api.common.emumdata.ProposalType;
 import org.tat.gginl.api.common.emumdata.UserType;
@@ -129,6 +130,18 @@ public class LifeProposal implements Serializable, IDataModel, IProposal {
 
 	@Transient
 	private String tempId;
+	
+	@Transient
+	private PaymentChannel paymentChannel;
+	
+	@Transient
+	private String fromBank;
+	
+	@Transient
+	private String toBank;
+	
+	@Transient
+	private String chequeNo;
 
 	@Version
 	private int version;
@@ -795,5 +808,39 @@ public class LifeProposal implements Serializable, IDataModel, IProposal {
 	public void setTempId(String tempId) {
 		this.tempId = tempId;
 	}
+
+	public PaymentChannel getPaymentChannel() {
+		return paymentChannel;
+	}
+
+	public void setPaymentChannel(PaymentChannel paymentChannel) {
+		this.paymentChannel = paymentChannel;
+	}
+
+	public String getFromBank() {
+		return fromBank;
+	}
+
+	public void setFromBank(String fromBank) {
+		this.fromBank = fromBank;
+	}
+
+	public String getToBank() {
+		return toBank;
+	}
+
+	public void setToBank(String toBank) {
+		this.toBank = toBank;
+	}
+
+	public String getChequeNo() {
+		return chequeNo;
+	}
+
+	public void setChequeNo(String chequeNo) {
+		this.chequeNo = chequeNo;
+	}
+	
+	
 
 }
