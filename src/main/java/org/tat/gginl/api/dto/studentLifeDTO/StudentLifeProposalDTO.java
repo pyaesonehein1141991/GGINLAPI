@@ -45,7 +45,7 @@ public class StudentLifeProposalDTO {
 
 	@ApiModelProperty(position = 10, required = true)
 	@NotNull(message = "proposalInsuredPersonList is mandatory")
-	private List<GroupFarmerProposalInsuredPersonDTO> proposalInsuredPersonList;
+	private List<StudentLifeProposalInsuredPersonDTO> proposalInsuredPersonList;
 
 	@ApiModelProperty(position = 11, example = "11", required = true)
 	@NotBlank(message = "salePointId is mandatory")

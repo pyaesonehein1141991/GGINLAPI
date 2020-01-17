@@ -61,6 +61,8 @@ import org.tat.gginl.api.domains.repository.TownshipRepository;
 import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalDTO;
 import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalInsuredPersonBeneficiariesDTO;
 import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalInsuredPersonDTO;
+import org.tat.gginl.api.dto.studentLifeDTO.StudentLifeProposalDTO;
+import org.tat.gginl.api.dto.studentLifeDTO.StudentLifeProposalInsuredPersonDTO;
 
 @Service
 public class LifeProposalService {
@@ -145,6 +147,42 @@ public class LifeProposalService {
 
 		List<TLF> tlfList = convertGroupFarmerPolicyToTLF(policyList);
 		tlfRepository.saveAll(tlfList);
+		return policyList;
+	}
+	
+	
+	
+	
+	//For StudentLife
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	public List<LifePolicy> createStudentLifeProposalToPolicy(StudentLifeProposalDTO studentLifeProposalDTO) {
+		// convert groupFarmerProposalDTO to lifeproposal
+		List<LifeProposal> studentLifeProposalList = convertStudentLifeProposalDTOToProposal(studentLifeProposalDTO);
+
+		// convert lifeproposal to lifepolicy
+		List<LifePolicy> policyList = convertStudentLifeProposalToPolicy(studentLifeProposalList);
+
+		// create lifepolicy and return policynoList
+		policyList = lifePolicyRepo.saveAll(policyList);
+		/*
+		 * List<Payment> paymentList = convertStudentLifePolicyToPayment(policyList);
+		 * paymentRepository.saveAll(paymentList);
+		 * 
+		 * CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
+		 * recorder.setCreatedDate(new Date());
+		 * 
+		 * if (null != StudentLifeProposalDTO.getAgentID()) {
+		 * 
+		 * List<AgentCommission> agentcommissionList =
+		 * convertStudentLifePolicyToAgentCommission(policyList);
+		 * agentCommissionRepo.saveAll(agentcommissionList);
+		 * 
+		 * }
+		 * 
+		 * List<TLF> tlfList = convertStudentLifePolicyToTLF(policyList);
+		 * tlfRepository.saveAll(tlfList);
+		 */
 		return policyList;
 	}
 
@@ -581,4 +619,102 @@ public class LifeProposalService {
 		return tlf;
 	}
 
+	//Forstudentlife studentlifeDto to proposal
+	private List<LifeProposal> convertStudentLifeProposalDTOToProposal(StudentLifeProposalDTO studentLifeProposalDTO) {
+
+		Optional<Branch> branchOptional = branchRepo.findById(studentLifeProposalDTO.getBranchId());
+		Optional<Customer> referralOptional = customerRepo.findById(studentLifeProposalDTO.getReferralID());
+		Optional<Organization> organizationOptional = organizationRepo
+				.findById(studentLifeProposalDTO.getCustomerID());
+		Optional<PaymentType> paymentTypeOptional = paymentTypeRepo.findById(studentLifeProposalDTO.getPaymentTypeId());
+		Optional<Agent> agentOptional = agentRepo.findById(studentLifeProposalDTO.getAgentID());
+		Optional<SaleMan> saleManOptional = saleManRepo.findById(studentLifeProposalDTO.getSaleManId());
+		Optional<SalePoint> salePointOptional = salePointRepo.findById(studentLifeProposalDTO.getSalePointId());
+
+		List<LifeProposal> lifeProposalList = new ArrayList<>();
+		studentLifeProposalDTO.getProposalInsuredPersonList().forEach(insuredPerson -> {
+
+			LifeProposal lifeProposal = new LifeProposal();
+			lifeProposal.setProposalType(ProposalType.UNDERWRITING);
+			lifeProposal.setSubmittedDate(studentLifeProposalDTO.getSubmittedDate());
+			lifeProposal.setBranch(branchOptional.get());
+			lifeProposal.setReferral(referralOptional.get());
+			lifeProposal.setOrganization(organizationOptional.get());
+			lifeProposal.setPaymentType(paymentTypeOptional.get());
+			lifeProposal.setAgent(agentOptional.get());
+			lifeProposal.setSaleMan(saleManOptional.get());
+			lifeProposal.setSalePoint(salePointOptional.get());
+			lifeProposal.getProposalInsuredPersonList().add(createInsuredPersonForStudentLife(insuredPerson));
+			String proposalNo = customIdRepo.getNextId("STUDENT_LIFE_PROPOSAL_NO_ID_GEN", null);
+			lifeProposal.setProposalNo(proposalNo);
+			lifeProposal.setPrefix("ISLIF001");
+			lifeProposalList.add(lifeProposal);
+
+		});
+
+		return lifeProposalList;
+	}
+	
+	
+	//ForStudentLife proposal to policy 
+	private List<LifePolicy> convertStudentLifeProposalToPolicy(List<LifeProposal> studentlifeProposalList) {
+		List<LifePolicy> policyList = new ArrayList<>();
+		studentlifeProposalList.forEach(proposal -> {
+			LifePolicy policy = new LifePolicy(proposal);
+			String policyNo = customIdRepo.getNextId("STUDENT_LIFE_POLICY_NO", null);
+			policy.setPolicyNo(policyNo);
+			policy.setActivedPolicyStartDate(policy.getPolicyInsuredPersonList().get(0).getStartDate());
+			policy.setActivedPolicyEndDate(policy.getPolicyInsuredPersonList().get(0).getEndDate());
+			policyList.add(policy);
+		});
+		return policyList;
+	}
+	
+	
+	private ProposalInsuredPerson createInsuredPersonForStudentLife(StudentLifeProposalInsuredPersonDTO dto) {
+		Optional<Product> productOptional = productRepo.findById(productId);
+		Optional<Township> townshipOptional = townshipRepo.findById(dto.getTownshipId());
+		Optional<Occupation> occupationOptional = occupationRepo.findById(dto.getOccupationID());
+		Optional<Customer> customerOptional = customerRepo.findById(dto.getCustomerID());
+
+		ResidentAddress residentAddress = new ResidentAddress();
+		residentAddress.setResidentAddress(dto.getResidentAddress());
+		residentAddress.setResidentTownship(townshipOptional.get());
+
+		Name name = new Name();
+		name.setFirstName(dto.getFirstName());
+		name.setMiddleName(dto.getMiddleName());
+		name.setLastName(dto.getLastName());
+
+		ProposalInsuredPerson insuredPerson = new ProposalInsuredPerson();
+
+		insuredPerson.setProduct(productOptional.get());
+		insuredPerson.setInitialId(dto.getInitialId());
+		insuredPerson.setBpmsInsuredPersonId(dto.getBpmsInsuredPersonId());
+		insuredPerson.setProposedSumInsured(dto.getProposedSumInsured());
+		insuredPerson.setProposedPremium(dto.getProposedPremium());
+		insuredPerson.setApprovedSumInsured(dto.getApprovedSumInsured());
+		insuredPerson.setApprovedPremium(dto.getApprovedPremium());
+		insuredPerson.setBasicTermPremium(dto.getBasicTermPremium());
+		insuredPerson.setIdType(dto.getIdType());
+		insuredPerson.setIdNo(dto.getIdNo());
+		insuredPerson.setFatherName(dto.getFatherName());
+		insuredPerson.setStartDate(dto.getStartDate());
+		insuredPerson.setEndDate(dto.getEndDate());
+		insuredPerson.setDateOfBirth(dto.getDateOfBirth());
+		insuredPerson.setGender(dto.getGender());
+		insuredPerson.setResidentAddress(residentAddress);
+		insuredPerson.setName(name);
+		insuredPerson.setOccupation(occupationOptional.get());
+		insuredPerson.setCustomer(customerOptional.get());
+
+		String insPersonCodeNo = customIdRepo.getNextId("LIFE_INSUREDPERSON_CODENO_ID_GEN", null);
+		insuredPerson.setInsPersonCodeNo(insPersonCodeNo);
+		insuredPerson.setPrefix("ISLIF008");
+		
+
+		return insuredPerson;
+	}
+	
+	
 }
