@@ -3,10 +3,10 @@ package org.tat.gginl.api.dto.groupFarmerDTO;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.tat.gginl.api.common.emumdata.PaymentChannel;
 import org.tat.gginl.api.configuration.DateHandler;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -42,6 +42,7 @@ public class GroupFarmerProposalDTO {
 	@ApiModelProperty(position = 9, example = "ISSYS022000009634116052019")
 	private String saleManId;
 
+	@Valid
 	@ApiModelProperty(position = 10, required = true)
 	@NotNull(message = "proposalInsuredPersonList is mandatory")
 	private List<GroupFarmerProposalInsuredPersonDTO> proposalInsuredPersonList;

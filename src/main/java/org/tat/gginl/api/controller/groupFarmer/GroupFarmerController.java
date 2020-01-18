@@ -51,8 +51,8 @@ public class GroupFarmerController {
 
 		ResponseDTO<Object> responseDTO = ResponseDTO.builder().responseStatus("Success!").responseBody(responseList)
 				.build();
-
 		return responseDTO;
+		
 	}
 
 }

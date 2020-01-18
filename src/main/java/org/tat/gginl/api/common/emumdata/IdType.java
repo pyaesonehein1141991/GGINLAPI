@@ -1,7 +1,7 @@
 package org.tat.gginl.api.common.emumdata;
 	
 	public enum IdType {
-		NRCNO("NRCNO"), FRCNO("FRCNO"), PASSPORTNO("PASSPORTNO"), STILL_APPLYING("Still Applying");
+		NRCNO("NRCNO"), FRCNO("FRCNO"), PASSPORTNO("PASSPORTNO"), STILL_APPLYING("STILL APPLYING");
 
 		private String label;
 

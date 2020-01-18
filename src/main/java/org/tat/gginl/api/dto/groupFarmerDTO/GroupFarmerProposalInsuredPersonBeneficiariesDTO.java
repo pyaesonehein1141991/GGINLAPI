@@ -3,6 +3,7 @@ package org.tat.gginl.api.dto.groupFarmerDTO;
 import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.tat.gginl.api.common.emumdata.Gender;
@@ -33,14 +34,14 @@ public class GroupFarmerProposalInsuredPersonBeneficiariesDTO {
 	
 	@ApiModelProperty(position = 3, example = "NRCNO", required = true)
 	@NotBlank(message = "idType is mandatory")
-	private IdType idType;
+	private String idType;
 	
 	@ApiModelProperty(position = 4, example = "123123123", required = true)
 	private String idNo;
 
 	@ApiModelProperty(position = 5, example = "MALE", required = true)
 	@NotNull(message = "gender is mandatory")
-	private Gender gender;
+	private String gender;
 
 	@ApiModelProperty(position = 6, example = "Yangon", required = true)
 	@NotBlank(message = "residentAddress is mandatory")
@@ -48,6 +49,7 @@ public class GroupFarmerProposalInsuredPersonBeneficiariesDTO {
 	
 	@ApiModelProperty(position =11, example = "ISSYS004002000000127620082014", required = true)
 	@NotBlank(message = "townshipId is mandatory")
+	@NotEmpty
 	private String townshipId;
 	
 	@ApiModelProperty(position = 7, example = "Aung", required = true)

@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://localhost;databaseName=ggli
+    url: jdbc:sqlserver://192.168.223.2;databaseName=ggip
     username: sa
-    password: 123@tat
+    password: Test20L9
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jackson:
     date-format: dd.MM.yyyy
@@ -21,7 +21,7 @@ server:
    port: ${PORT:8081} # This is the default port anyway, but you can change it here
    
 farmerProductId: ISPRD003001000009376125072017
-fileDir: D
+fileDir: C
 
 security:
   jwt:

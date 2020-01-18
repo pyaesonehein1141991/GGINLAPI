@@ -3,11 +3,11 @@ package org.tat.gginl.api.dto.groupFarmerDTO;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.tat.gginl.api.common.emumdata.Gender;
-import org.tat.gginl.api.common.emumdata.IdType;
 import org.tat.gginl.api.configuration.DateHandler;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -48,7 +48,7 @@ public class GroupFarmerProposalInsuredPersonDTO {
 
 	@ApiModelProperty(position = 7, example = "NRCNO", required = true)
 	@NotNull(message = "idType is mandatory")
-	private IdType idType;
+	private String idType;
 
 	@ApiModelProperty(position = 8, example = "123123123")
 	private String idNo;
@@ -75,7 +75,7 @@ public class GroupFarmerProposalInsuredPersonDTO {
 
 	@ApiModelProperty(position = 14, example = "MALE", required = true)
 	@NotNull(message = "gender is mandatory")
-	private Gender gender;
+	private String gender;
 
 	@ApiModelProperty(position = 15, example = "Yangon", required = true)
 	@NotNull(message = "residentAddress is mandatory")
@@ -93,7 +93,6 @@ public class GroupFarmerProposalInsuredPersonDTO {
 	private String lastName;
 
 	@ApiModelProperty(position = 19, example = "ISSYS011000009823001042019", required = true)
-	@NotBlank(message = "occupationID is mandatory")
 	private String occupationID;
 
 	@ApiModelProperty(position = 20, example = "ISSYS001000005575112092016")
@@ -101,8 +100,10 @@ public class GroupFarmerProposalInsuredPersonDTO {
 
 	@ApiModelProperty(position = 22, example = "ISSYS004000009724620062019", required = true)
 	@NotBlank(message = "townshipId is mandatory")
+	@NotEmpty
 	private String townshipId;
 	
+	@Valid
 	@ApiModelProperty(position = 21)
 	@NotNull(message = "insuredPersonBeneficiariesList is mandatory")
 	private List<GroupFarmerProposalInsuredPersonBeneficiariesDTO> insuredPersonBeneficiariesList;
