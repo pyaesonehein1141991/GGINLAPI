@@ -1,5 +1,4 @@
 package org.tat.gginl.api.dto;
-
 import lombok.Builder;
 import lombok.Data;
 

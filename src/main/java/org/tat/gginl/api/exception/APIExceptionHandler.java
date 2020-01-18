@@ -46,13 +46,12 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 		}
 		return result;
 	}
+	  @ExceptionHandler(ConstraintViolationException.class)
+	    public final ResponseEntity<Object> handleConstraintViolationException(Exception ex, WebRequest request) {
+	        ResponseDTO<Object> responseDTO = ResponseDTO.builder()
+	            .responseStatus(HttpStatus.BAD_REQUEST.toString())
+	            .message(ex.getMessage()).build();
 
-	@ExceptionHandler(ConstraintViolationException.class)
-	public final ResponseEntity<Object> handleConstraintViolationException(Exception ex, WebRequest request) {
-
-		ResponseDTO<Object> responseDTO = ResponseDTO.builder().responseStatus(HttpStatus.BAD_REQUEST.toString())
-				.message(ex.getMessage()).build();
-
-		return ResponseEntity.badRequest().body(responseDTO);
-	}
+	        return ResponseEntity.badRequest().body(responseDTO);
+	    }
 }
