@@ -2,6 +2,7 @@ package org.tat.gginl.api.scheduler;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,15 +10,19 @@ import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.tat.gginl.api.common.CSVUtils;
 import org.tat.gginl.api.domains.Township;
 import org.tat.gginl.api.domains.repository.TownshipRepository;
 import org.tat.gginl.api.domains.services.FileService;
+import org.tat.gginl.api.domains.services.TownShipService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -25,7 +30,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Component
 public class TowshipSchedular {
 	@Autowired
-	private TownshipRepository townshipRepo;
+	private TownShipService townshipService;
 
 	@Value("${fileDir}")
 	private String fileDir;
@@ -38,21 +43,37 @@ public class TowshipSchedular {
 			startDate = FileService.minusDays(startDate, 2);
 			Date endDate = FileService.resetEndDate(new Date());
 			
-			List<Township> townshipList = townshipRepo.findAll();
+		//	List<Township> townshipList = townshipRepo.findAll();
+
+			List<Object> columnNameList = townshipService.findAllColumnName();
+			List<Object[]> dataList = townshipService.findAllNativeObject();
 			
-			if(townshipList.size()>0) {
+			
+			if(dataList.size()>0) {
+				
+				List<String> columnString = columnNameList.stream().map(String::valueOf).collect(Collectors.toList()); 
+				
 				
 				ObjectMapper objectMapper = new ObjectMapper();
 				objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 				
-				File salePointsFile = new File("Township.csv");
+				File townshipFile = new File("TownShip.csv");
+				FileWriter writer = new FileWriter(townshipFile);
 				
-				FileService.writesCsvFromBean(Paths.get(salePointsFile.getPath()),townshipList);
+//				writesCsvFromBean(Paths.get(agentsFile.getPath()),agentList);
+				columnString.add("[)~=_(]");
+				CSVUtils.writeLine(writer, columnString, "[)!|;(]");
 				
+				for(Object[] object : dataList) {
+					
+					List<String> stringList = Stream.of(object).map(String::valueOf).collect(Collectors.toList());
+					stringList.add("[)~=_(]");
+					CSVUtils.writeLine(writer, stringList, "[)!|;(]");
+				}
 				FileOutputStream fos = new FileOutputStream("Township.zip");
 				ZipOutputStream zipOs = new ZipOutputStream(fos);
 
-				FileService.writeToZipFile(salePointsFile, zipOs);
+				FileService.writeToZipFile(townshipFile, zipOs);
 
 				zipOs.close();
 				fos.close();
@@ -75,7 +96,7 @@ public class TowshipSchedular {
 				Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\TownshipInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
 				
 				
-				Files.deleteIfExists(Paths.get(salePointsFile.getPath()));
+				Files.deleteIfExists(Paths.get(townshipFile.getPath()));
 				Files.deleteIfExists(Paths.get("Township.zip"));
 				Files.deleteIfExists(Paths.get("TownshipInfochecksum.md5"));
 
