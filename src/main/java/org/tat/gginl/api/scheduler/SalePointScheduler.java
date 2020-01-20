@@ -96,7 +96,7 @@ public class SalePointScheduler {
 				
 				
 				Files.deleteIfExists(Paths.get(salePointsFile.getPath()));
-				Files.deleteIfExists(Paths.get("SalePointsTest.zip"));
+				Files.deleteIfExists(Paths.get("SalePoints.zip"));
 				Files.deleteIfExists(Paths.get("SalePointsInfochecksum.md5"));
 
 

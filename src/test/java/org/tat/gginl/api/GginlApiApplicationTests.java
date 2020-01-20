@@ -178,7 +178,7 @@ class GginlApiApplicationTests {
 	
 //	@Scheduled(cron = "* 22 11 *  * ?")
 	
-	@BeforeEach
+//	@BeforeEach
 	public void createAgentFolder() throws Exception {
 		
 		
@@ -241,7 +241,7 @@ class GginlApiApplicationTests {
 			
 			
 			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
-			Files.deleteIfExists(Paths.get("AgentsTest.zip"));
+			Files.deleteIfExists(Paths.get("Agents.zip"));
 			Files.deleteIfExists(Paths.get("AgentsInfochecksum.md5"));
 
 

@@ -99,7 +99,7 @@ public class AgentScheduler {
 			
 			
 			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
-			Files.deleteIfExists(Paths.get("AgentsTest.zip"));
+			Files.deleteIfExists(Paths.get("Agents.zip"));
 			Files.deleteIfExists(Paths.get("AgentsInfochecksum.md5"));
 
 

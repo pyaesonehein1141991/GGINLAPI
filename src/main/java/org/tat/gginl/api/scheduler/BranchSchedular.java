@@ -94,7 +94,7 @@ public class BranchSchedular {
 			
 			
 			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
-			Files.deleteIfExists(Paths.get("BranchTest.zip"));
+			Files.deleteIfExists(Paths.get("Branch.zip"));
 			Files.deleteIfExists(Paths.get("BranchInfochecksum.md5"));
 
 

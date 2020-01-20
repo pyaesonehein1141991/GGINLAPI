@@ -101,7 +101,7 @@ public class CustomerScheduler {
 			
 			
 			Files.deleteIfExists(Paths.get(customerFile.getPath()));
-			Files.deleteIfExists(Paths.get("CustomerTest.zip"));
+			Files.deleteIfExists(Paths.get("Customer.zip"));
 			Files.deleteIfExists(Paths.get("CustomerInfochecksum.md5"));
 
 

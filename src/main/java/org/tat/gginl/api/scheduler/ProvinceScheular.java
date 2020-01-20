@@ -90,7 +90,7 @@ public class ProvinceScheular {
 			objectMapper.writeValue(checksumFile,checksum);
 			String tempDir= fileDir.concat(":\\AceSharedFolder\\Provience").concat(FileService.getDateToString(new Date()));
 			
-			Path filePath = Paths.get(tempDir.concat("\\Countrys.zip"));
+			Path filePath = Paths.get(tempDir.concat("\\Provience.zip"));
 			Files.createDirectories(filePath.getParent());
 			
 			Files.move(Paths.get(toCheckSumFile.getPath()),Paths.get(tempDir.concat("\\Provience.zip")),StandardCopyOption.REPLACE_EXISTING);

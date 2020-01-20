@@ -90,7 +90,7 @@ public class ProductSchedular {
 			objectMapper.writeValue(checksumFile,checksum);
 			String tempDir= fileDir.concat(":\\AceSharedFolder\\Product").concat(FileService.getDateToString(new Date()));
 			
-			Path filePath = Paths.get(tempDir.concat("\\Agents.zip"));
+			Path filePath = Paths.get(tempDir.concat("\\Product.zip"));
 			Files.createDirectories(filePath.getParent());
 			
 			Files.move(Paths.get(toCheckSumFile.getPath()),Paths.get(tempDir.concat("\\Product.zip")),StandardCopyOption.REPLACE_EXISTING);
@@ -99,8 +99,8 @@ public class ProductSchedular {
 			
 			
 			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
-			Files.deleteIfExists(Paths.get("AgentsTest.zip"));
-			Files.deleteIfExists(Paths.get("AgentsInfochecksum.md5"));
+			Files.deleteIfExists(Paths.get("Product.zip"));
+			Files.deleteIfExists(Paths.get("ProductInfoChecksum.md5"));
 
 
 		}
