@@ -2,6 +2,7 @@ package org.tat.gginl.api.scheduler;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,15 +10,19 @@ import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.tat.gginl.api.common.CSVUtils;
 import org.tat.gginl.api.domains.RelationShip;
 import org.tat.gginl.api.domains.repository.RelationshipRepository;
 import org.tat.gginl.api.domains.services.FileService;
+import org.tat.gginl.api.domains.services.RelationshipService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -28,33 +33,48 @@ public class RelationShipSchedular {
 	
 
 	@Autowired
-	private RelationshipRepository relationshipRepo;
+	private RelationshipService relationshipService;
 
 	@Value("${fileDir}")
 	private String fileDir;
 	
 	@Scheduled(cron = "0 0 0 * * ?")
-	 public void createSalePointFolder() throws Exception {
+	 public void createRelationShipFolder() throws Exception {
 			
 			Date startDate =FileService.resetStartDate(new Date());
 			startDate = FileService.minusDays(startDate, 2);
 			Date endDate = FileService.resetEndDate(new Date());
+
+			List<Object> columnNameList = relationshipService.findAllColumnName();
+			List<Object[]> dataList = relationshipService.findAllNativeObject();
 			
-			List<RelationShip> relationshipList = relationshipRepo.findAll();
 			
-			if(relationshipList.size()>0) {
+			if(dataList.size()>0) {
+				
+				List<String> columnString = columnNameList.stream().map(String::valueOf).collect(Collectors.toList()); 
+				
 				
 				ObjectMapper objectMapper = new ObjectMapper();
 				objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 				
-				File salePointsFile = new File("RelationShip.csv");
+				File relationshipFile = new File("RelationShip.csv");
+				FileWriter writer = new FileWriter(relationshipFile);
 				
-				FileService.writesCsvFromBean(Paths.get(salePointsFile.getPath()),relationshipList);
+//				writesCsvFromBean(Paths.get(agentsFile.getPath()),agentList);
+				columnString.add("[)~=_(]");
+				CSVUtils.writeLine(writer, columnString, "[)!|;(]");
+				
+				for(Object[] object : dataList) {
+					
+					List<String> stringList = Stream.of(object).map(String::valueOf).collect(Collectors.toList());
+					stringList.add("[)~=_(]");
+					CSVUtils.writeLine(writer, stringList, "[)!|;(]");
+				}
 				
 				FileOutputStream fos = new FileOutputStream("RelationShip.zip");
 				ZipOutputStream zipOs = new ZipOutputStream(fos);
 
-				FileService.writeToZipFile(salePointsFile, zipOs);
+				FileService.writeToZipFile(relationshipFile, zipOs);
 
 				zipOs.close();
 				fos.close();
@@ -77,7 +97,7 @@ public class RelationShipSchedular {
 				Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\RelationShipInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
 				
 				
-				Files.deleteIfExists(Paths.get(salePointsFile.getPath()));
+				Files.deleteIfExists(Paths.get(relationshipFile.getPath()));
 				Files.deleteIfExists(Paths.get("RelationShip.zip"));
 				Files.deleteIfExists(Paths.get("RelationShipInfochecksum.md5"));
 

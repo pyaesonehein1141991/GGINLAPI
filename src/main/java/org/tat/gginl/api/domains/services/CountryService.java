@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.tat.gginl.api.domains.Bank;
 import org.tat.gginl.api.domains.Country;
-import org.tat.gginl.api.domains.repository.BankRepository;
 import org.tat.gginl.api.domains.repository.CountryRepository;
 
 @Service
@@ -15,8 +13,7 @@ public class CountryService {
 	@Autowired
 	private CountryRepository countryRepository;
 	
-	@Autowired
-	private BankRepository bankRepository;
+
 	
 	public List<Country> findAll(){
 		return countryRepository.findAll();

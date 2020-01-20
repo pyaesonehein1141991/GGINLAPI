@@ -2,6 +2,7 @@ package org.tat.gginl.api.scheduler;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,12 +10,15 @@ import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.tat.gginl.api.common.CSVUtils;
 import org.tat.gginl.api.domains.SalePoint;
 import org.tat.gginl.api.domains.services.FileService;
 import org.tat.gginl.api.domains.services.SalePointService;
@@ -40,14 +44,30 @@ public class SalePointScheduler {
 			
 			List<SalePoint> salePointList = salePointService.findAll();
 			
-			if(salePointList.size()>0) {
+			List<Object> columnNameList = salePointService.findAllColumnName();
+			List<Object[]> dataList = salePointService.findAllNativeObject();
+			
+			if(dataList.size()>0) {
+				
+				List<String> columnString = columnNameList.stream().map(String::valueOf).collect(Collectors.toList()); 
+				
 				
 				ObjectMapper objectMapper = new ObjectMapper();
 				objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 				
-				File salePointsFile = new File("SalePoints.csv");
+				File salePointsFile = new File("SalePoint.csv");
+				FileWriter writer = new FileWriter(salePointsFile);
 				
-				FileService.writesCsvFromBean(Paths.get(salePointsFile.getPath()),salePointList);
+//				writesCsvFromBean(Paths.get(agentsFile.getPath()),agentList);
+				columnString.add("[)~=_(]");
+				CSVUtils.writeLine(writer, columnString, "[)!|;(]");
+				
+				for(Object[] object : dataList) {
+					
+					List<String> stringList = Stream.of(object).map(String::valueOf).collect(Collectors.toList());
+					stringList.add("[)~=_(]");
+					CSVUtils.writeLine(writer, stringList, "[)!|;(]");
+				}
 				
 				FileOutputStream fos = new FileOutputStream("SalePoints.zip");
 				ZipOutputStream zipOs = new ZipOutputStream(fos);

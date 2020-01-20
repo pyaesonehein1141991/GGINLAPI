@@ -20,6 +20,15 @@ public class SalePointService  {
 	public List<SalePoint> findAll() {
 		return salePointRepository.findAll();
 	}
+	
+	
+	public List<Object[]> findAllNativeObject(){
+		return salePointRepository.findAllNativeObject();
+	}
+	
+	public List<Object> findAllColumnName(){
+		return salePointRepository.findAllColumnName();
+	}
 
 	
 }

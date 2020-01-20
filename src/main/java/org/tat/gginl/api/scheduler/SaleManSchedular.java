@@ -2,6 +2,7 @@ package org.tat.gginl.api.scheduler;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,15 +10,19 @@ import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.tat.gginl.api.common.CSVUtils;
 import org.tat.gginl.api.domains.SaleMan;
 import org.tat.gginl.api.domains.repository.SaleManRepository;
 import org.tat.gginl.api.domains.services.FileService;
+import org.tat.gginl.api.domains.services.SaleManService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -25,34 +30,50 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Component
 public class SaleManSchedular {
 	@Autowired
-	private SaleManRepository saleManRepo;
+	private SaleManService saleManService;
 	
 
 	@Value("${fileDir}")
 	private String fileDir;
 	
 	@Scheduled(cron = "0 0 0 * * ?")
-	 public void createSalePointFolder() throws Exception {
+	 public void createSaleManFolder() throws Exception {
 			
 			Date startDate =FileService.resetStartDate(new Date());
 			startDate = FileService.minusDays(startDate, 2);
 			Date endDate = FileService.resetEndDate(new Date());
 			
-			List<SaleMan> saleManList = saleManRepo.findAll();
+		//	List<SaleMan> saleManList = saleManRepo.findAll();
+			List<Object> columnNameList = saleManService.findAllColumnName();
+			List<Object[]> dataList = saleManService.findAllNativeObject();
 			
-			if(saleManList.size()>0) {
+			if(dataList.size()>0) {
+				
+				List<String> columnString = columnNameList.stream().map(String::valueOf).collect(Collectors.toList()); 
+				
 				
 				ObjectMapper objectMapper = new ObjectMapper();
 				objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 				
-				File salePointsFile = new File("SaleMan.csv");
+				File saleManFile = new File("SaleMan.csv");
+				FileWriter writer = new FileWriter(saleManFile);
 				
-				FileService.writesCsvFromBean(Paths.get(salePointsFile.getPath()),saleManList);
+//				writesCsvFromBean(Paths.get(agentsFile.getPath()),agentList);
+				columnString.add("[)~=_(]");
+				CSVUtils.writeLine(writer, columnString, "[)!|;(]");
+				
+				for(Object[] object : dataList) {
+					
+					List<String> stringList = Stream.of(object).map(String::valueOf).collect(Collectors.toList());
+					stringList.add("[)~=_(]");
+					CSVUtils.writeLine(writer, stringList, "[)!|;(]");
+				}
+				
 				
 				FileOutputStream fos = new FileOutputStream("SaleMan.zip");
 				ZipOutputStream zipOs = new ZipOutputStream(fos);
 
-				FileService.writeToZipFile(salePointsFile, zipOs);
+				FileService.writeToZipFile(saleManFile, zipOs);
 
 				zipOs.close();
 				fos.close();
@@ -75,7 +96,7 @@ public class SaleManSchedular {
 				Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\SaleManInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
 				
 				
-				Files.deleteIfExists(Paths.get(salePointsFile.getPath()));
+				Files.deleteIfExists(Paths.get(saleManFile.getPath()));
 				Files.deleteIfExists(Paths.get("SaleMan.zip"));
 				Files.deleteIfExists(Paths.get("SaleManInfochecksum.md5"));
 

@@ -117,62 +117,62 @@ class GginlApiApplicationTests {
 	}
 	
 	
-
-	public void createCustomerFolder() throws Exception {
-		
-		Date startDate = resetStartDate(new Date());
-		startDate = minusDays(startDate, 2);
-		Date endDate = resetEndDate(new Date());
-		
-		List<Customer> customerList = customerService.findByRecorderCreatedDateBetweenOrRecorderUpdatedDateBetween(startDate, endDate);
-		
-		
-		if(customerList.size()>0) {
-			
-			ObjectMapper objectMapper = new ObjectMapper();
-			objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-			
-			File customerFile = new File("Customer.csv");
-			
-			writesCsvFromBean(Paths.get(customerFile.getPath()),customerList);
-			
-			
-			FileOutputStream fos = new FileOutputStream("Customer.zip");
-			ZipOutputStream zipOs = new ZipOutputStream(fos);
-
-			writeToZipFile(customerFile, zipOs);
-
-			zipOs.close();
-			fos.close();
-			
-			File toCheckSumFile = new File("Customer.zip");
-
-			MessageDigest md5Digest = MessageDigest.getInstance("MD5");
-
-			// Get the checksum
-			String checksum = getFileChecksum(md5Digest, toCheckSumFile);
-			File checksumFile = new File("CustomerInfoChecksum".concat(".md5"));
-			
-			objectMapper.writeValue(checksumFile,checksum);
-			String tempDir= "D:\\tempCustomer\\CustomerInfo".concat(getDateToString(new Date()));
-			
-			Path filePath = Paths.get(tempDir.concat("\\Customer.zip"));
-			Files.createDirectories(filePath.getParent());
-			
-			Files.move(Paths.get(toCheckSumFile.getPath()),Paths.get(tempDir.concat("\\Customer.zip")),StandardCopyOption.REPLACE_EXISTING);
-			Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\CustomerInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
-			
-			
-			
-			Files.deleteIfExists(Paths.get(customerFile.getPath()));
-			Files.deleteIfExists(Paths.get("Test.zip"));
-			Files.deleteIfExists(Paths.get("CustomerInfochecksum.md5"));
-
-
-		}
-		
-	}
-	
+//
+//	public void createCustomerFolder() throws Exception {
+//		
+//		Date startDate = resetStartDate(new Date());
+//		startDate = minusDays(startDate, 2);
+//		Date endDate = resetEndDate(new Date());
+//		
+//	//	List<Customer> customerList = customerService.findByRecorderCreatedDateBetweenOrRecorderUpdatedDateBetween(startDate, endDate);
+//		
+//		
+//		if(customerList.size()>0) {
+//			
+//			ObjectMapper objectMapper = new ObjectMapper();
+//			objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+//			
+//			File customerFile = new File("Customer.csv");
+//			
+//			writesCsvFromBean(Paths.get(customerFile.getPath()),customerList);
+//			
+//			
+//			FileOutputStream fos = new FileOutputStream("Customer.zip");
+//			ZipOutputStream zipOs = new ZipOutputStream(fos);
+//
+//			writeToZipFile(customerFile, zipOs);
+//
+//			zipOs.close();
+//			fos.close();
+//			
+//			File toCheckSumFile = new File("Customer.zip");
+//
+//			MessageDigest md5Digest = MessageDigest.getInstance("MD5");
+//
+//			// Get the checksum
+//			String checksum = getFileChecksum(md5Digest, toCheckSumFile);
+//			File checksumFile = new File("CustomerInfoChecksum".concat(".md5"));
+//			
+//			objectMapper.writeValue(checksumFile,checksum);
+//			String tempDir= "D:\\tempCustomer\\CustomerInfo".concat(getDateToString(new Date()));
+//			
+//			Path filePath = Paths.get(tempDir.concat("\\Customer.zip"));
+//			Files.createDirectories(filePath.getParent());
+//			
+//			Files.move(Paths.get(toCheckSumFile.getPath()),Paths.get(tempDir.concat("\\Customer.zip")),StandardCopyOption.REPLACE_EXISTING);
+//			Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\CustomerInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
+//			
+//			
+//			
+//			Files.deleteIfExists(Paths.get(customerFile.getPath()));
+//			Files.deleteIfExists(Paths.get("Test.zip"));
+//			Files.deleteIfExists(Paths.get("CustomerInfochecksum.md5"));
+//
+//
+//		}
+//		
+//	}
+//	
 
 	
 	

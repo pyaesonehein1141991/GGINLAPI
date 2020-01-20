@@ -25,4 +25,6 @@ public class CustomerService {
 	public List<Object> findAllColumnName(){
 		return customerRepository.findAllColumnName();
 	}
+	
+	
 }
