@@ -9,5 +9,6 @@ public class GroupFarmerResponseDTO {
 	
 	private String bpmsInsuredPersonId;
 	private String policyNo;
+	private String customerId;
 
 }

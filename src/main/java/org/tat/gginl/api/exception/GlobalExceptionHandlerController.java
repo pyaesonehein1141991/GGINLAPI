@@ -3,6 +3,7 @@ package org.tat.gginl.api.exception;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
@@ -42,5 +43,8 @@ public class GlobalExceptionHandlerController {
   public void handleException(HttpServletResponse res) throws IOException {
     res.sendError(HttpStatus.BAD_REQUEST.value(), "Something went wrong");
   }
+  
+
+
 
 }

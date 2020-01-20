@@ -31,6 +31,7 @@ import org.tat.gginl.api.domains.AgentCommission;
 import org.tat.gginl.api.domains.Bank;
 import org.tat.gginl.api.domains.Branch;
 import org.tat.gginl.api.domains.Customer;
+import org.tat.gginl.api.domains.GroupFarmerProposal;
 import org.tat.gginl.api.domains.InsuredPersonBeneficiaries;
 import org.tat.gginl.api.domains.LifePolicy;
 import org.tat.gginl.api.domains.LifeProposal;
@@ -50,6 +51,7 @@ import org.tat.gginl.api.domains.repository.AgentRepository;
 import org.tat.gginl.api.domains.repository.BankRepository;
 import org.tat.gginl.api.domains.repository.BranchRepository;
 import org.tat.gginl.api.domains.repository.CustomerRepository;
+import org.tat.gginl.api.domains.repository.GroupFarmerRepository;
 import org.tat.gginl.api.domains.repository.LifePolicyRepository;
 import org.tat.gginl.api.domains.repository.LifeProposalRepository;
 import org.tat.gginl.api.domains.repository.OccupationRepository;
@@ -62,7 +64,7 @@ import org.tat.gginl.api.domains.repository.SaleManRepository;
 import org.tat.gginl.api.domains.repository.SalePointRepository;
 import org.tat.gginl.api.domains.repository.TLFRepository;
 import org.tat.gginl.api.domains.repository.TownshipRepository;
-import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalDTO;
+import org.tat.gginl.api.dto.groupFarmerDTO.FarmerProposalDTO;
 import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalInsuredPersonBeneficiariesDTO;
 import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalInsuredPersonDTO;
 
@@ -122,13 +124,23 @@ public class LifeProposalService {
 	
 	@Autowired
 	private BankRepository bankRepository;
+	
+	@Autowired
+	private GroupFarmerRepository groupFarmerRepository;
 
 	@Value("${farmerProductId}")
 	private String productId;
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public List<LifePolicy> createGroupFarmerProposalToPolicy(GroupFarmerProposalDTO groupFarmerProposalDTO){
+	public List<LifePolicy> createGroupFarmerProposalToPolicy(FarmerProposalDTO groupFarmerProposalDTO) {
+		
+			GroupFarmerProposal groupFarmerProposal = createGroupFarmerProposal(groupFarmerProposalDTO);
+			groupFarmerProposal = groupFarmerRepository.save(groupFarmerProposal);
+			
 			List<LifeProposal> farmerProposalList = convertGroupFarmerProposalDTOToProposal(groupFarmerProposalDTO);
+			for(LifeProposal proposal:farmerProposalList) {
+				proposal.setGroupFarmerProposal(groupFarmerProposal);
+			}
 
 			// convert lifeproposal to lifepolicy
 			List<LifePolicy> policyList = convertGroupFarmerProposalToPolicy(farmerProposalList);
@@ -150,7 +162,56 @@ public class LifeProposalService {
 		
 	}
 
-	private List<LifeProposal> convertGroupFarmerProposalDTOToProposal(GroupFarmerProposalDTO groupFarmerProposalDTO) {
+	private GroupFarmerProposal createGroupFarmerProposal(FarmerProposalDTO groupFarmerProposalDTO) {
+		
+		Optional<Branch> branchOptional = branchRepo.findById(groupFarmerProposalDTO.getBranchId());
+		Optional<PaymentType> paymentTypeOptional = paymentTypeRepo.findById(groupFarmerProposalDTO.getPaymentTypeId());
+		Optional<Agent> agentOptional = agentRepo.findById(groupFarmerProposalDTO.getAgentID());
+		Optional<SaleMan> saleManOptional = saleManRepo.findById(groupFarmerProposalDTO.getSaleManId());
+		Optional<Customer> referralOptional = customerRepo.findById(groupFarmerProposalDTO.getReferralID());
+		Optional<Organization> organizationOptional = organizationRepo
+				.findById(groupFarmerProposalDTO.getOrganizationID());
+		Optional<SalePoint> salePointOptional = salePointRepo.findById(groupFarmerProposalDTO.getSalePointId());
+		
+		GroupFarmerProposal groupFarmerProposal = new GroupFarmerProposal();
+		groupFarmerProposal.setSubmittedDate(groupFarmerProposalDTO.getSubmittedDate());
+		groupFarmerProposal.setProposalType(ProposalType.UNDERWRITING);
+		groupFarmerProposal.setEndDate(groupFarmerProposalDTO.getEndDate());
+		groupFarmerProposal.setNoOfInsuredPerson(groupFarmerProposalDTO.getNoOfInsuredPerson());
+		groupFarmerProposal.setTotalSI(groupFarmerProposalDTO.getTotalSI());
+		if(branchOptional.isPresent()) {
+			groupFarmerProposal.setBranch(branchOptional.get());	
+		}
+		
+		if(agentOptional.isPresent()) {
+			groupFarmerProposal.setAgent(agentOptional.get());
+		}
+		groupFarmerProposal.setPaymentType(paymentTypeOptional.get());
+		
+		if(saleManOptional.isPresent()) {
+			groupFarmerProposal.setSaleMan(saleManOptional.get());
+		}
+		if(referralOptional.isPresent()) {
+			groupFarmerProposal.setReferral(referralOptional.get());
+		}
+		if(organizationOptional.isPresent()) {
+			groupFarmerProposal.setOrganization(organizationOptional.get());
+		}
+		if(salePointOptional.isPresent()) {
+			groupFarmerProposal.setSalePoint(salePointOptional.get());
+		}
+		
+		CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
+		recorder.setCreatedDate(new Date());
+		
+		groupFarmerProposal.setCommonCreateAndUpateMarks(recorder);
+		String proposalNo = customIdRepo.getNextId("GROUPFARMER_LIFE_PROPOSAL_NO", null);
+		groupFarmerProposal.setProposalNo(proposalNo);
+		
+		return groupFarmerProposal;
+	}
+
+	private List<LifeProposal> convertGroupFarmerProposalDTOToProposal(FarmerProposalDTO groupFarmerProposalDTO) {
 
 		Optional<Branch> branchOptional = branchRepo.findById(groupFarmerProposalDTO.getBranchId());
 		Optional<Customer> referralOptional = customerRepo.findById(groupFarmerProposalDTO.getReferralID());
@@ -249,10 +310,19 @@ public class LifeProposalService {
 		insuredPerson.setGender(Gender.valueOf(dto.getGender()));
 		insuredPerson.setResidentAddress(residentAddress);
 		insuredPerson.setName(name);
+		CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
+		recorder.setCreatedDate(new Date());
+		insuredPerson.setRecorder(recorder);
 		if(occupationOptional.isPresent()) {
 			insuredPerson.setOccupation(occupationOptional.get());
 		}
-		insuredPerson.setCustomer(customerOptional.get());
+		if(customerOptional.isPresent()) {
+			insuredPerson.setCustomer(customerOptional.get());
+		}else {
+			insuredPerson.setCustomer(createNewCustomer(insuredPerson));
+			insuredPerson.setNewCustomer(true);
+		}
+		
 
 		String insPersonCodeNo = customIdRepo.getNextId("LIFE_INSUREDPERSON_CODENO_ID_GEN", null);
 		insuredPerson.setInsPersonCodeNo(insPersonCodeNo);
@@ -260,8 +330,27 @@ public class LifeProposalService {
 		dto.getInsuredPersonBeneficiariesList().forEach(beneficiary -> {
 			insuredPerson.getInsuredPersonBeneficiariesList().add(createInsuredPersonBeneficiareis(beneficiary));
 		});
+		
+		
 
 		return insuredPerson;
+	}
+
+	private Customer createNewCustomer(ProposalInsuredPerson dto) {
+		Customer customer = new Customer();
+		customer.setInitialId(dto.getInitialId());
+		customer.setFatherName(dto.getFatherName());
+		customer.setIdNo(dto.getIdNo());
+		customer.setDateOfBirth(dto.getDateOfBirth());
+		customer.setGender(dto.getGender());
+		customer.setIdType(dto.getIdType());
+		customer.setResidentAddress(dto.getResidentAddress());
+		customer.setName(dto.getName());
+		customer.setOccupation(dto.getOccupation());
+		customer.setRecorder(dto.getRecorder());
+		
+		customer = customerRepo.save(customer);
+		return customer;
 	}
 
 	private InsuredPersonBeneficiaries createInsuredPersonBeneficiareis(

@@ -178,6 +178,19 @@ public class PolicyInsuredPerson implements IInsuredItem, Serializable {
 
 	@Version
 	private int version;
+	
+	@Transient
+	private boolean newCustomer;
+	
+	
+
+	public boolean isNewCustomer() {
+		return newCustomer;
+	}
+
+	public void setNewCustomer(boolean newCustomer) {
+		this.newCustomer = newCustomer;
+	}
 
 	public PolicyInsuredPerson() {
 	}
@@ -220,6 +233,7 @@ public class PolicyInsuredPerson implements IInsuredItem, Serializable {
 		this.school = insuredPerson.getSchool();
 		this.gradeInfo = insuredPerson.getGradeInfo();
 		this.bpmsInsuredPersonId = insuredPerson.getBpmsInsuredPersonId();
+		this.newCustomer = insuredPerson.isNewCustomer();
 		for (InsuredPersonAttachment attachment : insuredPerson.getAttachmentList()) {
 			addAttachment(new PolicyInsuredPersonAttachment(attachment));
 		}
@@ -822,6 +836,8 @@ public class PolicyInsuredPerson implements IInsuredItem, Serializable {
 	public void setUnit(int unit) {
 		this.unit = unit;
 	}
+	
+	
 
 	public double getAddOnPremium() {
 		double premium = 0.0;

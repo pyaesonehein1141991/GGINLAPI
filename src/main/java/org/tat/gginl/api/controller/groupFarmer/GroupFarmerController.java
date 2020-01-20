@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.tat.gginl.api.domains.LifePolicy;
 import org.tat.gginl.api.domains.services.LifeProposalService;
 import org.tat.gginl.api.dto.ResponseDTO;
-import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalDTO;
+import org.tat.gginl.api.dto.groupFarmerDTO.FarmerProposalDTO;
 import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerResponseDTO;
 
 import io.swagger.annotations.Api;
@@ -34,7 +34,7 @@ public class GroupFarmerController {
 			@ApiResponse(code = 400, message = "Something went wrong"), 
 			@ApiResponse(code = 403, message = "Access denied"), 
 			@ApiResponse(code = 500, message = "Expired or invalid JWT token") })
-	public ResponseDTO<Object> submitproposal(@Valid @RequestBody GroupFarmerProposalDTO groupFarmerProposalDTO) {
+	public ResponseDTO<Object> submitproposal(@Valid @RequestBody FarmerProposalDTO groupFarmerProposalDTO) {
 		List<LifePolicy> policyList = new ArrayList<>();
 		// create farmer proposal
 		policyList = lifeProposalService.createGroupFarmerProposalToPolicy(groupFarmerProposalDTO);
@@ -44,7 +44,9 @@ public class GroupFarmerController {
 		policyList.forEach(policy -> {
 			GroupFarmerResponseDTO dto = GroupFarmerResponseDTO.builder()
 					.bpmsInsuredPersonId(policy.getPolicyInsuredPersonList().get(0).getBpmsInsuredPersonId())
-					.policyNo(policy.getPolicyNo()).build();
+					.policyNo(policy.getPolicyNo())
+					.customerId(policy.getPolicyInsuredPersonList().get(0).isNewCustomer()?policy.getPolicyInsuredPersonList().get(0).getCustomer().getId():null)
+					.build();
 
 			responseList.add(dto);
 		});

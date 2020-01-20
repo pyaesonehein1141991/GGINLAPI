@@ -31,6 +31,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.tat.gginl.api.common.BeneficiariesInfoDTO;
+import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.FormatID;
 import org.tat.gginl.api.common.InsuredPersonAddOnDTO;
 import org.tat.gginl.api.common.InsuredPersonInfoDTO;
@@ -172,9 +173,24 @@ public class ProposalInsuredPerson implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lifeproposalInsuredPerson", orphanRemoval = true)
 	private List<SurveyQuestionAnswer> surveyQuestionAnswerList;
+	
+	private CommonCreateAndUpateMarks recorder;
+	
+	@Transient
+	private boolean newCustomer;
 
 	@Version
 	private int version;
+	
+	
+
+	public boolean isNewCustomer() {
+		return newCustomer;
+	}
+
+	public void setNewCustomer(boolean newCustomer) {
+		this.newCustomer = newCustomer;
+	}
 
 	public ProposalInsuredPerson() {
 
@@ -896,6 +912,15 @@ public class ProposalInsuredPerson implements Serializable {
 
 	public void setUnit(int unit) {
 		this.unit = unit;
+	}
+	
+
+	public CommonCreateAndUpateMarks getRecorder() {
+		return recorder;
+	}
+
+	public void setRecorder(CommonCreateAndUpateMarks recorder) {
+		this.recorder = recorder;
 	}
 
 	public int getAgeForNextYear() {
