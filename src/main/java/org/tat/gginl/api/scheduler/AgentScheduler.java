@@ -2,6 +2,7 @@ package org.tat.gginl.api.scheduler;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,12 +10,15 @@ import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.tat.gginl.api.common.CSVUtils;
 import org.tat.gginl.api.domains.Agent;
 import org.tat.gginl.api.domains.services.AgentService;
 import org.tat.gginl.api.domains.services.FileService;
@@ -40,14 +44,32 @@ public class AgentScheduler {
 		
 		List<Agent> agentList = agentService.findAll();
 		
-		if(agentList.size()>0) {
+
+		List<Object> columnNameList = agentService.findAllColumnName();
+		List<Object[]> dataList = agentService.findAllNativeObject();
+		
+		
+		if(dataList.size()>0) {
+			
+			List<String> columnString = columnNameList.stream().map(String::valueOf).collect(Collectors.toList()); 
+			
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 			
 			File agentsFile = new File("Agents.csv");
+			FileWriter writer = new FileWriter(agentsFile);
 			
-			FileService.writesCsvFromBean(Paths.get(agentsFile.getPath()),agentList);
+//			writesCsvFromBean(Paths.get(agentsFile.getPath()),agentList);
+			columnString.add("[)~=_(]");
+			CSVUtils.writeLine(writer, columnString, "[)!|;(]");
+			
+			for(Object[] object : dataList) {
+				
+				List<String> stringList = Stream.of(object).map(String::valueOf).collect(Collectors.toList());
+				stringList.add("[)~=_(]");
+				CSVUtils.writeLine(writer, stringList, "[)!|;(]");
+			}
 			
 			FileOutputStream fos = new FileOutputStream("Agents.zip");
 			ZipOutputStream zipOs = new ZipOutputStream(fos);

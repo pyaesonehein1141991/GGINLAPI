@@ -8,7 +8,9 @@ import lombok.Data;
 public class GroupFarmerResponseDTO {
 	
 	private String bpmsInsuredPersonId;
+	private String proposalNo;
 	private String policyNo;
 	private String customerId;
+	
 
 }

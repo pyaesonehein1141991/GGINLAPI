@@ -15,15 +15,20 @@ import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.tat.gginl.api.common.CSVUtils;
 import org.tat.gginl.api.domains.Agent;
 import org.tat.gginl.api.domains.Customer;
 import org.tat.gginl.api.domains.services.AgentService;
@@ -34,7 +39,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
-import com.opencsv.bean.MappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
@@ -54,13 +58,15 @@ class GginlApiApplicationTests {
 	public static <T> void writesCsvFromBean(Path path, List<T> objectList) throws Exception{
 		Writer writer = new FileWriter(path.toString());
 		
-		MappingStrategy<Object> mappingStrategy = new ColumnPositionMappingStrategy<>();
+		ColumnPositionMappingStrategy<Object> mappingStrategy = new ColumnPositionMappingStrategy<>();
 	    mappingStrategy.setType(Customer.class);
 		
 		StatefulBeanToCsv<Object> sbc = new StatefulBeanToCsvBuilder<>(writer)
+				.withMappingStrategy(mappingStrategy)
 				.withSeparator(CSVWriter.DEFAULT_SEPARATOR)
 				.withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
 				.withEscapechar(CSVWriter.NO_ESCAPE_CHARACTER)
+				.withLineEnd(System.lineSeparator())
 				.build();
 		
 		sbc.write(objectList);
@@ -130,6 +136,7 @@ class GginlApiApplicationTests {
 			
 			writesCsvFromBean(Paths.get(customerFile.getPath()),customerList);
 			
+			
 			FileOutputStream fos = new FileOutputStream("Customer.zip");
 			ZipOutputStream zipOs = new ZipOutputStream(fos);
 
@@ -171,23 +178,40 @@ class GginlApiApplicationTests {
 	
 //	@Scheduled(cron = "* 22 11 *  * ?")
 	
-//	@BeforeEach
+	@BeforeEach
 	public void createAgentFolder() throws Exception {
+		
+		
 		
 		Date startDate =FileService.resetStartDate(new Date());
 		startDate =FileService.minusDays(startDate, 2);
 		Date endDate =FileService.resetEndDate(new Date());
 		
-		List<Agent> agentList = agentService.findAll();
+		List<Object> columnNameList = agentService.findAllColumnName();
+		List<Object[]> dataList = agentService.findAllNativeObject();
 		
-		if(agentList.size()>0) {
+		
+		if(dataList.size()>0) {
+			
+			List<String> columnString = columnNameList.stream().map(String::valueOf).collect(Collectors.toList()); 
+			
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 			
 			File agentsFile = new File("Agents.csv");
+			FileWriter writer = new FileWriter(agentsFile);
 			
-			FileService.writesCsvFromBean(Paths.get(agentsFile.getPath()),agentList);
+//			writesCsvFromBean(Paths.get(agentsFile.getPath()),agentList);
+			columnString.add("[)~=_(]");
+			CSVUtils.writeLine(writer, columnString, "[)!|;(]");
+			
+			for(Object[] object : dataList) {
+				
+				List<String> stringList = Stream.of(object).map(String::valueOf).collect(Collectors.toList());
+				stringList.add("[)~=_(]");
+				CSVUtils.writeLine(writer, stringList, "[)!|;(]");
+			}
 			
 			FileOutputStream fos = new FileOutputStream("Agents.zip");
 			ZipOutputStream zipOs = new ZipOutputStream(fos);

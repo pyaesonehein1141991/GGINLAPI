@@ -2,8 +2,6 @@ package org.tat.gginl.api.domains.services;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tat.gginl.api.domains.Agent;
@@ -15,9 +13,17 @@ public class AgentService {
 	@Autowired
 	private AgentRepository repository;
 	
-	@Transactional
 	public List<Agent> findAll(){
 		return repository.findAll();
 	}
+	
+	public List<Object[]> findAllNativeObject(){
+		return repository.findAllNativeObject();
+	}
+	
+	public List<Object> findAllColumnName(){
+		return repository.findAllColumnName();
+	}
+
 
 }
