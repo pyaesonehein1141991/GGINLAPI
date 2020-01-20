@@ -1,6 +1,6 @@
 package org.tat.gginl.api.scheduler;
 
-import java.io.File;
+	import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.nio.file.Files;
@@ -19,33 +19,33 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.tat.gginl.api.common.CSVUtils;
-import org.tat.gginl.api.domains.Occupation;
-import org.tat.gginl.api.domains.repository.OccupationRepository;
+import org.tat.gginl.api.domains.services.BankService;
 import org.tat.gginl.api.domains.services.FileService;
-import org.tat.gginl.api.domains.services.OccupationService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 @Component
-public class OccupationSchedular {
-
-	@Autowired
-	private OccupationService occupationService;
-	
-	@Value("${fileDir}")
-	private String fileDir;
-	
-	@Scheduled(cron = "0 0 0 * * ?")
-	 public void createOccupationSFolder() throws Exception {
+public class BankScheduler {
+		
+		@Autowired
+		private BankService bankService;
+		
+		@Value("${fileDir}")
+		private String fileDir;
+		
+		@Scheduled(cron = "0 0 0 * * ?")
+		public void createBankFolder() throws Exception {
 			
 			Date startDate =FileService.resetStartDate(new Date());
-			startDate = FileService.minusDays(startDate, 2);
-			Date endDate = FileService.resetEndDate(new Date());
+			startDate =FileService.minusDays(startDate, 2);
+			Date endDate =FileService.resetEndDate(new Date());
 			
-//			List<Occupation> occupationList = occupationRepo.findAll();
+		//	List<Bank> agentList = bankService.findAll();
 			
-			List<Object> columnNameList = occupationService.findAllColumnName();
-			List<Object[]> dataList = occupationService.findAllNativeObject();
+
+			List<Object> columnNameList = bankService.findAllColumnName();
+			List<Object[]> dataList = bankService.findAllNativeObject();
+			
 			
 			if(dataList.size()>0) {
 				
@@ -55,8 +55,8 @@ public class OccupationSchedular {
 				ObjectMapper objectMapper = new ObjectMapper();
 				objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 				
-				File occupationFile = new File("Occupation.csv");
-				FileWriter writer = new FileWriter(occupationFile);
+				File agentsFile = new File("Banks.csv");
+				FileWriter writer = new FileWriter(agentsFile);
 				
 //				writesCsvFromBean(Paths.get(agentsFile.getPath()),agentList);
 				columnString.add("[)~=_(]");
@@ -69,40 +69,42 @@ public class OccupationSchedular {
 					CSVUtils.writeLine(writer, stringList, "[)!|;(]");
 				}
 				
-				
-				FileOutputStream fos = new FileOutputStream("Occupation.zip");
+				FileOutputStream fos = new FileOutputStream("Banks.zip");
 				ZipOutputStream zipOs = new ZipOutputStream(fos);
 
-				FileService.writeToZipFile(occupationFile, zipOs);
+				FileService.writeToZipFile(agentsFile, zipOs);
 
 				zipOs.close();
 				fos.close();
 				
-				File toCheckSumFile = new File("Occupation.zip");
+				File toCheckSumFile = new File("Banks.zip");
 
 				MessageDigest md5Digest = MessageDigest.getInstance("MD5");
 
 				// Get the checksum
-				String checksum =FileService.getFileChecksum(md5Digest, toCheckSumFile);
-				File checksumFile = new File("OccupationInfoChecksum".concat(".md5"));
+				String checksum = FileService.getFileChecksum(md5Digest, toCheckSumFile);
+				File checksumFile = new File("BanksInfoChecksum".concat(".md5"));
 				
 				objectMapper.writeValue(checksumFile,checksum);
-				String tempDir= fileDir.concat(":\\AceSharedFolder\\OccupationInfo").concat(FileService.getDateToString(new Date()));
+				String tempDir= fileDir.concat(":\\AceSharedFolder\\BanksInfo").concat(FileService.getDateToString(new Date()));
 				
-				Path filePath = Paths.get(tempDir.concat("\\Occupation.zip"));
+				Path filePath = Paths.get(tempDir.concat("\\Banks.zip"));
 				Files.createDirectories(filePath.getParent());
 				
-				Files.move(Paths.get(toCheckSumFile.getPath()),Paths.get(tempDir.concat("\\Occupation.zip")),StandardCopyOption.REPLACE_EXISTING);
-				Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\OccupationInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
+				Files.move(Paths.get(toCheckSumFile.getPath()),Paths.get(tempDir.concat("\\Banks.zip")),StandardCopyOption.REPLACE_EXISTING);
+				Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\BanksInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
 				
 				
-				Files.deleteIfExists(Paths.get(occupationFile.getPath()));
-				Files.deleteIfExists(Paths.get("Occupation.zip"));
-				Files.deleteIfExists(Paths.get("OccupationInfochecksum.md5"));
+				
+				Files.deleteIfExists(Paths.get(agentsFile.getPath()));
+				Files.deleteIfExists(Paths.get("Banks.zip"));
+				Files.deleteIfExists(Paths.get("BanksInfoChecksum.md5"));
 
 
 			}
 			
 		}
+	}
+	    
 
-}
+

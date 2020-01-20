@@ -2,6 +2,7 @@ package org.tat.gginl.api.scheduler;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,16 +10,20 @@ import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.tat.gginl.api.common.CSVUtils;
 import org.tat.gginl.api.domains.PaymentType;
 import org.tat.gginl.api.domains.SalePoint;
 import org.tat.gginl.api.domains.repository.PaymentTypeRepository;
 import org.tat.gginl.api.domains.services.FileService;
+import org.tat.gginl.api.domains.services.PaymentTypeService;
 import org.tat.gginl.api.domains.services.SalePointService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +33,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 public class PaymentTypeSchedular {
 
 	@Autowired
-	private PaymentTypeRepository paymentTypeRepo;
+	private PaymentTypeService paymentTypeService;
 
 	@Value("${fileDir}")
 	private String fileDir;
@@ -40,21 +45,39 @@ public class PaymentTypeSchedular {
 			startDate = FileService.minusDays(startDate, 2);
 			Date endDate = FileService.resetEndDate(new Date());
 			
-			List<PaymentType> paymentTypeList = paymentTypeRepo.findAll();
+		//	List<PaymentType> paymentTypeList = paymentTypeRepo.findAll();
 			
-			if(paymentTypeList.size()>0) {
+
+			List<Object> columnNameList = paymentTypeService.findAllColumnName();
+			List<Object[]> dataList = paymentTypeService.findAllNativeObject();
+			
+			
+			if(dataList.size()>0) {
+				
+				List<String> columnString = columnNameList.stream().map(String::valueOf).collect(Collectors.toList()); 
+				
 				
 				ObjectMapper objectMapper = new ObjectMapper();
 				objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
 				
-				File salePointsFile = new File("PaymentType.csv");
+				File paymentTypeFile = new File("PaymentType.csv");
+				FileWriter writer = new FileWriter(paymentTypeFile);
 				
-				FileService.writesCsvFromBean(Paths.get(salePointsFile.getPath()),paymentTypeList);
+//				writesCsvFromBean(Paths.get(agentsFile.getPath()),agentList);
+				columnString.add("[)~=_(]");
+				CSVUtils.writeLine(writer, columnString, "[)!|;(]");
+				
+				for(Object[] object : dataList) {
+					
+					List<String> stringList = Stream.of(object).map(String::valueOf).collect(Collectors.toList());
+					stringList.add("[)~=_(]");
+					CSVUtils.writeLine(writer, stringList, "[)!|;(]");
+				}
 				
 				FileOutputStream fos = new FileOutputStream("PaymentType.zip");
 				ZipOutputStream zipOs = new ZipOutputStream(fos);
 
-				FileService.writeToZipFile(salePointsFile, zipOs);
+				FileService.writeToZipFile(paymentTypeFile, zipOs);
 
 				zipOs.close();
 				fos.close();
@@ -77,7 +100,7 @@ public class PaymentTypeSchedular {
 				Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\PaymentTypeInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
 				
 				
-				Files.deleteIfExists(Paths.get(salePointsFile.getPath()));
+				Files.deleteIfExists(Paths.get(paymentTypeFile.getPath()));
 				Files.deleteIfExists(Paths.get("PaymentType.zip"));
 				Files.deleteIfExists(Paths.get("PaymentTypeInfochecksum.md5"));
 

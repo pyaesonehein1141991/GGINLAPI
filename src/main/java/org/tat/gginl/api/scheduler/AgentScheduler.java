@@ -42,7 +42,7 @@ public class AgentScheduler {
 		startDate =FileService.minusDays(startDate, 2);
 		Date endDate =FileService.resetEndDate(new Date());
 		
-		List<Agent> agentList = agentService.findAll();
+	//	List<Agent> agentList = agentService.findAll();
 		
 
 		List<Object> columnNameList = agentService.findAllColumnName();
