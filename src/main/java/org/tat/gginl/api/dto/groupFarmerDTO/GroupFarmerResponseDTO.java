@@ -7,6 +7,7 @@ import lombok.Data;
 @Builder
 public class GroupFarmerResponseDTO {
 	
+	private String groupProposalNo;
 	private String bpmsInsuredPersonId;
 	private String proposalNo;
 	private String policyNo;

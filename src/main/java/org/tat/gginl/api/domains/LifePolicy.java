@@ -847,6 +847,10 @@ public class LifePolicy implements IPolicy, Serializable, ISorter {
 	public void setPaymentChannel(PaymentChannel paymentChannel) {
 		this.paymentChannel = paymentChannel;
 	}
+	
+	public String getGroupFarmerProposalNo() {
+		return lifeProposal.getGroupFarmerProposal().getProposalNo();
+	}
 
 	/*
 	 * (non-Javadoc)

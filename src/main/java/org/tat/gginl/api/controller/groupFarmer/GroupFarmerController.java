@@ -46,6 +46,7 @@ public class GroupFarmerController {
 					.bpmsInsuredPersonId(policy.getPolicyInsuredPersonList().get(0).getBpmsInsuredPersonId())
 					.proposalNo(policy.getProposalNo())
 					.policyNo(policy.getPolicyNo())
+					.groupProposalNo(policy.getGroupFarmerProposalNo())
 					.customerId(policy.getPolicyInsuredPersonList().get(0).isNewCustomer()?policy.getPolicyInsuredPersonList().get(0).getCustomer().getId():null)
 					.build();
 
