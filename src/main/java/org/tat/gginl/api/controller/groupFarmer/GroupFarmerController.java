@@ -35,11 +35,12 @@ public class GroupFarmerController {
 			@ApiResponse(code = 403, message = "Access denied"), 
 			@ApiResponse(code = 500, message = "Expired or invalid JWT token") })
 	public ResponseDTO<Object> submitproposal(@Valid @RequestBody FarmerProposalDTO groupFarmerProposalDTO) {
+//		try {
 		List<LifePolicy> policyList = new ArrayList<>();
 		// create farmer proposal
 		policyList = lifeProposalService.createGroupFarmerProposalToPolicy(groupFarmerProposalDTO);
 		// create response object
-		List<GroupFarmerResponseDTO> responseList = new ArrayList<>();
+		List<GroupFarmerResponseDTO> responseList = null;
 
 		policyList.forEach(policy -> {
 			GroupFarmerResponseDTO dto = GroupFarmerResponseDTO.builder()
@@ -56,7 +57,12 @@ public class GroupFarmerController {
 		ResponseDTO<Object> responseDTO = ResponseDTO.builder().responseStatus("Success!").responseBody(responseList)
 				.build();
 		return responseDTO;
-		
-	}
+		}
+//		catch(Exception e)
+//		{
+//			e.getMessage();
+//		}
+//		return null;
+//	}
 
 }

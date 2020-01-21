@@ -4,34 +4,41 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.tat.gginl.api.common.SecurityUser;
 import org.tat.gginl.api.common.emumdata.Role;
 import org.tat.gginl.api.domains.services.UserService;
 
+
+
 @SpringBootApplication
-@EnableScheduling
+//@EnableScheduling
 public class GginlApiApplication implements CommandLineRunner {
 	@Autowired
 	private UserService userService;
 
+//	private static final Logger LOGGER = LogManager.getLogger(GginlApiApplication.class);
+	
 	public static void main(String[] args) {
-//		SpringApplication.run(GginlApiApplication.class, args);
-
 		SpringApplication application = new SpringApplication(GginlApiApplication.class);
-		Properties properties = new Properties();
+	    Properties properties = new Properties();
 		properties.setProperty("spring.main.banner-mode", "log");
 		properties.setProperty("logging.file", "C:/APILOG.log");
+		properties.setProperty("logging.level.com.microsoft.sqlserver.jdbc", "info");
+		properties.setProperty("logging.level.com.microsoft.sqlserver.jdbc.internals", "debug");
+		properties.setProperty("logging.level.root", "WARN");
+		properties.setProperty("logging.level.org.tat.gginl.api", "warn");
+		properties.setProperty("logging.level.org.springframework.web", "debug");
 		properties.setProperty("logging.pattern.console", "");
 		application.setDefaultProperties(properties);
 		application.run(args);
-
 	}
 
 	@Bean

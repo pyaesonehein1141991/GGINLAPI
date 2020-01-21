@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.ConstraintViolationException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import org.tat.gginl.api.dto.ResponseDTO;
 @ControllerAdvice
 public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(APIExceptionHandler.class);
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -31,6 +34,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 		}
 		ResponseDTO<Object> responseDTO = ResponseDTO.builder().responseStatus(status.toString())
 				.message(generateMessage(fieldError)).responseBody(null).build();
+		LOGGER.error(details.toString());
 		return ResponseEntity.badRequest().body(responseDTO);
 
 	}
@@ -51,7 +55,7 @@ public class APIExceptionHandler extends ResponseEntityExceptionHandler {
 	        ResponseDTO<Object> responseDTO = ResponseDTO.builder()
 	            .responseStatus(HttpStatus.BAD_REQUEST.toString())
 	            .message(ex.getMessage()).build();
-
+	        LOGGER.error(ex.getMessage());
 	        return ResponseEntity.badRequest().body(responseDTO);
 	    }
 }
