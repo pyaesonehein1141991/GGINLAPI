@@ -34,7 +34,7 @@ public class HospitalScheduler {
 	@Value("${fileDir}")
 	private String fileDir;
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 */5 * ? * *")
 	public void createBankFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());
@@ -77,6 +77,7 @@ public class HospitalScheduler {
 
 			zipOs.close();
 			fos.close();
+			writer.close();
 			
 			File toCheckSumFile = new File("Hospital.zip");
 
@@ -97,9 +98,9 @@ public class HospitalScheduler {
 			
 			
 			
-			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
 			Files.deleteIfExists(Paths.get("Hospital.zip"));
 			Files.deleteIfExists(Paths.get("HospitalInfoChecksum.md5"));
+			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
 
 
 		}

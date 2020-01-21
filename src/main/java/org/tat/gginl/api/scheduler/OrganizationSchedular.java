@@ -36,7 +36,7 @@ public class OrganizationSchedular {
 	@Value("${fileDir}")
 	private String fileDir;
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 */5 * ? * *")
 	 public void createSalePointFolder() throws Exception {
 			
 			Date startDate =FileService.resetStartDate(new Date());
@@ -77,6 +77,7 @@ public class OrganizationSchedular {
 
 				zipOs.close();
 				fos.close();
+				writer.close();
 				
 				File toCheckSumFile = new File("Organization.zip");
 
@@ -96,9 +97,9 @@ public class OrganizationSchedular {
 				Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\OrganizationInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
 				
 				
-				Files.deleteIfExists(Paths.get(organizationFile.getPath()));
 				Files.deleteIfExists(Paths.get("Organization.zip"));
 				Files.deleteIfExists(Paths.get("OrganizationInfochecksum.md5"));
+				Files.deleteIfExists(Paths.get(organizationFile.getPath()));
 
 
 			}

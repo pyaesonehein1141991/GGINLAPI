@@ -36,7 +36,7 @@ public class SaleManSchedular {
 	@Value("${fileDir}")
 	private String fileDir;
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 */5 * ? * *")
 	 public void createSaleManFolder() throws Exception {
 			
 			Date startDate =FileService.resetStartDate(new Date());
@@ -77,6 +77,7 @@ public class SaleManSchedular {
 
 				zipOs.close();
 				fos.close();
+				writer.close();
 				
 				File toCheckSumFile = new File("SaleMan.zip");
 
@@ -96,9 +97,9 @@ public class SaleManSchedular {
 				Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\SaleManInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
 				
 				
-				Files.deleteIfExists(Paths.get(saleManFile.getPath()));
 				Files.deleteIfExists(Paths.get("SaleMan.zip"));
 				Files.deleteIfExists(Paths.get("SaleManInfochecksum.md5"));
+				Files.deleteIfExists(Paths.get(saleManFile.getPath()));
 
 
 			}

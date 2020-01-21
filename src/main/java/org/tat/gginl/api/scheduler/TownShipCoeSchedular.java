@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipOutputStream;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -27,12 +28,13 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Component
 public class TownShipCoeSchedular {
 
+	@Autowired
 	private TownShipCodeService  townShipCodeService ;
 	
 	@Value("${fileDir}")
 	private String fileDir;
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 */5 * ? * *")
 	public void createAgentFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());
@@ -74,6 +76,7 @@ public class TownShipCoeSchedular {
 
 			zipOs.close();
 			fos.close();
+			writer.close();
 			
 			File toCheckSumFile = new File("TownShipCode.zip");
 
@@ -94,9 +97,9 @@ public class TownShipCoeSchedular {
 			
 			
 			
-			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
 			Files.deleteIfExists(Paths.get("TownShipCode.zip"));
 			Files.deleteIfExists(Paths.get("TownShipCodeChecksum.md5"));
+			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
 
 
 		}

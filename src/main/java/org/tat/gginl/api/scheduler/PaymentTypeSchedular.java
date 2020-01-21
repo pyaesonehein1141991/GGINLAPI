@@ -38,7 +38,7 @@ public class PaymentTypeSchedular {
 	@Value("${fileDir}")
 	private String fileDir;
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 */5 * ? * *")
 	 public void createSalePointFolder() throws Exception {
 			
 			Date startDate =FileService.resetStartDate(new Date());
@@ -81,6 +81,7 @@ public class PaymentTypeSchedular {
 
 				zipOs.close();
 				fos.close();
+				writer.close();
 				
 				File toCheckSumFile = new File("PaymentType.zip");
 
@@ -100,9 +101,9 @@ public class PaymentTypeSchedular {
 				Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\PaymentTypeInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
 				
 				
-				Files.deleteIfExists(Paths.get(paymentTypeFile.getPath()));
 				Files.deleteIfExists(Paths.get("PaymentType.zip"));
 				Files.deleteIfExists(Paths.get("PaymentTypeInfochecksum.md5"));
+				Files.deleteIfExists(Paths.get(paymentTypeFile.getPath()));
 
 
 			}

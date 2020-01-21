@@ -35,7 +35,7 @@ public class ProductSchedular {
 	@Value("${fileDir}")
 	private String fileDir;
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 */5 * ? * *")
 	public void createProductFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());
@@ -78,6 +78,7 @@ public class ProductSchedular {
 
 			zipOs.close();
 			fos.close();
+			writer.close();
 			
 			File toCheckSumFile = new File("Product.zip");
 
@@ -98,9 +99,9 @@ public class ProductSchedular {
 			
 			
 			
-			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
 			Files.deleteIfExists(Paths.get("Product.zip"));
 			Files.deleteIfExists(Paths.get("ProductInfoChecksum.md5"));
+			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
 
 
 		}

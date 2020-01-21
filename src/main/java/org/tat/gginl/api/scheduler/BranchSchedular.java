@@ -37,7 +37,7 @@ public class BranchSchedular {
 	@Value("${fileDir}")
 	private String fileDir;
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 */5 * ? * *")
 	public void createAgentFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());
@@ -73,6 +73,7 @@ public class BranchSchedular {
 
 			zipOs.close();
 			fos.close();
+			writer.close();
 			
 			File toCheckSumFile = new File("Branch.zip");
 
@@ -93,9 +94,9 @@ public class BranchSchedular {
 			
 			
 			
-			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
 			Files.deleteIfExists(Paths.get("Branch.zip"));
 			Files.deleteIfExists(Paths.get("BranchInfochecksum.md5"));
+			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
 
 
 		}

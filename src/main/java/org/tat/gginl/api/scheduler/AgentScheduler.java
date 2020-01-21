@@ -35,7 +35,7 @@ public class AgentScheduler {
 	@Value("${fileDir}")
 	private String fileDir;
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 */5 * ? * *")
 	public void createAgentFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());
@@ -78,6 +78,7 @@ public class AgentScheduler {
 
 			zipOs.close();
 			fos.close();
+			writer.close();
 			
 			File toCheckSumFile = new File("Agents.zip");
 
@@ -98,9 +99,9 @@ public class AgentScheduler {
 			
 			
 			
-			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
 			Files.deleteIfExists(Paths.get("Agents.zip"));
 			Files.deleteIfExists(Paths.get("AgentsInfochecksum.md5"));
+			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
 
 
 		}

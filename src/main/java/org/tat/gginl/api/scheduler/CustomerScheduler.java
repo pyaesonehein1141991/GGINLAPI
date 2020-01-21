@@ -36,7 +36,7 @@ public class CustomerScheduler {
 	@Value("${fileDir}")
 	private String fileDir;
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 */5 * ? * *")
 	public void createCustomerFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());
@@ -80,6 +80,7 @@ public class CustomerScheduler {
 
 			zipOs.close();
 			fos.close();
+			writer.close();
 			
 			File toCheckSumFile = new File("Customer.zip");
 
@@ -100,9 +101,9 @@ public class CustomerScheduler {
 			
 			
 			
-			Files.deleteIfExists(Paths.get(customerFile.getPath()));
 			Files.deleteIfExists(Paths.get("Customer.zip"));
 			Files.deleteIfExists(Paths.get("CustomerInfochecksum.md5"));
+			Files.deleteIfExists(Paths.get(customerFile.getPath()));
 
 
 		}

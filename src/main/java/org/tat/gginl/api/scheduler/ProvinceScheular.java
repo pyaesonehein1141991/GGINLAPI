@@ -35,7 +35,7 @@ public class ProvinceScheular {
 	@Value("${fileDir}")
 	private String fileDir;
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 */5 * ? * *")
 	public void createProvienceFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());
@@ -78,6 +78,7 @@ public class ProvinceScheular {
 
 			zipOs.close();
 			fos.close();
+			writer.close();
 			
 			File toCheckSumFile = new File("Provience.zip");
 
@@ -98,9 +99,9 @@ public class ProvinceScheular {
 			
 			
 			
-			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
 			Files.deleteIfExists(Paths.get("Provience.zip"));
 			Files.deleteIfExists(Paths.get("ProvienceInfoChecksum.md5"));
+			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
 
 
 		}

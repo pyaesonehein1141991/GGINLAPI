@@ -38,7 +38,7 @@ public class RelationShipSchedular {
 	@Value("${fileDir}")
 	private String fileDir;
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 */5 * ? * *")
 	 public void createRelationShipFolder() throws Exception {
 			
 			Date startDate =FileService.resetStartDate(new Date());
@@ -78,6 +78,7 @@ public class RelationShipSchedular {
 
 				zipOs.close();
 				fos.close();
+				writer.close();
 				
 				File toCheckSumFile = new File("RelationShip.zip");
 
@@ -97,9 +98,9 @@ public class RelationShipSchedular {
 				Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\RelationShipInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
 				
 				
-				Files.deleteIfExists(Paths.get(relationshipFile.getPath()));
 				Files.deleteIfExists(Paths.get("RelationShip.zip"));
 				Files.deleteIfExists(Paths.get("RelationShipInfochecksum.md5"));
+				Files.deleteIfExists(Paths.get(relationshipFile.getPath()));
 
 
 			}

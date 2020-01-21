@@ -34,7 +34,7 @@ public class GradeInfoScheduler {
 	@Value("${fileDir}")
 	private String fileDir;
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 */5 * ? * *")
 	public void createBankFolder() throws Exception {
 		
 		Date startDate =FileService.resetStartDate(new Date());
@@ -77,6 +77,7 @@ public class GradeInfoScheduler {
 
 			zipOs.close();
 			fos.close();
+			writer.close();
 			
 			File toCheckSumFile = new File("GradeInfo.zip");
 
@@ -97,9 +98,9 @@ public class GradeInfoScheduler {
 			
 			
 			
-			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
 			Files.deleteIfExists(Paths.get("GradeInfo.zip"));
 			Files.deleteIfExists(Paths.get("GradeInfoInfoChecksum.md5"));
+			Files.deleteIfExists(Paths.get(agentsFile.getPath()));
 
 
 		}

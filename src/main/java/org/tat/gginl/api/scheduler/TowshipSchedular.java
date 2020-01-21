@@ -36,7 +36,7 @@ public class TowshipSchedular {
 	private String fileDir;
 	
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 */5 * ? * *")
 	 public void createSalePointFolder() throws Exception {
 			
 			Date startDate =FileService.resetStartDate(new Date());
@@ -77,6 +77,7 @@ public class TowshipSchedular {
 
 				zipOs.close();
 				fos.close();
+				writer.close();
 				
 				File toCheckSumFile = new File("Township.zip");
 
@@ -96,9 +97,9 @@ public class TowshipSchedular {
 				Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\TownshipInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
 				
 				
-				Files.deleteIfExists(Paths.get(townshipFile.getPath()));
 				Files.deleteIfExists(Paths.get("Township.zip"));
 				Files.deleteIfExists(Paths.get("TownshipInfochecksum.md5"));
+				Files.deleteIfExists(Paths.get(townshipFile.getPath()));
 
 
 			}

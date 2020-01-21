@@ -35,7 +35,7 @@ public class OccupationSchedular {
 	@Value("${fileDir}")
 	private String fileDir;
 	
-	@Scheduled(cron = "0 0 0 * * ?")
+	@Scheduled(cron = "0 */5 * ? * *")
 	 public void createOccupationSFolder() throws Exception {
 			
 			Date startDate =FileService.resetStartDate(new Date());
@@ -77,6 +77,7 @@ public class OccupationSchedular {
 
 				zipOs.close();
 				fos.close();
+				writer.close();
 				
 				File toCheckSumFile = new File("Occupation.zip");
 
@@ -96,9 +97,9 @@ public class OccupationSchedular {
 				Files.move(Paths.get(checksumFile.getPath()),Paths.get(tempDir.concat("\\OccupationInfoChecksum.md5")),StandardCopyOption.REPLACE_EXISTING);
 				
 				
-				Files.deleteIfExists(Paths.get(occupationFile.getPath()));
 				Files.deleteIfExists(Paths.get("Occupation.zip"));
 				Files.deleteIfExists(Paths.get("OccupationInfochecksum.md5"));
+				Files.deleteIfExists(Paths.get(occupationFile.getPath()));
 
 
 			}
