@@ -32,6 +32,7 @@ import org.tat.gginl.api.domains.Bank;
 import org.tat.gginl.api.domains.Branch;
 import org.tat.gginl.api.domains.Customer;
 import org.tat.gginl.api.domains.GroupFarmerProposal;
+import org.tat.gginl.api.domains.GroupFarmerProposalDTO;
 import org.tat.gginl.api.domains.InsuredPersonBeneficiaries;
 import org.tat.gginl.api.domains.LifePolicy;
 import org.tat.gginl.api.domains.LifeProposal;
@@ -148,15 +149,15 @@ public class LifeProposalService {
 			// create lifepolicy and return policynoList
 			policyList = lifePolicyRepo.saveAll(policyList);
 			
-			List<Payment> paymentList = convertGroupFarmerPolicyToPayment(policyList);
+			List<Payment> paymentList = convertGroupFarmerToPayment(groupFarmerProposal,groupFarmerProposalDTO);
 			paymentRepository.saveAll(paymentList);
 		
 			if (null != groupFarmerProposalDTO.getAgentID()) {
-				List<AgentCommission> agentcommissionList = convertGroupFarmerPolicyToAgentCommission(policyList);
+				List<AgentCommission> agentcommissionList = convertGroupFarmerToAgentCommission(groupFarmerProposal);
 				agentCommissionRepo.saveAll(agentcommissionList);
 			}
 
-			List<TLF> tlfList = convertGroupFarmerPolicyToTLF(policyList);
+			List<TLF> tlfList = convertGroupFarmerToTLF(groupFarmerProposal);
 			tlfRepository.saveAll(tlfList);
 			return policyList;
 		
@@ -179,6 +180,10 @@ public class LifeProposalService {
 		groupFarmerProposal.setEndDate(groupFarmerProposalDTO.getEndDate());
 		groupFarmerProposal.setNoOfInsuredPerson(groupFarmerProposalDTO.getNoOfInsuredPerson());
 		groupFarmerProposal.setTotalSI(groupFarmerProposalDTO.getTotalSI());
+		groupFarmerProposal.setPaymentComplete(true);
+		groupFarmerProposal.setProcessComplete(true);
+		double totalPremium=(groupFarmerProposal.getTotalSI() / 100) * 1 ;
+		groupFarmerProposal.setPremium(totalPremium);
 		if(branchOptional.isPresent()) {
 			groupFarmerProposal.setBranch(branchOptional.get());	
 		}
@@ -203,11 +208,9 @@ public class LifeProposalService {
 		
 		CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
 		recorder.setCreatedDate(new Date());
-		
 		groupFarmerProposal.setCommonCreateAndUpateMarks(recorder);
 		String proposalNo = customIdRepo.getNextId("GROUPFARMER_LIFE_PROPOSAL_NO", null);
 		groupFarmerProposal.setProposalNo(proposalNo);
-		
 		return groupFarmerProposal;
 	}
 
@@ -464,6 +467,68 @@ public class LifeProposalService {
 		return paymentList;
 	}
 	
+	
+	private List<Payment> convertGroupFarmerToPayment(GroupFarmerProposal groupFarmerProposal,FarmerProposalDTO farmerProposalDTO) {
+				List<Payment> paymentList = new ArrayList<Payment>();
+			try {
+			Optional<Bank> fromBankOptional=Optional.empty();
+			Optional<Bank> toBankOptional =Optional.empty();
+			if(farmerProposalDTO.getFromBank() !=null) {
+			fromBankOptional = bankRepository.findById(farmerProposalDTO.getFromBank());
+			}if(farmerProposalDTO.getToBank() !=null) {
+			toBankOptional = bankRepository.findById(farmerProposalDTO.getToBank());
+			}
+			Payment payment = new Payment();
+			double rate = 1.0;
+			String receiptNo="";
+			CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
+			recorder.setCreatedDate(new Date());
+			if(farmerProposalDTO.getPaymentChannel().equalsIgnoreCase("CSH")) {
+				 receiptNo = customIdRepo.getNextId("CASH_RECEIPT_ID_GEN", null);
+				 payment.setPaymentChannel(PaymentChannel.CASHED);
+			}else if(farmerProposalDTO.getPaymentChannel().equalsIgnoreCase("CHQ")) {
+				 payment.setPO(true);
+				 payment.setPaymentChannel(PaymentChannel.CHEQUE);
+				 receiptNo = customIdRepo.getNextId("CHEQUE_RECEIPT_ID_GEN", null);
+			}else if(farmerProposalDTO.getPaymentChannel().equalsIgnoreCase("TRF")) {
+				 payment.setPaymentChannel(PaymentChannel.TRANSFER);
+				 receiptNo = customIdRepo.getNextId("TRANSFER_RECEIPT_ID_GEN", null);
+			}else if (farmerProposalDTO.getPaymentChannel().equalsIgnoreCase("RCV")) {
+				 payment.setPaymentChannel(PaymentChannel.SUNDRY);
+				 receiptNo = customIdRepo.getNextId("CHEQUE_RECEIPT_ID_GEN", null);
+				 payment.setPO(true);
+			}
+			payment.setReceiptNo(receiptNo);
+			payment.setChequeNo(farmerProposalDTO.getChequeNo());
+			payment.setPaymentType(groupFarmerProposal.getPaymentType());
+			payment.setReferenceType(PolicyReferenceType.GROUP_FARMER_PROPOSAL);
+			payment.setConfirmDate(new Date());
+			payment.setPaymentDate(new Date());
+			if(toBankOptional.isPresent()) {
+				payment.setAccountBank(toBankOptional.get());
+			}
+			if(fromBankOptional.isPresent()) {
+				payment.setBank(fromBankOptional.get());	
+			}
+			payment.setReferenceNo(groupFarmerProposal.getId());
+			payment.setBasicPremium(groupFarmerProposal.getPremium());
+			payment.setFromTerm(1);
+			payment.setToTerm(1);
+			payment.setCur("KYT");
+			payment.setRate(rate);
+			payment.setComplete(true);
+			payment.setAmount(payment.getNetPremium());
+			payment.setHomeAmount(payment.getNetPremium());
+			payment.setHomePremium(payment.getBasicPremium());
+			payment.setHomeAddOnPremium(payment.getAddOnPremium());
+			payment.setCommonCreateAndUpateMarks(recorder);
+			paymentList.add(payment);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+			return paymentList;
+	}
+	
 	// agent Commission
 	private List<AgentCommission> convertGroupFarmerPolicyToAgentCommission(List<LifePolicy> farmerPolicyList) {
 		List<AgentCommission> agentCommissionList = new ArrayList<AgentCommission>();
@@ -480,6 +545,25 @@ public class LifeProposalService {
 					(rate * firstAgentCommission), "KYT", (rate * lifePolicy.getTotalTermPremium())));
 
 		});
+
+		return agentCommissionList;
+	}
+	
+	private List<AgentCommission> convertGroupFarmerToAgentCommission(GroupFarmerProposal groupFarmerProposal) {
+		List<AgentCommission> agentCommissionList = new ArrayList<AgentCommission>();
+		try {
+		/* get agent commission of each policy */
+			double commissionPercent = 10.0;
+			Payment payment = paymentRepository.findByPaymentReferenceNo(groupFarmerProposal.getId());
+			double rate = payment.getRate();
+			double firstAgentCommission = groupFarmerProposal.getAgentCommission();
+			agentCommissionList.add(new AgentCommission(groupFarmerProposal.getId(), PolicyReferenceType.GROUP_FARMER_PROPOSAL,
+					groupFarmerProposal.getAgent(), firstAgentCommission, new Date(), payment.getReceiptNo(),
+					groupFarmerProposal.getPremium(), commissionPercent, AgentCommissionEntryType.UNDERWRITING, rate,
+					(rate * firstAgentCommission), "KYT", (rate * groupFarmerProposal.getPremium())));
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 
 		return agentCommissionList;
 	}
@@ -527,6 +611,48 @@ public class LifeProposalService {
 		}
 		return TLFList;
 	}
+	
+	private List<TLF> convertGroupFarmerToTLF(GroupFarmerProposal proposal) {
+		List<TLF> TLFList = new ArrayList<TLF>();
+		try {
+		String accountCode = "Farmer_Premium";
+			Payment payment = paymentRepository.findByPaymentReferenceNo(proposal.getId());
+		
+			TLF tlf1 = addNewTLF_For_CashDebitForPremium(payment, proposal.getOrganization().getId(),
+						proposal.getBranch(), payment.getReceiptNo(), false, "KYT", proposal.getSalePoint(),
+						proposal.getProposalNo());
+			TLFList.add(tlf1);
+			TLF tlf2 = addNewTLF_For_PremiumCredit(payment, proposal.getOrganization().getId(),proposal.getBranch(), accountCode, payment.getReceiptNo(), false, "KYT",
+					proposal.getSalePoint(), proposal.getProposalNo());
+				TLFList.add(tlf2);
+			
+			if (payment.getPaymentChannel().equals(PaymentChannel.CHEQUE) || payment.getPaymentChannel().equals(PaymentChannel.SUNDRY)) {
+				String customerId=proposal.getOrganization().getId();
+				TLF tlf3 = addNewTLF_For_PremiumDebitForRCVAndCHQ(payment,customerId,proposal.getBranch(), payment.getAccountBank().getAcode(),false,payment.getReceiptNo(),true,
+						false,"KYT", proposal.getSalePoint(), proposal.getProposalNo());
+				TLFList.add(tlf3);
+				TLF tlf4 = addNewTLF_For_CashCreditForPremiumForRCVAndCHQ(payment,customerId,proposal.getBranch(),false,payment.getReceiptNo(),true,
+						false,"KYT", proposal.getSalePoint(),proposal.getProposalNo());
+				TLFList.add(tlf4);
+			}				
+			
+			if (proposal.getAgent() != null) {
+				double firstAgentCommission = proposal.getAgentCommission();
+				AgentCommission ac = new AgentCommission(proposal.getId(), PolicyReferenceType.GROUP_FARMER_PROPOSAL,
+						proposal.getAgent(), firstAgentCommission, new Date());
+				TLF tlf5 = addNewTLF_For_AgentCommissionDr(ac, false, proposal.getBranch(), payment, payment.getId(),
+						false, "KYT", proposal.getSalePoint(), proposal.getProposalNo());
+				TLFList.add(tlf5);
+				TLF tlf6 = addNewTLF_For_AgentCommissionCredit(ac, false, proposal.getBranch(), payment,
+						payment.getId(), false, "KYT", proposal.getSalePoint(), proposal.getProposalNo());
+				TLFList.add(tlf6);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return TLFList;
+	}
+
 
 	public TLF addNewTLF_For_CashDebitForPremium(Payment payment, String customerId, Branch branch, String tlfNo,
 			boolean isRenewal, String currencyCode, SalePoint salePoint, String policyNo) {
@@ -549,6 +675,7 @@ public class LifeProposalService {
 				String coaCodeType = "";
 				switch (payment.getReferenceType()) {
 				case FARMER_POLICY:
+				case GROUP_FARMER_PROPOSAL:
 					coaCodeType = COACode.FARMER_PAYMENT_ORDER;
 					break;
 					default:
@@ -559,6 +686,7 @@ public class LifeProposalService {
 				String coaCodeType = "";
 				switch (payment.getReferenceType()) {
 			     case FARMER_POLICY:
+			     case GROUP_FARMER_PROPOSAL:
 				 coaCodeType = COACode.FARMER_SUNDRY;
 				break;
 			     default:
@@ -667,6 +795,7 @@ public class LifeProposalService {
 			Product product;
 
 			switch (ac.getReferenceType()) {
+			case GROUP_FARMER_PROPOSAL:
 			case FARMER_POLICY:
 				coaCode = COACode.FARMER_AGENT_COMMISSION;
 				break;
@@ -736,6 +865,7 @@ public class LifeProposalService {
 				case CHEQUE: {
 					String coaCodeType = "";
 					switch (payment.getReferenceType()) {
+						case GROUP_FARMER_PROPOSAL:
 						case FARMER_POLICY:
 							coaCodeType = COACode.FARMER_PAYMENT_ORDER;
 							break;
@@ -748,6 +878,7 @@ public class LifeProposalService {
 				case SUNDRY: {
 					String coaCodeType = "";
 					switch (payment.getReferenceType()) {
+					    case GROUP_FARMER_PROPOSAL:
 						case FARMER_POLICY:
 							coaCodeType = COACode.FARMER_SUNDRY;
 							break;
@@ -824,7 +955,7 @@ public class LifeProposalService {
 		// No to Agent Name for commission amount of Amount
 		nrBf.append("Agent Commission payable for ");
 		switch (payment.getReferenceType()) {
-
+		case GROUP_FARMER_PROPOSAL:
 		case FARMER_POLICY:
 			insuranceName = "Life Insurance, ";
 			break;
@@ -857,6 +988,7 @@ public class LifeProposalService {
 
 			switch (ac.getReferenceType()) {
 			case FARMER_POLICY:
+			case GROUP_FARMER_PROPOSAL:
 				coaCode = COACode.FARMER_AGENT_PAYABLE;
 				break;
 			default:

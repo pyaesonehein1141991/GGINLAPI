@@ -40,7 +40,7 @@ public class GroupFarmerController {
 		// create farmer proposal
 		policyList = lifeProposalService.createGroupFarmerProposalToPolicy(groupFarmerProposalDTO);
 		// create response object
-		List<GroupFarmerResponseDTO> responseList = null;
+		List<GroupFarmerResponseDTO> responseList = new ArrayList<GroupFarmerResponseDTO>();
 
 		policyList.forEach(policy -> {
 			GroupFarmerResponseDTO dto = GroupFarmerResponseDTO.builder()

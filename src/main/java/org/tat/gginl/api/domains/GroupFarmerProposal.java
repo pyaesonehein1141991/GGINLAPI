@@ -27,7 +27,9 @@ import javax.persistence.Version;
 
 import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.FormatID;
+import org.tat.gginl.api.common.PolicyInsuredPerson;
 import org.tat.gginl.api.common.TableName;
+import org.tat.gginl.api.common.Utils;
 import org.tat.gginl.api.common.emumdata.ProposalType;
 
 import lombok.Data;
@@ -119,6 +121,21 @@ public class GroupFarmerProposal implements Serializable {
 		if (id != null) {
 			this.id = FormatID.formatId(id, getPrefix(), 10);
 		}
+	}
+	
+	@Transient
+	public double getAgentCommission() {
+		double totalCommission = 0.0;
+		if (agent != null) {
+				double commissionPercent = 0.1;
+				if (commissionPercent > 0) {
+					double totalPremium = premium ;
+					double commission = Utils.getPercentOf(commissionPercent, totalPremium);
+					totalCommission = totalCommission + commission;
+				}
+			}
+		
+		return Utils.getTwoDecimalPoint(totalCommission);
 	}
 
 }
