@@ -61,13 +61,13 @@ public class AgentScheduler {
 			FileWriter writer = new FileWriter(agentsFile);
 			
 //			writesCsvFromBean(Paths.get(agentsFile.getPath()),agentList);
-			columnString.add("[)~=_(]");
+			columnString.add("\r");
 			CSVUtils.writeLine(writer, columnString, "[)!|;(]");
 			
 			for(Object[] object : dataList) {
 				
 				List<String> stringList = Stream.of(object).map(String::valueOf).collect(Collectors.toList());
-				stringList.add("[)~=_(]");
+				stringList.add("\r");
 				CSVUtils.writeLine(writer, stringList, "[)!|;(]");
 			}
 			

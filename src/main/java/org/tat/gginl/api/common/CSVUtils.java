@@ -50,8 +50,9 @@ public class CSVUtils {
 
 			first = false;
 		}
-		sb.append("\n");
-		w.append(sb.toString());
+		sb.append("[)~=_(]\n");
+		w.append(sb.toString().replaceAll("[)!|;(][)~=_(]", "[)~=_(]"));
+		
 
 	}
 
