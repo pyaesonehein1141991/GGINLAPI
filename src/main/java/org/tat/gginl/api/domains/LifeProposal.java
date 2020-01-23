@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,6 +28,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.FormatID;
 import org.tat.gginl.api.common.IDataModel;
 import org.tat.gginl.api.common.IProposal;
@@ -146,6 +148,9 @@ public class LifeProposal implements Serializable, IDataModel, IProposal {
 	@Version
 	private int version;
 
+	@Embedded
+	private CommonCreateAndUpateMarks recorder;
+	
 	public LifeProposal() {
 		tempId = System.nanoTime() + "";
 	}
@@ -670,6 +675,15 @@ public class LifeProposal implements Serializable, IDataModel, IProposal {
 
 	public void setGroupFarmerProposal(GroupFarmerProposal groupFarmerProposal) {
 		this.groupFarmerProposal = groupFarmerProposal;
+	}
+
+	
+	public CommonCreateAndUpateMarks getRecorder() {
+		return recorder;
+	}
+
+	public void setRecorder(CommonCreateAndUpateMarks recorder) {
+		this.recorder = recorder;
 	}
 
 	@Override

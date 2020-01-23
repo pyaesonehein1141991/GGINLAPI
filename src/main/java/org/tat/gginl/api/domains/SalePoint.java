@@ -49,9 +49,9 @@ public class SalePoint implements Serializable {
 	@JoinColumn(name = "TOWNSHIPID", referencedColumnName = "ID")
 	private Township township;
 	
-	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="BRANCHID",referencedColumnName="ID")
-	private Branch branch;
+//	@OneToOne(fetch=FetchType.LAZY)
+//	@JoinColumn(name="BRANCHID",referencedColumnName="ID")
+//	private Branch branch;
 
 	@Embedded
 	private CommonCreateAndUpateMarks commonCreateAndUpateMarks;
@@ -123,20 +123,20 @@ public class SalePoint implements Serializable {
 		this.township = township;
 	}
 
-	public Branch getBranch() {
-		return branch;
-	}
-
-	public void setBranch(Branch branch) {
-		this.branch = branch;
-	}
+//	public Branch getBranch() {
+//		return branch;
+//	}
+//
+//	public void setBranch(Branch branch) {
+//		this.branch = branch;
+//	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((Address == null) ? 0 : Address.hashCode());
-		result = prime * result + ((branch == null) ? 0 : branch.hashCode());
+//		result = prime * result + ((branch == null) ? 0 : branch.hashCode());
 		result = prime * result + ((commonCreateAndUpateMarks == null) ? 0 : commonCreateAndUpateMarks.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
@@ -163,11 +163,11 @@ public class SalePoint implements Serializable {
 				return false;
 		} else if (!Address.equals(other.Address))
 			return false;
-		if (branch == null) {
-			if (other.branch != null)
-				return false;
-		} else if (!branch.equals(other.branch))
-			return false;
+//		if (branch == null) {
+//			if (other.branch != null)
+//				return false;
+//		} else if (!branch.equals(other.branch))
+//			return false;
 		if (commonCreateAndUpateMarks == null) {
 			if (other.commonCreateAndUpateMarks != null)
 				return false;

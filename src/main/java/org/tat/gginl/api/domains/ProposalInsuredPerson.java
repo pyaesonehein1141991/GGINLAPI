@@ -174,6 +174,7 @@ public class ProposalInsuredPerson implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lifeproposalInsuredPerson", orphanRemoval = true)
 	private List<SurveyQuestionAnswer> surveyQuestionAnswerList;
 	
+	@Embedded
 	private CommonCreateAndUpateMarks recorder;
 	
 	@Transient

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.tat.gginl.api.common.COACode;
 import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
+import org.tat.gginl.api.common.DateUtils;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.ResidentAddress;
 import org.tat.gginl.api.common.TLFBuilder;
@@ -256,6 +257,11 @@ public class LifeProposalService {
 					lifeProposal.setToBank(groupFarmerProposalDTO.getToBank());
 					lifeProposal.setFromBank(groupFarmerProposalDTO.getFromBank());
 				}
+				lifeProposal.setComplete(true);
+				
+				CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
+				recorder.setCreatedDate(new Date());
+				lifeProposal.setRecorder(recorder);
 				
 				lifeProposal.setProposalType(ProposalType.UNDERWRITING);
 				lifeProposal.setSubmittedDate(groupFarmerProposalDTO.getSubmittedDate());
@@ -329,6 +335,8 @@ public class LifeProposalService {
 		insuredPerson.setStartDate(dto.getStartDate());
 		insuredPerson.setEndDate(dto.getEndDate());
 		insuredPerson.setDateOfBirth(dto.getDateOfBirth());
+		insuredPerson.setAge(DateUtils.getAgeForNextYear(dto.getDateOfBirth()));
+		insuredPerson.setPeriodMonth(12);
 		insuredPerson.setGender(Gender.valueOf(dto.getGender()));
 		insuredPerson.setResidentAddress(residentAddress);
 		insuredPerson.setName(name);
