@@ -995,7 +995,7 @@ public class LifeProposalService {
 		switch (payment.getReferenceType()) {
 		case GROUP_FARMER_PROPOSAL:
 		case FARMER_POLICY:
-			insuranceName = "Life Insurance, ";
+			insuranceName = "";
 			break;
 		default:
 			break;
