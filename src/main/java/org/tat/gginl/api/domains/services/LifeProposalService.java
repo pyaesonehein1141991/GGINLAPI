@@ -429,6 +429,8 @@ public class LifeProposalService {
 			policy.setPaymentChannel(proposal.getPaymentChannel());
 			policy.setActivedPolicyStartDate(policy.getPolicyInsuredPersonList().get(0).getStartDate());
 			policy.setActivedPolicyEndDate(policy.getPolicyInsuredPersonList().get(0).getEndDate());
+			policy.setCommenmanceDate(proposal.getSubmittedDate());
+			policy.setLastPaymentTerm(1);
 			policyList.add(policy);
 		});
 		return policyList;
