@@ -849,6 +849,7 @@ public class LifeProposalService {
 			tlf.setSalePoint(salePoint);
 			tlf.setPolicyNo(policyNo);
 			tlf.setAgentTransaction(true);
+			tlf.setPaid(true);
 			tlf.setCommonCreateAndUpateMarks(recorder);
 			// setIDPrefixForInsert(tlf);
 			// paymentDAO.insertTLF(tlf);
@@ -1045,6 +1046,7 @@ public class LifeProposalService {
 			tlf.setPaymentChannel(payment.getPaymentChannel());
 			tlf.setSalePoint(salePoint);
 			tlf.setPolicyNo(policyNo);
+			tlf.setPaid(true);
 			tlf.setAgentTransaction(true);
 			tlf.setCommonCreateAndUpateMarks(recorder);
 
