@@ -157,6 +157,11 @@ public class LifeProposalService {
 		
 			if (null != groupFarmerProposalDTO.getAgentID()) {
 				List<AgentCommission> agentcommissionList = convertGroupFarmerToAgentCommission(groupFarmerProposal);
+				CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
+				recorder.setCreatedDate(new Date());
+				agentcommissionList.forEach(agent->{
+					agent.setRecorder(recorder);
+				});
 				agentCommissionRepo.saveAll(agentcommissionList);
 			}
 
