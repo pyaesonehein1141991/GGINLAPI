@@ -751,15 +751,15 @@ public class LifeProposalService {
 		nrBf.append("Being amount of ");
 		switch (payment.getReferenceType()) {
 		case FARMER_POLICY:
+		case GROUP_FARMER_PROPOSAL:
 		case LIFE_POLICY:
 			nrBf.append(" Life Premium ");
-			LifePolicy lifePolicy = lifePolicyRepo.getOne(payment.getReferenceNo());
-			si = lifePolicy.getTotalSumInsured();
-			premium = (lifePolicy.isEndorsementApplied()) ? lifePolicy.getTotalEndorsementPremium()
-					: lifePolicy.getTotalPremium();
-			customerName = lifePolicy.getCustomerName();
-			totalInsuredPerson = lifePolicy.getInsuredPersonInfo().size() > 1 ? lifePolicy.getInsuredPersonInfo().size()
-					: 0;
+		//	LifePolicy lifePolicy = lifePolicyRepo.getOne(payment.getReferenceNo());
+			GroupFarmerProposal groupFarmerProposal=groupFarmerRepository.getOne(payment.getReferenceNo());
+			si = groupFarmerProposal.getTotalSI();
+			premium = groupFarmerProposal.getPremium();
+			customerName = groupFarmerProposal.getOrganization().getName();
+			totalInsuredPerson = groupFarmerProposal.getNoOfInsuredPerson();
 			break;
 		default:
 			break;
@@ -771,8 +771,11 @@ public class LifeProposalService {
 		nrBf.append(customerName);
 		nrBf.append(" for Sum Insured ");
 		nrBf.append(Utils.getCurrencyFormatString(si));
+		nrBf.append(" and for total number of insured person ");
+		nrBf.append(Integer.toString(totalInsuredPerson));
 		nrBf.append(" and the premium amount of ");
 		nrBf.append(Utils.getCurrencyFormatString(premium));
+	
 		nrBf.append(". ");
 
 		return nrBf.toString();
@@ -923,7 +926,7 @@ public class LifeProposalService {
 			tlf.setClearing(isClearing);
 			tlf.setPaymentChannel(payment.getPaymentChannel());
 			tlf.setSalePoint(salePoint);
-			tlf.setPolicyNo(policyNo);
+		//	tlf.setPolicyNo(policyNo);
 	//		setIDPrefixForInsert(tlf);
 	///		paymentDAO.insertTLF(tlf);
 
@@ -963,7 +966,7 @@ public class LifeProposalService {
 			tlf.setPaymentChannel(payment.getPaymentChannel());
 			tlf.setSalePoint(salePoint);
 			tlf.setClearing(isClearing);
-			tlf.setPolicyNo(policyNo);
+		//	tlf.setPolicyNo(policyNo);
 			//setIDPrefixForInsert(tlf);
 		//	paymentDAO.insertTLF(tlf);
   
