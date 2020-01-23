@@ -127,7 +127,7 @@ public class GroupFarmerProposal implements Serializable {
 	public double getAgentCommission() {
 		double totalCommission = 0.0;
 		if (agent != null) {
-				double commissionPercent = 0.1;
+				double commissionPercent = 10;
 				if (commissionPercent > 0) {
 					double totalPremium = premium ;
 					double commission = Utils.getPercentOf(commissionPercent, totalPremium);

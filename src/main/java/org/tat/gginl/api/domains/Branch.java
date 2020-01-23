@@ -45,7 +45,7 @@ public class Branch implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TOWNSHIPID", referencedColumnName = "ID")
 	private Township township;
-
+	
 	@Version
 	private int version;
 
