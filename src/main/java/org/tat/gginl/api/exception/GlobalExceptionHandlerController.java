@@ -33,7 +33,7 @@ public class GlobalExceptionHandlerController {
 	  }
   @ExceptionHandler(CustomException.class)
   public void handleCustomException(HttpServletResponse res, CustomException ex) throws IOException {
-	  logger.error(ex.getMessage());
+	  logger.error("handleCustomException: " + ex.getMessage());
     res.sendError(ex.getHttpStatus().value(), ex.getMessage());
   }
 
@@ -45,7 +45,7 @@ public class GlobalExceptionHandlerController {
 
   @ExceptionHandler(Exception.class)
   public void handleException(HttpServletResponse res) throws IOException {
-	logger.error("");
+	logger.error("IOEXception :");
     res.sendError(HttpStatus.BAD_REQUEST.value(), "Something went wrong");
   }
 }

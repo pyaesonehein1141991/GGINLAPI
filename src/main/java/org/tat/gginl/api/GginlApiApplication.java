@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,6 +25,7 @@ public class GginlApiApplication implements CommandLineRunner {
 	private UserService userService;
 
 //	private static final Logger LOGGER = LogManager.getLogger(GginlApiApplication.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GginlApiApplication.class);
 	
 	public static void main(String[] args) {
 		SpringApplication application = new SpringApplication(GginlApiApplication.class);

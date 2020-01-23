@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
@@ -32,7 +34,6 @@ import org.tat.gginl.api.domains.Bank;
 import org.tat.gginl.api.domains.Branch;
 import org.tat.gginl.api.domains.Customer;
 import org.tat.gginl.api.domains.GroupFarmerProposal;
-import org.tat.gginl.api.domains.GroupFarmerProposalDTO;
 import org.tat.gginl.api.domains.InsuredPersonBeneficiaries;
 import org.tat.gginl.api.domains.LifePolicy;
 import org.tat.gginl.api.domains.LifeProposal;
@@ -72,6 +73,7 @@ import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalInsuredPersonDTO;
 @Service
 public class LifeProposalService {
 
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private LifeProposalRepository lifeProposalRepo;
 
@@ -134,7 +136,7 @@ public class LifeProposalService {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public List<LifePolicy> createGroupFarmerProposalToPolicy(FarmerProposalDTO groupFarmerProposalDTO) {
-		
+		try {
 			GroupFarmerProposal groupFarmerProposal = createGroupFarmerProposal(groupFarmerProposalDTO);
 			groupFarmerProposal = groupFarmerRepository.save(groupFarmerProposal);
 			
@@ -161,10 +163,15 @@ public class LifeProposalService {
 			tlfRepository.saveAll(tlfList);
 			return policyList;
 		
+		} catch (Exception e) {
+			logger.error("JOEERROR:"+e.getMessage(),e);
+			throw e;
+		}
+		
 	}
 
 	private GroupFarmerProposal createGroupFarmerProposal(FarmerProposalDTO groupFarmerProposalDTO) {
-		
+		try {
 		Optional<Branch> branchOptional = branchRepo.findById(groupFarmerProposalDTO.getBranchId());
 		Optional<PaymentType> paymentTypeOptional = paymentTypeRepo.findById(groupFarmerProposalDTO.getPaymentTypeId());
 		Optional<Agent> agentOptional = agentRepo.findById(groupFarmerProposalDTO.getAgentID());
@@ -212,6 +219,11 @@ public class LifeProposalService {
 		String proposalNo = customIdRepo.getNextId("GROUPFARMER_LIFE_PROPOSAL_NO", null);
 		groupFarmerProposal.setProposalNo(proposalNo);
 		return groupFarmerProposal;
+		}catch(Exception e)
+		{
+			logger.error("JOEERROR:" + e.getMessage());
+			throw e;
+		}
 	}
 
 	private List<LifeProposal> convertGroupFarmerProposalDTOToProposal(FarmerProposalDTO groupFarmerProposalDTO) {
@@ -224,58 +236,65 @@ public class LifeProposalService {
 		Optional<Agent> agentOptional = agentRepo.findById(groupFarmerProposalDTO.getAgentID());
 		Optional<SaleMan> saleManOptional = saleManRepo.findById(groupFarmerProposalDTO.getSaleManId());
 		Optional<SalePoint> salePointOptional = salePointRepo.findById(groupFarmerProposalDTO.getSalePointId());
-		
 		List<LifeProposal> lifeProposalList = new ArrayList<>();
-		groupFarmerProposalDTO.getProposalInsuredPersonList().forEach(insuredPerson -> {
-			LifeProposal lifeProposal = new LifeProposal();
-			if(groupFarmerProposalDTO.getPaymentChannel().equalsIgnoreCase("TRF")){
-				lifeProposal.setPaymentChannel(PaymentChannel.TRANSFER);
-				lifeProposal.setToBank(groupFarmerProposalDTO.getToBank());
-				lifeProposal.setFromBank(groupFarmerProposalDTO.getFromBank());
-			}else if(groupFarmerProposalDTO.getPaymentChannel().equalsIgnoreCase("CSH")) {
-				lifeProposal.setPaymentChannel(PaymentChannel.CASHED);
-			}else if(groupFarmerProposalDTO.getPaymentChannel().equalsIgnoreCase("CHQ")) {
-				lifeProposal.setPaymentChannel(PaymentChannel.CHEQUE);
-				lifeProposal.setChequeNo(groupFarmerProposalDTO.getChequeNo());
-				lifeProposal.setToBank(groupFarmerProposalDTO.getToBank());
-				lifeProposal.setFromBank(groupFarmerProposalDTO.getFromBank());
-			}else if(groupFarmerProposalDTO.getPaymentChannel().equalsIgnoreCase("RCV")) {
-				lifeProposal.setPaymentChannel(PaymentChannel.SUNDRY);
-				lifeProposal.setToBank(groupFarmerProposalDTO.getToBank());
-				lifeProposal.setFromBank(groupFarmerProposalDTO.getFromBank());
-			}
-			
-			lifeProposal.setProposalType(ProposalType.UNDERWRITING);
-			lifeProposal.setSubmittedDate(groupFarmerProposalDTO.getSubmittedDate());
-			lifeProposal.setBranch(branchOptional.get());
-			if(referralOptional.isPresent()) {
-				lifeProposal.setReferral(referralOptional.get());	
-			}
-			if(organizationOptional.isPresent()) {
-				lifeProposal.setOrganization(organizationOptional.get());
-			}
-			if(paymentTypeOptional.isPresent()) {
+		try {
+			groupFarmerProposalDTO.getProposalInsuredPersonList().forEach(insuredPerson -> {
+				LifeProposal lifeProposal = new LifeProposal();
+				if(groupFarmerProposalDTO.getPaymentChannel().equalsIgnoreCase("TRF")){
+					lifeProposal.setPaymentChannel(PaymentChannel.TRANSFER);
+					lifeProposal.setToBank(groupFarmerProposalDTO.getToBank());
+					lifeProposal.setFromBank(groupFarmerProposalDTO.getFromBank());
+				}else if(groupFarmerProposalDTO.getPaymentChannel().equalsIgnoreCase("CSH")) {
+					lifeProposal.setPaymentChannel(PaymentChannel.CASHED);
+				}else if(groupFarmerProposalDTO.getPaymentChannel().equalsIgnoreCase("CHQ")) {
+					lifeProposal.setPaymentChannel(PaymentChannel.CHEQUE);
+					lifeProposal.setChequeNo(groupFarmerProposalDTO.getChequeNo());
+					lifeProposal.setToBank(groupFarmerProposalDTO.getToBank());
+					lifeProposal.setFromBank(groupFarmerProposalDTO.getFromBank());
+				}else if(groupFarmerProposalDTO.getPaymentChannel().equalsIgnoreCase("RCV")) {
+					lifeProposal.setPaymentChannel(PaymentChannel.SUNDRY);
+					lifeProposal.setToBank(groupFarmerProposalDTO.getToBank());
+					lifeProposal.setFromBank(groupFarmerProposalDTO.getFromBank());
+				}
 				
-				lifeProposal.setPaymentType(paymentTypeOptional.get());
-			}
-			
-			if(agentOptional.isPresent()) {
+				lifeProposal.setProposalType(ProposalType.UNDERWRITING);
+				lifeProposal.setSubmittedDate(groupFarmerProposalDTO.getSubmittedDate());
+				lifeProposal.setBranch(branchOptional.get());
+				if(referralOptional.isPresent()) {
+					lifeProposal.setReferral(referralOptional.get());	
+				}
+				if(organizationOptional.isPresent()) {
+					lifeProposal.setOrganization(organizationOptional.get());
+				}
+				if(paymentTypeOptional.isPresent()) {
+					
+					lifeProposal.setPaymentType(paymentTypeOptional.get());
+				}
 				
-				lifeProposal.setAgent(agentOptional.get());
-			}
+				if(agentOptional.isPresent()) {
+					
+					lifeProposal.setAgent(agentOptional.get());
+				}
+				
+				if(saleManOptional.isPresent()) {
+					lifeProposal.setSaleMan(saleManOptional.get());
+				}
+				lifeProposal.setSalePoint(salePointOptional.get());
+				lifeProposal.getProposalInsuredPersonList().add(createInsuredPerson(insuredPerson));
+				String proposalNo = customIdRepo.getNextId("FARMER_LIFE_PROPOSAL_NO", null);
+				lifeProposal.setProposalNo(proposalNo);
+				lifeProposal.setPrefix("ISLIF001");
+				lifeProposalList.add(lifeProposal);
+
+			});
+
 			
-			if(saleManOptional.isPresent()) {
-				lifeProposal.setSaleMan(saleManOptional.get());
-			}
-			lifeProposal.setSalePoint(salePointOptional.get());
-			lifeProposal.getProposalInsuredPersonList().add(createInsuredPerson(insuredPerson));
-			String proposalNo = customIdRepo.getNextId("FARMER_LIFE_PROPOSAL_NO", null);
-			lifeProposal.setProposalNo(proposalNo);
-			lifeProposal.setPrefix("ISLIF001");
-			lifeProposalList.add(lifeProposal);
-
-		});
-
+		} catch (Exception e) {
+			logger.error("JOEERROR:"+e.getMessage(),e);
+			throw e;
+		}
+		
+		
 		return lifeProposalList;
 	}
 
