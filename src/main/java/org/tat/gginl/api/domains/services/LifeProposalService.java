@@ -519,7 +519,9 @@ public class LifeProposalService {
 				 payment.setPO(true);
 				 payment.setPaymentChannel(PaymentChannel.CHEQUE);
 				 receiptNo = customIdRepo.getNextId("CHEQUE_RECEIPT_ID_GEN", null);
+				payment.setChequeNo(farmerProposalDTO.getChequeNo());
 			}else if(farmerProposalDTO.getPaymentChannel().equalsIgnoreCase("TRF")) {
+				payment.setPoNo(farmerProposalDTO.getChequeNo());
 				 payment.setPaymentChannel(PaymentChannel.TRANSFER);
 				 receiptNo = customIdRepo.getNextId("TRANSFER_RECEIPT_ID_GEN", null);
 			}else if (farmerProposalDTO.getPaymentChannel().equalsIgnoreCase("RCV")) {
@@ -528,7 +530,6 @@ public class LifeProposalService {
 				 payment.setPO(true);
 			}
 			payment.setReceiptNo(receiptNo);
-			payment.setChequeNo(farmerProposalDTO.getChequeNo());
 			payment.setPaymentType(groupFarmerProposal.getPaymentType());
 			payment.setReferenceType(PolicyReferenceType.GROUP_FARMER_PROPOSAL);
 			payment.setConfirmDate(new Date());
