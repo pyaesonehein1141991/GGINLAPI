@@ -18,7 +18,7 @@ public class ResidentAddress implements Serializable {
 	
 	@Access(AccessType.FIELD)
 	@OneToOne
-	@JoinColumn(name = "RESIDENTTOWNSHIPID", referencedColumnName = "ID",insertable = false, updatable = false)
+	@JoinColumn(name = "RESIDENTTOWNSHIPID", referencedColumnName = "ID")
 	private Township residentTownship;
 
 	public ResidentAddress() {

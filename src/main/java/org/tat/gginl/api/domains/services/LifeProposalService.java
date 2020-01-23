@@ -867,7 +867,8 @@ public class LifeProposalService {
 			String coaCode = null;
 			String enoNo = payment.getReceiptNo();
 			Product product = null;
-
+			CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
+			recorder.setCreatedDate(new Date());
 			if (isRenewal) {
 					totalNetPremium = totalNetPremium + payment.getRenewalNetPremium();
 			} else {
@@ -926,6 +927,7 @@ public class LifeProposalService {
 			tlf.setClearing(isClearing);
 			tlf.setPaymentChannel(payment.getPaymentChannel());
 			tlf.setSalePoint(salePoint);
+			tlf.setCommonCreateAndUpateMarks(recorder);
 		//	tlf.setPolicyNo(policyNo);
 	//		setIDPrefixForInsert(tlf);
 	///		paymentDAO.insertTLF(tlf);
@@ -941,6 +943,8 @@ public class LifeProposalService {
 		TLF tlf =new TLF();
 		try {
 			double netPremium = 0.0;
+			CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
+			recorder.setCreatedDate(new Date());
 			if (isRenewal) {
 				netPremium = payment.getRenewalNetPremium();
 			} else {
@@ -966,6 +970,7 @@ public class LifeProposalService {
 			tlf.setPaymentChannel(payment.getPaymentChannel());
 			tlf.setSalePoint(salePoint);
 			tlf.setClearing(isClearing);
+			tlf.setCommonCreateAndUpateMarks(recorder);
 		//	tlf.setPolicyNo(policyNo);
 			//setIDPrefixForInsert(tlf);
 		//	paymentDAO.insertTLF(tlf);
