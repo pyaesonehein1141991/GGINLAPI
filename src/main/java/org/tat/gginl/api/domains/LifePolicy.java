@@ -10,6 +10,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,6 +28,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.FormatID;
 import org.tat.gginl.api.common.IInsuredItem;
 import org.tat.gginl.api.common.IPolicy;
@@ -150,6 +152,9 @@ public class LifePolicy implements IPolicy, Serializable, ISorter {
 	
 	@Transient
 	private String chequeNo;
+	
+	@Embedded
+	private CommonCreateAndUpateMarks recorder;
 
 	public LifePolicy() {
 	}
@@ -220,6 +225,15 @@ public class LifePolicy implements IPolicy, Serializable, ISorter {
 
 	}
 	
+	
+
+	public CommonCreateAndUpateMarks getRecorder() {
+		return recorder;
+	}
+
+	public void setRecorder(CommonCreateAndUpateMarks recorder) {
+		this.recorder = recorder;
+	}
 
 	public String getChequeNo() {
 		return chequeNo;

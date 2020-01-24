@@ -17,6 +17,8 @@ import org.tat.gginl.api.common.COACode;
 import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.DateUtils;
 import org.tat.gginl.api.common.Name;
+import org.tat.gginl.api.common.PolicyInsuredPerson;
+import org.tat.gginl.api.common.PolicyInsuredPersonBeneficiaries;
 import org.tat.gginl.api.common.ResidentAddress;
 import org.tat.gginl.api.common.TLFBuilder;
 import org.tat.gginl.api.common.TranCode;
@@ -419,6 +421,9 @@ public class LifeProposalService {
 		String beneficiaryNo = customIdRepo.getNextId("LIFE_BENEFICIARY_ID_GEN", null);
 		beneficiary.setBeneficiaryNo(beneficiaryNo);
 		beneficiary.setPrefix("ISLIF004");
+		CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
+		recorder.setCreatedDate(new Date());
+		beneficiary.setRecorder(recorder);
 		return beneficiary;
 	}
 
@@ -436,6 +441,15 @@ public class LifeProposalService {
 			policy.setActivedPolicyEndDate(policy.getPolicyInsuredPersonList().get(0).getEndDate());
 			policy.setCommenmanceDate(proposal.getSubmittedDate());
 			policy.setLastPaymentTerm(1);
+			CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
+			recorder.setCreatedDate(new Date());
+			policy.setRecorder(recorder);
+			for(PolicyInsuredPerson insuredPerson: policy.getPolicyInsuredPersonList()) {
+				insuredPerson.setRecorder(recorder);
+				for(PolicyInsuredPersonBeneficiaries beneficiary: insuredPerson.getPolicyInsuredPersonBeneficiariesList()) {
+					beneficiary.setRecorder(recorder);
+				}
+			}
 			policyList.add(policy);
 		});
 		return policyList;

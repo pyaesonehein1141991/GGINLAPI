@@ -81,6 +81,9 @@ public class PolicyInsuredPersonBeneficiaries implements Serializable {
 
 	@Version
 	private int version;
+	
+	@Embedded
+	private CommonCreateAndUpateMarks recorder;
 
 	public PolicyInsuredPersonBeneficiaries() {
 
@@ -263,6 +266,22 @@ public class PolicyInsuredPersonBeneficiaries implements Serializable {
 
 	public void setVersion(int version) {
 		this.version = version;
+	}
+	
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public CommonCreateAndUpateMarks getRecorder() {
+		return recorder;
+	}
+
+	public void setRecorder(CommonCreateAndUpateMarks recorder) {
+		this.recorder = recorder;
 	}
 
 	public String getFullName() {

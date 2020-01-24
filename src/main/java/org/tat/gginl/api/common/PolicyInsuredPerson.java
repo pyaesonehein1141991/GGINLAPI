@@ -182,6 +182,9 @@ public class PolicyInsuredPerson implements IInsuredItem, Serializable {
 	@Transient
 	private boolean newCustomer;
 	
+	@Embedded
+	private CommonCreateAndUpateMarks recorder;
+	
 	
 
 	public boolean isNewCustomer() {
@@ -838,6 +841,14 @@ public class PolicyInsuredPerson implements IInsuredItem, Serializable {
 	}
 	
 	
+
+	public CommonCreateAndUpateMarks getRecorder() {
+		return recorder;
+	}
+
+	public void setRecorder(CommonCreateAndUpateMarks recorder) {
+		this.recorder = recorder;
+	}
 
 	public double getAddOnPremium() {
 		double premium = 0.0;

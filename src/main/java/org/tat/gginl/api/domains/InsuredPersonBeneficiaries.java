@@ -23,6 +23,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.tat.gginl.api.common.BeneficiariesInfoDTO;
+import org.tat.gginl.api.common.CommonCreateAndUpateMarks;
 import org.tat.gginl.api.common.FormatID;
 import org.tat.gginl.api.common.Name;
 import org.tat.gginl.api.common.PolicyInsuredPersonBeneficiaries;
@@ -69,6 +70,9 @@ public class InsuredPersonBeneficiaries {
 
 	@Version
 	private int version;
+	
+	@Embedded
+	private CommonCreateAndUpateMarks recorder;
 
 	public InsuredPersonBeneficiaries() {
 	}
@@ -235,6 +239,15 @@ public class InsuredPersonBeneficiaries {
 
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+
+	
+	public CommonCreateAndUpateMarks getRecorder() {
+		return recorder;
+	}
+
+	public void setRecorder(CommonCreateAndUpateMarks recorder) {
+		this.recorder = recorder;
 	}
 
 	public String getFullName() {
