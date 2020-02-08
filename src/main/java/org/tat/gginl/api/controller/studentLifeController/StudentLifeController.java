@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.tat.gginl.api.domains.LifePolicy;
 import org.tat.gginl.api.domains.services.LifeProposalService;
 import org.tat.gginl.api.dto.ResponseDTO;
-import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerProposalDTO;
-import org.tat.gginl.api.dto.groupFarmerDTO.GroupFarmerResponseDTO;
 import org.tat.gginl.api.dto.studentLifeDTO.StudentLifeProposalDTO;
 import org.tat.gginl.api.dto.studentLifeDTO.StudentLifeReponseDTO;
 
