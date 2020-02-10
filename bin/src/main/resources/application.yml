@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://localhost;databaseName=ggip
+    url: jdbc:sqlserver://localhost;databaseName=ggip3
     username: sa
     password: sasa
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
@@ -21,3 +21,21 @@ server:
    port: ${PORT:8081} # This is the default port anyway, but you can change it here
    
 farmerProductId: ISPRD003001000009376125072017
+fileDir: D
+
+security:
+  jwt:
+    token:
+      secret-key: secret-key
+      expire-length: 300000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
+
+UserController:
+  signin: Authenticates user and returns its JWT token.
+  signup: Creates user and returns its JWT token
+  delete: Deletes specific user by username
+  search: Returns specific user by username
+  me: Returns current user's data
+  submitProposal: Create proposal and return policy no
+GroupFarmerController:
+  submitproposal: Create Group farmer Proposal and return policy no
+
