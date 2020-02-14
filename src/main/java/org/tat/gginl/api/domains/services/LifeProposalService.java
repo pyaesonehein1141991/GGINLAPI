@@ -1136,8 +1136,6 @@ public class LifeProposalService {
   /////////////////////////////////////////////////////////////////////////////////////
   // For Student Life
 
-  // For StudentLife
-
   @Transactional(propagation = Propagation.REQUIRED)
   public List<LifePolicy> createStudentLifeProposalToPolicy(
       StudentLifeProposalDTO studentLifeProposalDTO) {
@@ -1150,6 +1148,19 @@ public class LifeProposalService {
 
     // create lifepolicy and return policynoList
     policyList = lifePolicyRepo.saveAll(policyList);
+
+    // create lifepolicy to payment
+    List<Payment> paymentList = convertStudentLifePolicyToPayment(policyList);
+    paymentRepository.saveAll(paymentList);
+
+    CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
+    recorder.setCreatedDate(new Date());
+
+    if (null != studentLifeProposalDTO.getAgentID()) {
+      List<AgentCommission> agentcommissionList =
+          convertStudentLifePolicyToAgentCommission(policyList);
+      agentCommissionRepo.saveAll(agentcommissionList);
+    }
 
     return policyList;
   }
@@ -1258,6 +1269,91 @@ public class LifeProposalService {
 
 
     return insuredPerson;
+  }
+
+  // for student life payment
+  private List<Payment> convertStudentLifePolicyToPayment(List<LifePolicy> studentlifePolicyList) {
+    List<Payment> paymentList = new ArrayList<Payment>();
+
+    studentlifePolicyList.forEach(lifePolicy -> {
+      Optional<Bank> fromBankOptional = Optional.empty();
+      Optional<Bank> toBankOptional = Optional.empty();
+      if (lifePolicy.getFromBank() != null) {
+        fromBankOptional = bankRepository.findById(lifePolicy.getFromBank());
+      }
+      if (lifePolicy.getToBank() != null) {
+        toBankOptional = bankRepository.findById(lifePolicy.getToBank());
+      }
+      Payment payment = new Payment();
+      double rate = 1.0;
+      String receiptNo = "";
+      CommonCreateAndUpateMarks recorder = new CommonCreateAndUpateMarks();
+      recorder.setCreatedDate(new Date());
+      if (PaymentChannel.CASHED.equals(lifePolicy.getPaymentChannel())) {
+        receiptNo = customIdRepo.getNextId("CASH_RECEIPT_ID_GEN", null);
+      } else if (PaymentChannel.CHEQUE.equals(lifePolicy.getPaymentChannel())) {
+        payment.setPO(true);
+        receiptNo = customIdRepo.getNextId("CHEQUE_RECEIPT_ID_GEN", null);
+      } else if (PaymentChannel.TRANSFER.equals(lifePolicy.getPaymentChannel())) {
+        receiptNo = customIdRepo.getNextId("TRANSFER_RECEIPT_ID_GEN", null);
+      } else {
+        receiptNo = customIdRepo.getNextId("CHEQUE_RECEIPT_ID_GEN", null);
+        payment.setPO(true);
+      }
+
+      payment.setReceiptNo(receiptNo);
+      payment.setChequeNo(lifePolicy.getChequeNo());
+      payment.setPaymentType(lifePolicy.getPaymentType());
+      payment.setPaymentChannel(lifePolicy.getPaymentChannel());
+      payment.setReferenceType(PolicyReferenceType.FARMER_POLICY);
+      payment.setConfirmDate(new Date());
+      payment.setPaymentDate(new Date());
+      if (toBankOptional.isPresent()) {
+        payment.setAccountBank(toBankOptional.get());
+      }
+      if (fromBankOptional.isPresent()) {
+        payment.setBank(fromBankOptional.get());
+      }
+      payment.setReferenceNo(lifePolicy.getId());
+      payment.setBasicPremium(lifePolicy.getTotalBasicTermPremium());
+      payment.setAddOnPremium(lifePolicy.getTotalAddOnTermPremium());
+      payment.setFromTerm(1);
+      payment.setToTerm(1);
+      payment.setCur("KYT");
+      payment.setRate(rate);
+      payment.setComplete(true);
+      payment.setAmount(payment.getNetPremium());
+      payment.setHomeAmount(payment.getNetPremium());
+      payment.setHomePremium(payment.getBasicPremium());
+      payment.setHomeAddOnPremium(payment.getAddOnPremium());
+      payment.setCommonCreateAndUpateMarks(recorder);
+      paymentList.add(payment);
+
+    });
+    return paymentList;
+  }
+
+
+  // agent Commission
+  private List<AgentCommission> convertStudentLifePolicyToAgentCommission(
+      List<LifePolicy> studentlifePolicyList) {
+    List<AgentCommission> agentCommissionList = new ArrayList<AgentCommission>();
+    /* get agent commission of each policy */
+    studentlifePolicyList.forEach(lifePolicy -> {
+      Product product = lifePolicy.getPolicyInsuredPersonList().get(0).getProduct();
+      double commissionPercent = product.getFirstCommission();
+      Payment payment = paymentRepository.findByPaymentReferenceNo(lifePolicy.getId());
+      double rate = payment.getRate();
+      double firstAgentCommission = lifePolicy.getAgentCommission();
+      agentCommissionList.add(new AgentCommission(lifePolicy.getId(),
+          PolicyReferenceType.STUDENT_LIFE_POLICY, lifePolicy.getAgent(), firstAgentCommission,
+          new Date(), payment.getReceiptNo(), lifePolicy.getTotalTermPremium(), commissionPercent,
+          AgentCommissionEntryType.UNDERWRITING, rate, (rate * firstAgentCommission), "KYT",
+          (rate * lifePolicy.getTotalTermPremium())));
+
+    });
+
+    return agentCommissionList;
   }
 
 

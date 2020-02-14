@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://localhost;databaseName=ggipAccount
+    url: jdbc:sqlserver://acehawksvr3;databaseName=ggli
     username: sa
     password: 123@ace
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
