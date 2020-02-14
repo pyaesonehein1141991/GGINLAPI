@@ -33,7 +33,8 @@ public class CurrencyUtils {
 		String currencyFormat = "";
 		if (currency.getCurrencyCode().equalsIgnoreCase("USD")) {
 			currencyFormat = "� #,##0.00";
-		} else if (currency.getCurrencyCode().equalsIgnoreCase("KYT")) {
+		}
+		else if (currency.getCurrencyCode().equalsIgnoreCase("KYT")) {
 			currencyFormat = "#,##0.00";
 		}
 
