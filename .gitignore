@@ -5,6 +5,7 @@
 mvnw
 mvnw.cmd
 .mvn/
+*.class
 
 ### STS ###
 .apt_generated
